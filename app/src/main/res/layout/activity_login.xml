@@ -1,0 +1,161 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/main"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".LoginActivity">
+
+
+    <TextView
+        android:id="@+id/tv_login_label"
+        style="@style/AppEditText.Bold.S20"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="50dp"
+        android:text="로그인"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.5" />
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/et_email_layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="30dp"
+        android:layout_marginTop="50dp"
+        android:layout_marginEnd="30dp"
+        android:hint="이메일"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/tv_login_label">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/et_password_layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="30dp"
+        android:layout_marginTop="10dp"
+        android:layout_marginEnd="30dp"
+        android:hint="비밀번호"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/et_email_layout">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/btn_login"
+        style="@style/AppEditText.White.S20"
+        android:layout_width="0dp"
+        android:layout_height="70dp"
+        android:layout_marginStart="30dp"
+        android:layout_marginTop="30dp"
+        android:layout_marginEnd="30dp"
+        android:background="@drawable/btn_selector"
+        android:text="이메일로 로그인"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/et_password_layout" />
+
+
+    <TextView
+        android:id="@+id/tv_join"
+        style="@style/AppEditText.S18"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="80dp"
+        android:layout_marginTop="20dp"
+        android:text="회원가입"
+        app:layout_constraintEnd_toStartOf="@id/tv_find"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/btn_login" />
+
+    <View
+        android:id="@+id/view_line1"
+        android:layout_width="1dp"
+        android:layout_height="0dp"
+        android:background="@color/gray_100"
+        app:layout_constraintBottom_toBottomOf="@id/tv_join"
+        app:layout_constraintEnd_toStartOf="@id/tv_find"
+        app:layout_constraintStart_toEndOf="@id/tv_join"
+        app:layout_constraintTop_toTopOf="@id/tv_find" />
+
+    <TextView
+        android:id="@+id/tv_find"
+        style="@style/AppEditText.S18"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="80dp"
+        android:text="계정 찾기"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@id/tv_join"
+        app:layout_constraintTop_toBottomOf="@id/btn_login"
+        app:layout_constraintTop_toTopOf="@id/tv_join" />
+
+    <View
+        android:id="@+id/view_line2"
+        android:layout_width="0dp"
+        android:layout_height="1dp"
+        android:layout_marginTop="40dp"
+        android:background="@color/gray_100"
+        app:layout_constraintEnd_toEndOf="@id/btn_login"
+        app:layout_constraintStart_toStartOf="@id/btn_login"
+        app:layout_constraintTop_toBottomOf="@id/view_line1" />
+
+    <TextView
+        android:id="@+id/tv_login_hint_label"
+        style="@style/AppEditText.Hint.S16"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:text="소셜로 로그인"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/view_line2" />
+
+
+    <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/iv_login_kakao"
+        android:layout_width="60dp"
+        android:layout_height="60dp"
+        android:layout_marginTop="15dp"
+        android:background="@drawable/ic_login_kakao"
+        app:layout_constraintDimensionRatio="1:1:1"
+        app:layout_constraintEnd_toStartOf="@id/iv_login_naver"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/tv_login_hint_label" />
+
+    <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/iv_login_naver"
+        android:layout_width="60dp"
+        android:layout_height="60dp"
+        android:background="@drawable/ic_login_naver"
+        app:layout_constraintDimensionRatio="1:1:1"
+        app:layout_constraintEnd_toStartOf="@id/iv_login_google"
+        app:layout_constraintStart_toEndOf="@id/iv_login_kakao"
+        app:layout_constraintTop_toTopOf="@id/iv_login_kakao" />
+
+    <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/iv_login_google"
+        android:layout_width="60dp"
+        android:layout_height="0dp"
+        android:background="@drawable/ic_login_google"
+        app:layout_constraintBottom_toBottomOf="@id/iv_login_naver"
+        app:layout_constraintDimensionRatio="1:1:1"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@id/iv_login_naver"
+        app:layout_constraintTop_toTopOf="@id/iv_login_kakao" />
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>
