@@ -1,20 +1,21 @@
-package com.zzangse.attendance_check;
+package com.zzangse.attendance_check.activity;
 
 import android.os.Bundle;
+import android.util.Log;
 import android.view.MenuItem;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
-import androidx.navigation.NavController;
-import androidx.navigation.Navigation;
-import androidx.navigation.fragment.NavHostFragment;
-import androidx.navigation.ui.NavigationUI;
 
 import com.google.android.material.navigation.NavigationBarView;
+import com.zzangse.attendance_check.fragment.ChartFragment;
+import com.zzangse.attendance_check.fragment.CheckFragment;
+import com.zzangse.attendance_check.fragment.EditFragment;
+import com.zzangse.attendance_check.fragment.MoreFragment;
+import com.zzangse.attendance_check.R;
 import com.zzangse.attendance_check.databinding.ActivityMainBinding;
 
 public class MainActivity extends AppCompatActivity {
@@ -51,12 +52,16 @@ public class MainActivity extends AppCompatActivity {
         @Override
         public boolean onNavigationItemSelected(@NonNull MenuItem item) {
             if (item.getItemId() == R.id.menu_check) {
+                Log.d("BottomNavSelect", "프래그먼트 check 이동");
                 replace(checkFragment);
             } else if (item.getItemId() == R.id.menu_chart) {
+                Log.d("BottomNavSelect", "프래그먼트 chart 이동");
                 replace(chartFragment);
             }else if (item.getItemId() == R.id.menu_edit) {
+                Log.d("BottomNavSelect", "프래그먼트 edit 이동");
                 replace(editFragment);
             } else if (item.getItemId() == R.id.menu_more) {
+                Log.d("BottomNavSelect", "프래그먼트 more 이동");
                 replace(moreFragment);
             }
             return true;

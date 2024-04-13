@@ -1,4 +1,4 @@
-package com.zzangse.attendance_check;
+package com.zzangse.attendance_check.activity;
 
 import android.os.Bundle;
 import android.widget.Toast;
