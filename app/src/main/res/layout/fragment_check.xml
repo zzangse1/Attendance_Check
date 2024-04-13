@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".CheckFragment">
+    tools:context=".fragment.CheckFragment">
 
     <!-- TODO: Update blank fragment layout -->
 
@@ -15,10 +15,42 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:titleCentered="true"
-        app:title="출석" />
+        app:title="출결 체크"
+        app:titleCentered="true" />
+
+
+    <LinearLayout
+        android:id="@+id/date_layout"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:gravity="center"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/toolbar_check">
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/btn_left"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@drawable/ic_arrow_left" />
+
+        <TextView
+            android:id="@+id/tv_date"
+            style="@style/AppEditText.Bold.S24"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="4월 13일" />
+
+        <Button
+            android:id="@+id/btn_right"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@drawable/ic_arrow_right" />
+    </LinearLayout>
 
     <View
+        android:id="@+id/view"
         android:layout_width="0dp"
         android:layout_height="150dp"
         android:layout_marginStart="20dp"
@@ -28,6 +60,34 @@
         android:background="@drawable/view_background"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/toolbar_check" />
+        app:layout_constraintTop_toBottomOf="@id/date_layout" />
 
+
+        <View
+            android:id="@+id/circle_green"
+            android:layout_width="100dp"
+            android:layout_height="100dp"
+            app:layout_constraintStart_toStartOf="@id/view"
+            app:layout_constraintTop_toTopOf="@id/view"
+            app:layout_constraintBottom_toBottomOf="@id/view"
+            app:layout_constraintEnd_toStartOf="@id/circle_yellow"
+            android:background="@drawable/circle_green" />
+
+        <View
+            android:id="@+id/circle_yellow"
+            android:layout_width="100dp"
+            android:layout_height="100dp"
+            app:layout_constraintStart_toEndOf="@id/circle_green"
+            app:layout_constraintTop_toTopOf="@id/circle_green"
+            app:layout_constraintEnd_toStartOf="@id/circle_red"
+            android:background="@drawable/circle_green" />
+
+        <View
+            android:id="@+id/circle_red"
+            android:layout_width="100dp"
+            android:layout_height="100dp"
+            app:layout_constraintStart_toEndOf="@id/circle_yellow"
+            app:layout_constraintTop_toTopOf="@id/circle_yellow"
+            app:layout_constraintEnd_toEndOf="@id/view"
+            android:background="@drawable/circle_green" />
 </androidx.constraintlayout.widget.ConstraintLayout>
