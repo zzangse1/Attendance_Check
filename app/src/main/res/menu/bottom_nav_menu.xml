@@ -8,10 +8,7 @@
         android:id="@+id/menu_chart"
         android:title="통계"
         android:icon="@drawable/ic_chart" />
-    <item
-        android:id="@+id/menu_record"
-        android:title="기록"
-        android:icon="@drawable/ic_check" />
+
     <item
         android:id="@+id/menu_edit"
         android:title="편집"
