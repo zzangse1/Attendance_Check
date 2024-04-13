@@ -32,8 +32,12 @@
         <item name="fontFamily">@font/spoqa_bold</item>
     </style>
 
+    <style name="AppEditText.Bold.S24">
+        <item name="fontFamily">@font/spoqa_bold</item>
+        <item name="android:textSize">24sp</item>
+    </style>
 
-    <style name="AppEditText.Bold.S20">
+    <style name="AppEditText.Bold.S40">
         <item name="fontFamily">@font/spoqa_bold</item>
         <item name="android:textSize">40sp</item>
     </style>
