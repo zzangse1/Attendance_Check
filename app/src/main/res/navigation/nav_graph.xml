@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/nav_graph"
+    app:startDestination="@id/menu_check">
+
+    <fragment
+        android:id="@+id/menu_check"
+        android:name="com.zzangse.attendance_check.CheckFragment"
+        android:label="출석체크"
+        tools:layout="@layout/fragment_check" />
+    <fragment
+        android:id="@+id/menu_chart"
+        android:name="com.zzangse.attendance_check.ChartFragment"
+        android:label="출석체크"
+        tools:layout="@layout/fragment_chart" />
+
+    <fragment
+        android:id="@+id/menu_record"
+        android:name="com.zzangse.attendance_check.RecordFragment"
+        android:label="출석체크"
+        tools:layout="@layout/fragment_record" />
+
+    <fragment
+        android:id="@+id/menu_edit"
+        android:name="com.zzangse.attendance_check.EditFragment"
+        android:label="출석체크"
+        tools:layout="@layout/fragment_edit" />
+
+    <fragment
+        android:id="@+id/menu_more"
+        android:name="com.zzangse.attendance_check.MoreFragment"
+        android:label="출석체크"
+        tools:layout="@layout/fragment_more" />
+
+
+</navigation>

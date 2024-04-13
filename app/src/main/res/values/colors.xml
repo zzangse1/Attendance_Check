@@ -9,5 +9,6 @@
     <color name="navy_200">#191970</color>
     <color name="gray_100">#DCDCDC</color>
     <color name="gray_200">#C0C0C0</color>
-    <color name="gray_300">#5F6868</color>
+    <color name="gray_300">#8897AE</color>
+    <color name="gray_400">#5F6868</color>
 </resources>
