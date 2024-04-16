@@ -1,0 +1,239 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+
+    <TextView
+        android:id="@+id/tv_signup_label"
+        style="@style/AppEditText.Bold.S40"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="50dp"
+        android:text="회원가입"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.5" />
+
+    <androidx.core.widget.NestedScrollView
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:scrollbars="vertical"
+        app:layout_constraintBottom_toTopOf="@id/btn_send"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/tv_signup_label">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <EditText
+                android:id="@+id/et_id"
+                style="@style/AppEditText.S18"
+                android:layout_width="0dp"
+                android:layout_height="60dp"
+                android:layout_marginStart="20dp"
+                android:layout_marginTop="20dp"
+                android:layout_marginEnd="20dp"
+                android:background="@drawable/et_top_radius"
+                android:drawableStart="@drawable/ic_person"
+                android:drawablePadding="20dp"
+                android:hint="아이디"
+                android:maxLength="12"
+                android:paddingStart="20dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <EditText
+                android:id="@+id/et_password"
+                style="@style/AppEditText.S18"
+                android:layout_width="0dp"
+                android:layout_height="60dp"
+                android:layout_marginStart="20dp"
+                android:layout_marginEnd="20dp"
+                android:background="@drawable/et_mid_radius"
+                android:drawableStart="@drawable/ic_lock"
+                android:drawablePadding="20dp"
+                android:hint="비밀번호"
+                android:inputType="textPassword"
+                android:paddingStart="20dp"
+                android:paddingEnd="20dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/et_id" />
+
+            <ImageButton
+                android:id="@+id/ib_show_password"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/ic_visibility_off"
+                android:background="@color/white"
+                app:layout_constraintTop_toTopOf="@id/et_password"
+                app:layout_constraintBottom_toBottomOf="@id/et_password"
+                app:layout_constraintEnd_toEndOf="@id/et_password"
+                android:layout_marginEnd="20dp" />
+
+            <EditText
+                android:id="@+id/et_email"
+                style="@style/AppEditText.S18"
+                android:layout_width="0dp"
+                android:layout_height="60dp"
+                android:layout_marginStart="20dp"
+                android:layout_marginEnd="20dp"
+                android:background="@drawable/et_bottom_radius"
+                android:drawableStart="@drawable/ic_mail"
+                android:drawablePadding="20dp"
+                android:hint="[선택] 이메일주소 (본인 확인용)"
+                android:paddingStart="20dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/et_password" />
+
+            <TextView
+                android:id="@+id/tv_warning_top_label"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="20dp"
+                android:layout_marginTop="10dp"
+                android:text="•아이디: 필수 정보입니다.\n •비밀번호: 필수 정보입니다."
+                android:textColor="#FF0000"
+                android:visibility="gone"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/et_email" />
+
+            <EditText
+                android:id="@+id/et_name"
+                style="@style/AppEditText.S18"
+                android:layout_width="0dp"
+                android:layout_height="60dp"
+                android:layout_marginStart="20dp"
+                android:layout_marginTop="20dp"
+                android:layout_marginEnd="20dp"
+                android:background="@drawable/et_top_radius"
+                android:drawableStart="@drawable/ic_person"
+                android:drawablePadding="20dp"
+                android:hint="이름"
+                android:paddingStart="20dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/tv_warning_top_label" />
+
+            <EditText
+                android:id="@+id/et_date"
+                style="@style/AppEditText.S18"
+                android:layout_width="0dp"
+                android:layout_height="60dp"
+                android:layout_marginStart="20dp"
+                android:layout_marginEnd="20dp"
+                android:background="@drawable/et_mid_bottom_radius"
+                android:drawableStart="@drawable/ic_calendar"
+                android:drawablePadding="20dp"
+                android:hint="생년월일 8자리"
+                android:inputType="date"
+                android:paddingStart="20dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/et_name" />
+
+            <View
+                android:id="@+id/et_gender_layout"
+                android:layout_width="0dp"
+                android:layout_height="60dp"
+                android:layout_marginStart="20dp"
+                android:layout_marginEnd="20dp"
+                android:background="@drawable/et_mid_radius"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.0"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/et_date" />
+
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:gravity="center"
+                app:layout_constraintBottom_toBottomOf="@id/et_gender_layout"
+                app:layout_constraintEnd_toEndOf="@id/et_gender_layout"
+                app:layout_constraintStart_toStartOf="@id/et_gender_layout"
+                app:layout_constraintTop_toTopOf="@id/et_gender_layout">
+
+                <androidx.appcompat.widget.AppCompatButton
+                    android:id="@+id/btn_male"
+                    style="@style/AppButtonText.Gray.S16"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:background="@drawable/selector_btn_start_gener"
+                    android:text="남자" />
+
+                <androidx.appcompat.widget.AppCompatButton
+                    android:id="@+id/btn_female"
+                    style="@style/AppButtonText.Gray.S16"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:background="@drawable/selector_btn_center_gener"
+                    android:text="여자" />
+
+                <androidx.appcompat.widget.AppCompatButton
+                    android:id="@+id/btn_none"
+                    style="@style/AppButtonText.Gray.S16"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:background="@drawable/selector_btn_end_gener"
+                    android:text="선택안함" />
+            </LinearLayout>
+
+
+            <EditText
+                android:id="@+id/et_number"
+                style="@style/AppEditText.S18"
+                android:layout_width="0dp"
+                android:layout_height="60dp"
+                android:layout_marginStart="20dp"
+                android:layout_marginEnd="20dp"
+                android:background="@drawable/et_bottom_radius"
+                android:drawableStart="@drawable/ic_phone"
+                android:drawablePadding="20dp"
+                android:hint="휴대전화번호"
+                android:inputType="number"
+                android:paddingStart="20dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/et_gender_layout" />
+
+            <TextView
+                android:id="@+id/tv_warning_bottom_label"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="20dp"
+                android:text="•이름: 필수 정보입니다.\n•생년월일: 필수 정보입니다.\n•휴대전화번호: 필수 정보입니다."
+                android:textColor="#FF0000"
+                android:visibility="gone"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/et_number" />
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </androidx.core.widget.NestedScrollView>
+
+
+    <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/btn_send"
+        style="@style/AppEditText.White.S20"
+        android:layout_width="0dp"
+        android:layout_height="60dp"
+        android:layout_marginStart="20dp"
+        android:layout_marginEnd="20dp"
+        android:layout_marginBottom="10dp"
+        android:background="@drawable/btn_selector"
+        android:text="인증요청"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>
