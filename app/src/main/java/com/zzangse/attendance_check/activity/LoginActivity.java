@@ -1,5 +1,6 @@
 package com.zzangse.attendance_check.activity;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.widget.Toast;
 
@@ -18,6 +19,7 @@ public class LoginActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         initView();
         onClickBtn();
+        onClickSignUp();
     }
 
     private void initView() {
@@ -28,6 +30,13 @@ public class LoginActivity extends AppCompatActivity {
     private void onClickBtn() {
         loginBinding.btnLogin.setOnClickListener(v->{
             Toast.makeText(this,"test",Toast.LENGTH_SHORT).show();
+        });
+    }
+
+    private void onClickSignUp() {
+        loginBinding.tvSingup.setOnClickListener(v->{
+            Intent intent = new Intent(LoginActivity.this,SignupActivity.class);
+            startActivity(intent);
         });
     }
 }
