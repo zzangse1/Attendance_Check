@@ -18,6 +18,7 @@
         app:layout_constraintVertical_bias="0.5" />
 
     <androidx.core.widget.NestedScrollView
+        android:id="@+id/scrollView"
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:scrollbars="vertical"
@@ -31,7 +32,7 @@
             android:layout_height="match_parent">
 
             <EditText
-                android:id="@+id/et_id"
+                android:id="@+id/et_email_id"
                 style="@style/AppEditText.S18"
                 android:layout_width="0dp"
                 android:layout_height="60dp"
@@ -78,7 +79,7 @@
                 android:layout_marginEnd="20dp" />
 
             <EditText
-                android:id="@+id/et_email"
+                android:id="@+id/et_nick_name"
                 style="@style/AppEditText.S18"
                 android:layout_width="0dp"
                 android:layout_height="60dp"
@@ -94,8 +95,9 @@
                 app:layout_constraintTop_toBottomOf="@id/et_password" />
 
             <TextView
-                android:id="@+id/tv_warning_top_label"
-                android:layout_width="wrap_content"
+                android:id="@+id/tv_error_id"
+                style="@style/AppEditText.Red.S14"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="20dp"
                 android:layout_marginTop="10dp"
