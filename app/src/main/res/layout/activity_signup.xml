@@ -39,11 +39,13 @@
                 android:layout_marginStart="20dp"
                 android:layout_marginTop="20dp"
                 android:layout_marginEnd="20dp"
-                android:background="@drawable/et_top_radius"
+                android:background="@drawable/selector_et_id"
                 android:drawableStart="@drawable/ic_person"
                 android:drawablePadding="20dp"
-                android:hint="아이디"
-                android:maxLength="12"
+                android:hint="이메일주소"
+                android:inputType="text"
+                android:maxLength="20"
+                android:nextFocusDown="@id/et_password"
                 android:paddingStart="20dp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
@@ -56,27 +58,28 @@
                 android:layout_height="60dp"
                 android:layout_marginStart="20dp"
                 android:layout_marginEnd="20dp"
-                android:background="@drawable/et_mid_radius"
+                android:background="@drawable/selector_et_password"
                 android:drawableStart="@drawable/ic_lock"
                 android:drawablePadding="20dp"
                 android:hint="비밀번호"
                 android:inputType="textPassword"
+                android:nextFocusDown="@id/et_nick_name"
                 android:paddingStart="20dp"
                 android:paddingEnd="20dp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/et_id" />
+                app:layout_constraintTop_toBottomOf="@id/et_email_id" />
 
             <ImageButton
                 android:id="@+id/ib_show_password"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:src="@drawable/ic_visibility_off"
+                android:layout_marginEnd="20dp"
                 android:background="@color/white"
-                app:layout_constraintTop_toTopOf="@id/et_password"
+                android:src="@drawable/ic_visibility_off"
                 app:layout_constraintBottom_toBottomOf="@id/et_password"
                 app:layout_constraintEnd_toEndOf="@id/et_password"
-                android:layout_marginEnd="20dp" />
+                app:layout_constraintTop_toTopOf="@id/et_password" />
 
             <EditText
                 android:id="@+id/et_nick_name"
@@ -85,10 +88,13 @@
                 android:layout_height="60dp"
                 android:layout_marginStart="20dp"
                 android:layout_marginEnd="20dp"
-                android:background="@drawable/et_bottom_radius"
-                android:drawableStart="@drawable/ic_mail"
+                android:maxLength="8"
+                android:background="@drawable/selector_et_email"
+                android:drawableStart="@drawable/ic_nickname"
                 android:drawablePadding="20dp"
-                android:hint="[선택] 이메일주소 (본인 확인용)"
+                android:hint="닉네임"
+                android:inputType="text"
+                android:nextFocusDown="@id/et_name"
                 android:paddingStart="20dp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
@@ -101,11 +107,32 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="20dp"
                 android:layout_marginTop="10dp"
-                android:text="•아이디: 필수 정보입니다.\n •비밀번호: 필수 정보입니다."
-                android:textColor="#FF0000"
                 android:visibility="gone"
+                app:layout_constraintEnd_toEndOf="@id/et_nick_name"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/et_email" />
+                app:layout_constraintTop_toBottomOf="@id/et_nick_name" />
+
+            <TextView
+                android:id="@+id/tv_error_password"
+                style="@style/AppEditText.Red.S14"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="20dp"
+                android:visibility="gone"
+                app:layout_constraintEnd_toEndOf="@id/et_nick_name"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/tv_error_id" />
+
+            <TextView
+                android:id="@+id/tv_error_nick_name"
+                style="@style/AppEditText.Red.S14"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="20dp"
+                android:visibility="gone"
+                app:layout_constraintEnd_toEndOf="@id/et_nick_name"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/tv_error_password" />
 
             <EditText
                 android:id="@+id/et_name"
@@ -115,53 +142,57 @@
                 android:layout_marginStart="20dp"
                 android:layout_marginTop="20dp"
                 android:layout_marginEnd="20dp"
-                android:background="@drawable/et_top_radius"
+                android:background="@drawable/selector_et_id"
                 android:drawableStart="@drawable/ic_person"
                 android:drawablePadding="20dp"
                 android:hint="이름"
+                android:inputType="text"
+                android:nextFocusDown="@id/et_birth"
                 android:paddingStart="20dp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/tv_warning_top_label" />
+                app:layout_constraintTop_toBottomOf="@id/tv_error_password" />
 
             <EditText
-                android:id="@+id/et_date"
+                android:id="@+id/et_birth"
                 style="@style/AppEditText.S18"
                 android:layout_width="0dp"
                 android:layout_height="60dp"
                 android:layout_marginStart="20dp"
                 android:layout_marginEnd="20dp"
-                android:background="@drawable/et_mid_bottom_radius"
+                android:background="@drawable/selector_et_password"
                 android:drawableStart="@drawable/ic_calendar"
                 android:drawablePadding="20dp"
                 android:hint="생년월일 8자리"
+                android:maxLength="8"
                 android:inputType="date"
+                android:nextFocusDown="@id/et_number"
                 android:paddingStart="20dp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/et_name" />
 
             <View
-                android:id="@+id/et_gender_layout"
+                android:id="@+id/et_sex_layout"
                 android:layout_width="0dp"
                 android:layout_height="60dp"
                 android:layout_marginStart="20dp"
                 android:layout_marginEnd="20dp"
-                android:background="@drawable/et_mid_radius"
+                android:background="@drawable/et_unclick_password"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.0"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/et_date" />
+                app:layout_constraintTop_toBottomOf="@id/et_birth" />
 
 
             <LinearLayout
                 android:layout_width="0dp"
                 android:layout_height="0dp"
                 android:gravity="center"
-                app:layout_constraintBottom_toBottomOf="@id/et_gender_layout"
-                app:layout_constraintEnd_toEndOf="@id/et_gender_layout"
-                app:layout_constraintStart_toStartOf="@id/et_gender_layout"
-                app:layout_constraintTop_toTopOf="@id/et_gender_layout">
+                app:layout_constraintBottom_toBottomOf="@id/et_sex_layout"
+                app:layout_constraintEnd_toEndOf="@id/et_sex_layout"
+                app:layout_constraintStart_toStartOf="@id/et_sex_layout"
+                app:layout_constraintTop_toTopOf="@id/et_sex_layout">
 
                 <androidx.appcompat.widget.AppCompatButton
                     android:id="@+id/btn_male"
@@ -169,7 +200,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
-                    android:background="@drawable/selector_btn_start_gener"
+                    android:background="@drawable/selector_btn_start_sex"
                     android:text="남자" />
 
                 <androidx.appcompat.widget.AppCompatButton
@@ -178,7 +209,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
-                    android:background="@drawable/selector_btn_center_gener"
+                    android:background="@drawable/selector_btn_center_sex"
                     android:text="여자" />
 
                 <androidx.appcompat.widget.AppCompatButton
@@ -187,7 +218,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
-                    android:background="@drawable/selector_btn_end_gener"
+                    android:background="@drawable/selector_btn_end_sex"
                     android:text="선택안함" />
             </LinearLayout>
 
@@ -199,26 +230,58 @@
                 android:layout_height="60dp"
                 android:layout_marginStart="20dp"
                 android:layout_marginEnd="20dp"
-                android:background="@drawable/et_bottom_radius"
+                android:background="@drawable/selector_et_email"
                 android:drawableStart="@drawable/ic_phone"
                 android:drawablePadding="20dp"
                 android:hint="휴대전화번호"
+                android:maxLength="11"
                 android:inputType="number"
                 android:paddingStart="20dp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/et_gender_layout" />
+                app:layout_constraintTop_toBottomOf="@id/et_sex_layout" />
 
             <TextView
-                android:id="@+id/tv_warning_bottom_label"
+                android:id="@+id/tv_error_name"
+                style="@style/AppEditText.Red.S14"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="20dp"
-                android:text="•이름: 필수 정보입니다.\n•생년월일: 필수 정보입니다.\n•휴대전화번호: 필수 정보입니다."
-                android:textColor="#FF0000"
                 android:visibility="gone"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/et_number" />
+
+            <TextView
+                android:id="@+id/tv_error_birth"
+                style="@style/AppEditText.Red.S14"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="20dp"
+                android:visibility="gone"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/tv_error_name" />
+
+            <TextView
+                android:id="@+id/tv_error_sex"
+                style="@style/AppEditText.Red.S14"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="20dp"
+                android:visibility="gone"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/tv_error_birth" />
+
+            <TextView
+                android:id="@+id/tv_error_phone_number"
+                style="@style/AppEditText.Red.S14"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="20dp"
+                android:visibility="gone"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/tv_error_sex" />
+
+
         </androidx.constraintlayout.widget.ConstraintLayout>
     </androidx.core.widget.NestedScrollView>
 
