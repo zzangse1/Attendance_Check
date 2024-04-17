@@ -5,9 +5,15 @@
         <item name="fontFamily">@font/spoqa_medium</item>
     </style>
 
+    <style name="AppWarningText">
+        <item name="fontFamily">@font/spoqa_light</item>
+    </style>
+
     <style name="AppEditText.S18">
         <item name="android:textSize">18sp</item>
     </style>
+
+
 
     <style name="AppEditText.Hint">
         <item name="fontFamily">@font/spoqa_medium</item>
@@ -28,6 +34,13 @@
         <item name="android:textSize">20sp</item>
     </style>
 
+    <style name="AppEditText.Red">
+        <item name="android:textColor">@color/red</item>
+    </style>
+
+    <style name="AppEditText.Red.S14">
+        <item name="android:textSize">14sp</item>
+    </style>
 
     <style name="AppButtonText.Gray" parent="Widget.AppCompat.Button.Borderless">
         <item name="fontFamily">@font/spoqa_medium</item>
@@ -52,7 +65,7 @@
         <item name="android:textSize">40sp</item>
     </style>
 
-    <style name="AppBtnGender" parent="Widget.MaterialComponents.Button.OutlinedButton">
+    <style name="AppBtnSex" parent="Widget.MaterialComponents.Button.OutlinedButton">
         <item name="android:textColor">@color/gray_100  </item>
         <item name="strokeColor">@color/gray_100</item>
     </style>
