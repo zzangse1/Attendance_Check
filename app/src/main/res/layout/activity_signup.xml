@@ -33,7 +33,7 @@
 
             <EditText
                 android:id="@+id/et_email_id"
-                style="@style/AppEditText.S18"
+                style="@style/AppEditText.S17"
                 android:layout_width="0dp"
                 android:layout_height="60dp"
                 android:layout_marginStart="20dp"
@@ -53,7 +53,7 @@
 
             <EditText
                 android:id="@+id/et_password"
-                style="@style/AppEditText.S18"
+                style="@style/AppEditText.S17"
                 android:layout_width="0dp"
                 android:layout_height="60dp"
                 android:layout_marginStart="20dp"
@@ -83,17 +83,17 @@
 
             <EditText
                 android:id="@+id/et_nick_name"
-                style="@style/AppEditText.S18"
+                style="@style/AppEditText.S17"
                 android:layout_width="0dp"
                 android:layout_height="60dp"
                 android:layout_marginStart="20dp"
                 android:layout_marginEnd="20dp"
-                android:maxLength="8"
                 android:background="@drawable/selector_et_email"
                 android:drawableStart="@drawable/ic_nickname"
                 android:drawablePadding="20dp"
                 android:hint="닉네임"
                 android:inputType="text"
+                android:maxLength="8"
                 android:nextFocusDown="@id/et_name"
                 android:paddingStart="20dp"
                 app:layout_constraintEnd_toEndOf="parent"
@@ -136,7 +136,7 @@
 
             <EditText
                 android:id="@+id/et_name"
-                style="@style/AppEditText.S18"
+                style="@style/AppEditText.S17"
                 android:layout_width="0dp"
                 android:layout_height="60dp"
                 android:layout_marginStart="20dp"
@@ -155,7 +155,7 @@
 
             <EditText
                 android:id="@+id/et_birth"
-                style="@style/AppEditText.S18"
+                style="@style/AppEditText.S17"
                 android:layout_width="0dp"
                 android:layout_height="60dp"
                 android:layout_marginStart="20dp"
@@ -164,8 +164,8 @@
                 android:drawableStart="@drawable/ic_calendar"
                 android:drawablePadding="20dp"
                 android:hint="생년월일 8자리"
-                android:maxLength="8"
                 android:inputType="date"
+                android:maxLength="8"
                 android:nextFocusDown="@id/et_number"
                 android:paddingStart="20dp"
                 app:layout_constraintEnd_toEndOf="parent"
@@ -196,7 +196,7 @@
 
                 <androidx.appcompat.widget.AppCompatButton
                     android:id="@+id/btn_male"
-                    style="@style/AppButtonText.Gray.S16"
+                    style="@style/AppButtonText.Gray.S17"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
@@ -205,7 +205,7 @@
 
                 <androidx.appcompat.widget.AppCompatButton
                     android:id="@+id/btn_female"
-                    style="@style/AppButtonText.Gray.S16"
+                    style="@style/AppButtonText.Gray.S17"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
@@ -214,7 +214,7 @@
 
                 <androidx.appcompat.widget.AppCompatButton
                     android:id="@+id/btn_none"
-                    style="@style/AppButtonText.Gray.S16"
+                    style="@style/AppButtonText.Gray.S17"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
@@ -225,7 +225,7 @@
 
             <EditText
                 android:id="@+id/et_number"
-                style="@style/AppEditText.S18"
+                style="@style/AppEditText.S17"
                 android:layout_width="0dp"
                 android:layout_height="60dp"
                 android:layout_marginStart="20dp"
@@ -234,8 +234,8 @@
                 android:drawableStart="@drawable/ic_phone"
                 android:drawablePadding="20dp"
                 android:hint="휴대전화번호"
-                android:maxLength="11"
                 android:inputType="number"
+                android:maxLength="11"
                 android:paddingStart="20dp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
