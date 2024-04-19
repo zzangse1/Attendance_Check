@@ -1,6 +1,7 @@
 package com.zzangse.attendance_check.activity;
 
 import android.content.Context;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.text.InputType;
 import android.view.View;
@@ -11,6 +12,7 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.content.ContextCompat;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
@@ -163,10 +165,14 @@ public class SignupActivity extends AppCompatActivity {
     }
 
     private boolean checkSex(String sex) {
+        Drawable drawable_ok = ContextCompat.getDrawable(getApplicationContext(),R.drawable.et_unclick_password);
+        Drawable drawable_error = ContextCompat.getDrawable(getApplicationContext(),R.drawable.et_error_sex);
         if (!sex.isEmpty()) {
+            signupBinding.etSexLayout.setBackground(drawable_ok);
             signupBinding.tvErrorSex.setVisibility(View.GONE);
             return true;
         } else {
+            signupBinding.etSexLayout.setBackground(drawable_error);
             signupBinding.tvErrorSex.setText(WARNING_MSG_NO_SEX);
             signupBinding.tvErrorSex.setVisibility(View.VISIBLE);
             return false;
@@ -174,11 +180,15 @@ public class SignupActivity extends AppCompatActivity {
     }
 
     private boolean checkName(String name) {
+        Drawable drawable_ok = ContextCompat.getDrawable(getApplicationContext(),R.drawable.ic_person);
+        Drawable drawable_error = ContextCompat.getDrawable(getApplicationContext(),R.drawable.ic_error_person);
         boolean isMatch = Pattern.matches(REGEX_NAME, name);
         if (isMatch) {
+            signupBinding.etName.setCompoundDrawablesRelativeWithIntrinsicBounds(drawable_ok,null,null,null);
             signupBinding.tvErrorName.setVisibility(View.GONE);
             return true;
         } else {
+            signupBinding.etName.setCompoundDrawablesRelativeWithIntrinsicBounds(drawable_error,null,null,null);
             signupBinding.tvErrorName.setText(WARNING_MSG_NO_NAME);
             signupBinding.tvErrorName.setVisibility(View.VISIBLE);
             return false;
@@ -186,16 +196,21 @@ public class SignupActivity extends AppCompatActivity {
     }
 
     private boolean checkNickName(String nickName) {
+        Drawable drawable_ok = ContextCompat.getDrawable(getApplicationContext(),R.drawable.ic_nickname);
+        Drawable drawable_error = ContextCompat.getDrawable(getApplicationContext(),R.drawable.ic_error_nickname);
         boolean isMatchNickName = nickName.length() >= 2 && nickName.length() <= 8;
         if (nickName.isEmpty()) {
+            signupBinding.etNickName.setCompoundDrawablesRelativeWithIntrinsicBounds(drawable_error,null,null,null);
             signupBinding.tvErrorNickName.setText(WARNING_MSG_NO_NICKNAME);
             signupBinding.tvErrorNickName.setVisibility(View.VISIBLE);
             return false;
         } else if (!isMatchNickName) {
+            signupBinding.etNickName.setCompoundDrawablesRelativeWithIntrinsicBounds(drawable_error,null,null,null);
             signupBinding.tvErrorNickName.setText(WARNING_MSG_RULE_NICKNAME);
             signupBinding.tvErrorNickName.setVisibility(View.VISIBLE);
             return false;
         } else {
+            signupBinding.etNickName.setCompoundDrawablesRelativeWithIntrinsicBounds(drawable_ok,null,null,null);
             signupBinding.tvErrorNickName.setVisibility(View.GONE);
             return true;
         }
@@ -206,20 +221,23 @@ public class SignupActivity extends AppCompatActivity {
     private boolean checkEmailId(String emailId) {
         boolean isMatch = Pattern.matches(REGEX_EMAIL_ID, emailId);
         // 아이디 입력 에러 구분
+        Drawable drawable_ok = ContextCompat.getDrawable(getApplicationContext(),R.drawable.ic_person);
+        Drawable drawable_error = ContextCompat.getDrawable(getApplicationContext(),R.drawable.ic_error_person);
         if (emailId.isEmpty()) {
             // 기입 안했을 때
+            signupBinding.etEmailId.setCompoundDrawablesRelativeWithIntrinsicBounds(drawable_error,null,null,null);
             signupBinding.tvErrorId.setText(WARNING_MSG_NO_EMAIL_ID);
             signupBinding.tvErrorId.setVisibility(View.VISIBLE);
-            signupBinding.etEmailId.setBackgroundResource(R.drawable.et_error_id);
             return false;
         } else if (!isMatch) {
             // 정규식에 맞지 않을 때
-            signupBinding.etEmailId.setBackgroundResource(R.drawable.et_error_id);
+            signupBinding.etEmailId.setCompoundDrawablesRelativeWithIntrinsicBounds(drawable_error,null,null,null);
             signupBinding.tvErrorId.setText(WARNING_MSG_RULE_EMAIL_ID);
             signupBinding.tvErrorId.setVisibility(View.VISIBLE);
             return false;
         } else {
             // 정상적으로 입력 됐을 때
+            signupBinding.etEmailId.setCompoundDrawablesRelativeWithIntrinsicBounds(drawable_ok,null,null,null);
             signupBinding.etEmailId.setBackgroundResource(R.drawable.selector_et_id);
             signupBinding.tvErrorId.setVisibility(View.GONE);
             return true;
@@ -231,29 +249,39 @@ public class SignupActivity extends AppCompatActivity {
     private boolean checkPassword(String password) {
         boolean isMatch = Pattern.matches(REGEX_PASSWORD, password);
         boolean isMatchPassword = password.length() < 8 || password.length() > 16;
+        Drawable drawable_ok = ContextCompat.getDrawable(getApplicationContext(),R.drawable.ic_lock);
+        Drawable drawable_error = ContextCompat.getDrawable(getApplicationContext(),R.drawable.ic_error_lock);
         // 비밀번호 입력 에러 구분
         if (password.isEmpty()) {
             // 기입 안했을 때
+            signupBinding.etPassword.setCompoundDrawablesRelativeWithIntrinsicBounds(drawable_error,null,null,null);
             signupBinding.tvErrorPassword.setText(WARNING_MSG_NO_PASSWORD);
             signupBinding.tvErrorPassword.setVisibility(View.VISIBLE);
             return false;
         } else if (!isMatch || isMatchPassword) {
             // 정규식에 맞지 않을 때
+            signupBinding.etPassword.setCompoundDrawablesRelativeWithIntrinsicBounds(drawable_error,null,null,null);
             signupBinding.tvErrorPassword.setText(WARNING_MSG_RULE_PASSWORD);
             signupBinding.tvErrorPassword.setVisibility(View.VISIBLE);
             return false;
         } else {
+            // 정상적으로 입력 됐을 때
+            signupBinding.etPassword.setCompoundDrawablesRelativeWithIntrinsicBounds(drawable_ok,null,null,null);
             signupBinding.tvErrorPassword.setVisibility(View.GONE);
             return true;
         }
     }
 
     private boolean checkBirth(String birthday) {
+        Drawable drawable_ok = ContextCompat.getDrawable(getApplicationContext(),R.drawable.ic_calendar);
+        Drawable drawable_error = ContextCompat.getDrawable(getApplicationContext(),R.drawable.ic_error_calendar);
         boolean isMatch = Pattern.matches(YYYYMMDD, birthday);
         if (isMatch) {
+            signupBinding.etBirth.setCompoundDrawablesRelativeWithIntrinsicBounds(drawable_ok,null,null,null);
             signupBinding.tvErrorBirth.setVisibility(View.GONE);
             return true;
         } else {
+            signupBinding.etBirth.setCompoundDrawablesRelativeWithIntrinsicBounds(drawable_error,null,null,null);
             signupBinding.tvErrorBirth.setText(WARNING_MSG_NO_BIRTHDAY);
             signupBinding.tvErrorBirth.setVisibility(View.VISIBLE);
             return false;
@@ -261,11 +289,15 @@ public class SignupActivity extends AppCompatActivity {
     }
 
     private boolean checkPhoneNumber(String phoneNumber) {
+        Drawable drawable_ok = ContextCompat.getDrawable(getApplicationContext(),R.drawable.ic_phone);
+        Drawable drawable_error = ContextCompat.getDrawable(getApplicationContext(),R.drawable.ic_error_phone);
         boolean isMatch = Pattern.matches(REGEX_PHONE_NUMBER, phoneNumber);
         if (isMatch) {
+            signupBinding.etNumber.setCompoundDrawablesRelativeWithIntrinsicBounds(drawable_ok,null,null,null);
             signupBinding.tvErrorPhoneNumber.setVisibility(View.GONE);
             return true;
         } else {
+            signupBinding.etNumber.setCompoundDrawablesRelativeWithIntrinsicBounds(drawable_error,null,null,null);
             signupBinding.tvErrorPhoneNumber.setText(WARNING_MSG_NO_PHONE_NUMBER);
             signupBinding.tvErrorPhoneNumber.setVisibility(View.VISIBLE);
             return false;
