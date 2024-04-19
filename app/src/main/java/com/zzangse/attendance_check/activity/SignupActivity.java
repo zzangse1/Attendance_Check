@@ -40,7 +40,7 @@ public class SignupActivity extends AppCompatActivity {
     private static final String REGEX_PHONE_NUMBER = "^\\d{3}-?\\d{3,4}-?\\d{4}$";
     private static final String WARNING_MSG_NO_EMAIL_ID = "•이메일: 필수 정보 입니다.";
     private static final String WARNING_MSG_ERROR_ID = "•이메일: 사용할 수 없는 아이디입니다. 다른 아이디를 입력해 주세요.";
-    private static final String WARNING_MSG_RULE_EMAIL_ID = "•이메일: [test@google.com]와 같은 형식으로 작성해주세요.";
+    private static final String WARNING_MSG_RULE_EMAIL_ID = "•이메일: [test@test.com]와 같은 형식으로 작성해주세요.";
     private static final String WARNING_MSG_RULE_PASSWORD = "•비밀번호: 8~16자의 영문 대/소문자, 숫자, [!,@,#,$]를 사용해 주세요.";
     private static final String WARNING_MSG_NO_PASSWORD = "•비밀번호: 필수 정보입니다.";
     private static final String WARNING_MSG_NO_NICKNAME = "•닉네임: 필수 정보입니다.";
