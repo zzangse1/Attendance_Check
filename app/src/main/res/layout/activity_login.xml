@@ -34,9 +34,10 @@
 
         <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/et_email_id"
-            style="@style/AppEditText.S18"
+            style="@style/AppEditText.S17"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
+            android:layout_height="wrap_content"
+            android:text="admin@test.com" />
     </com.google.android.material.textfield.TextInputLayout>
 
     <com.google.android.material.textfield.TextInputLayout
@@ -53,10 +54,11 @@
 
         <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/et_password"
-            style="@style/AppEditText.S18"
-            android:inputType="textPassword"
+            style="@style/AppEditText.S17"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
+            android:layout_height="wrap_content"
+            android:inputType="textPassword"
+            android:text="admin123" />
     </com.google.android.material.textfield.TextInputLayout>
 
     <androidx.appcompat.widget.AppCompatButton
@@ -76,7 +78,7 @@
 
     <TextView
         android:id="@+id/tv_singup"
-        style="@style/AppEditText.S18"
+        style="@style/AppEditText.S17"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="80dp"
@@ -98,7 +100,7 @@
 
     <TextView
         android:id="@+id/tv_find"
-        style="@style/AppEditText.S18"
+        style="@style/AppEditText.S17"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginEnd="80dp"
