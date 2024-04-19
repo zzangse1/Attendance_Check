@@ -36,6 +36,8 @@
             android:id="@+id/et_email_id"
             style="@style/AppEditText.S17"
             android:layout_width="match_parent"
+            android:maxLines="1"
+            android:maxLength="20"
             android:layout_height="wrap_content"
             android:text="admin@test.com" />
     </com.google.android.material.textfield.TextInputLayout>
@@ -56,10 +58,24 @@
             android:id="@+id/et_password"
             style="@style/AppEditText.S17"
             android:layout_width="match_parent"
+            android:maxLength="16"
+            android:maxLines="1"
             android:layout_height="wrap_content"
             android:inputType="textPassword"
             android:text="admin123" />
     </com.google.android.material.textfield.TextInputLayout>
+
+    <ImageButton
+        android:id="@+id/ib_show_password"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="20dp"
+        android:background="@color/white"
+        android:src="@drawable/ic_visibility_off"
+        app:layout_constraintBottom_toBottomOf="@id/et_password_layout"
+        app:layout_constraintEnd_toEndOf="@id/et_password_layout"
+        app:layout_constraintVertical_bias="0.6"
+        app:layout_constraintTop_toTopOf="@id/et_password_layout" />
 
     <androidx.appcompat.widget.AppCompatButton
         android:id="@+id/btn_login"
