@@ -1,7 +1,10 @@
 package com.zzangse.attendance_check.fragment;
 
+import android.content.Intent;
 import android.os.Bundle;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
 import android.view.LayoutInflater;
@@ -9,14 +12,12 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.zzangse.attendance_check.R;
+import com.zzangse.attendance_check.activity.GroupAddActivity;
+import com.zzangse.attendance_check.activity.SettingActivity;
+import com.zzangse.attendance_check.databinding.FragmentEditBinding;
 
-/**
- * A simple {@link Fragment} subclass.
- * Use the {@link EditFragment#newInstance} factory method to
- * create an instance of this fragment.
- */
 public class EditFragment extends Fragment {
-
+    private FragmentEditBinding fragmentEditBinding;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -26,7 +27,29 @@ public class EditFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_edit, container, false);
+       fragmentEditBinding = FragmentEditBinding.inflate(inflater);
+       return fragmentEditBinding.getRoot();
+    }
+
+    @Override
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+        // 구현
+        onClickGroupAdd();
+        onClickTest();
+    }
+
+    private void onClickGroupAdd() {
+        fragmentEditBinding.ibGroupAdd.setOnClickListener(v->{
+            Intent intent = new Intent(getActivity(), GroupAddActivity.class);
+            startActivity(intent);
+        });
+    }
+
+    private void onClickTest() {
+        fragmentEditBinding.btnTest.setOnClickListener(v->{
+            Intent intent = new Intent(getActivity(), SettingActivity.class);
+            startActivity(intent);
+        });
     }
 }

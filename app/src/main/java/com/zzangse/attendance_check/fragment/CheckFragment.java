@@ -46,7 +46,7 @@ public class CheckFragment extends Fragment {
                         String email = userAccount.getId();
                         String birth = userAccount.getBirth();
                         // 필요한 작업을 수행
-                        checkBinding.tvTest.setText(name + "\n" + email + "\n" + birth);
+                        //checkBinding.tvTest.setText(name + "\n" + email + "\n" + birth);
                     }
                 } else {
                     // 해당 userID에 해당하는 데이터가 없는 경우
@@ -69,11 +69,12 @@ public class CheckFragment extends Fragment {
             Log.e("TAG", "userId: " + userId);
             getUserInfo(userId);
         } else {
-            Toast.makeText(getActivity(),"getUserId false",Toast.LENGTH_SHORT).show();
+            Toast.makeText(getActivity(), "getUserId false", Toast.LENGTH_SHORT).show();
         }
     }
+
     @Override
-    public View onCreateView(@NonNull LayoutInflater inflater,@NonNull ViewGroup container,
+    public View onCreateView(@NonNull LayoutInflater inflater, @NonNull ViewGroup container,
                              @NonNull Bundle savedInstanceState) {
         checkBinding = FragmentCheckBinding.inflate(inflater);
         return checkBinding.getRoot();
