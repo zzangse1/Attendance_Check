@@ -18,8 +18,39 @@
         app:title="출결 체크"
         app:titleCentered="true" />
 
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/btn_left"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="50dp"
+        android:layout_marginEnd="10dp"
+        android:background="@drawable/ic_arrow_left"
+        app:layout_constraintBottom_toBottomOf="@id/tv_date"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@id/tv_date" />
 
-    <LinearLayout
+    <TextView
+        android:id="@+id/tv_date"
+        style="@style/AppEditText.Bold.S24"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="4월 20일"
+        app:layout_constraintBottom_toTopOf="@id/view"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/toolbar_check" />
+
+    <Button
+        android:id="@+id/btn_right"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="50dp"
+        android:background="@drawable/ic_arrow_right"
+        app:layout_constraintBottom_toBottomOf="@id/tv_date"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="@id/tv_date" />
+
+    <!--LinearLayout
         android:id="@+id/date_layout"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -40,14 +71,14 @@
             style="@style/AppEditText.Bold.S24"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="4월 13일" />
+            android:text="12월 13일" />
 
         <Button
             android:id="@+id/btn_right"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:background="@drawable/ic_arrow_right" />
-    </LinearLayout>
+    </LinearLayout-->
 
     <View
         android:id="@+id/view"
@@ -60,43 +91,46 @@
         android:background="@drawable/view_check_background"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/date_layout" />
+        app:layout_constraintTop_toBottomOf="@id/btn_left" />
 
-    <TextView
-        android:id="@+id/tv_test"
+    <View
+        android:id="@+id/circle_green"
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+        android:background="@drawable/circle_green"
+        app:layout_constraintBottom_toBottomOf="@id/view"
+        app:layout_constraintEnd_toStartOf="@id/circle_yellow"
+        app:layout_constraintStart_toStartOf="@id/view"
+        app:layout_constraintTop_toTopOf="@id/view" />
+
+    <View
+        android:id="@+id/circle_yellow"
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+        android:background="@drawable/circle_green"
+        app:layout_constraintEnd_toStartOf="@id/circle_red"
+        app:layout_constraintStart_toEndOf="@id/circle_green"
+        app:layout_constraintTop_toTopOf="@id/circle_green" />
+
+    <View
+        android:id="@+id/circle_red"
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+        android:background="@drawable/circle_green"
+        app:layout_constraintEnd_toEndOf="@id/view"
+        app:layout_constraintStart_toEndOf="@id/circle_yellow"
+        app:layout_constraintTop_toTopOf="@id/circle_yellow" />
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/rv_check"
+        android:layout_margin="10dp"
         android:layout_width="0dp"
-        style="@style/AppEditText.S17"
         android:layout_height="0dp"
-        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        tools:listitem="@layout/rv_check"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/view"
-        app:layout_constraintBottom_toBottomOf="parent"/>
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/view" />
 
-        <View
-            android:id="@+id/circle_green"
-            android:layout_width="100dp"
-            android:layout_height="100dp"
-            app:layout_constraintStart_toStartOf="@id/view"
-            app:layout_constraintTop_toTopOf="@id/view"
-            app:layout_constraintBottom_toBottomOf="@id/view"
-            app:layout_constraintEnd_toStartOf="@id/circle_yellow"
-            android:background="@drawable/circle_green" />
 
-        <View
-            android:id="@+id/circle_yellow"
-            android:layout_width="100dp"
-            android:layout_height="100dp"
-            app:layout_constraintStart_toEndOf="@id/circle_green"
-            app:layout_constraintTop_toTopOf="@id/circle_green"
-            app:layout_constraintEnd_toStartOf="@id/circle_red"
-            android:background="@drawable/circle_green" />
-
-        <View
-            android:id="@+id/circle_red"
-            android:layout_width="100dp"
-            android:layout_height="100dp"
-            app:layout_constraintStart_toEndOf="@id/circle_yellow"
-            app:layout_constraintTop_toTopOf="@id/circle_yellow"
-            app:layout_constraintEnd_toEndOf="@id/view"
-            android:background="@drawable/circle_green" />
 </androidx.constraintlayout.widget.ConstraintLayout>

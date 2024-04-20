@@ -15,6 +15,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:titleCentered="true"
+        app:titleTextAppearance="@style/AppEditText.Bold.S24"
         app:title="출결 통계" />
 
 </FrameLayout>
