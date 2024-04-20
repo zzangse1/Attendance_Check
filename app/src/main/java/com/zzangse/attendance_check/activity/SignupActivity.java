@@ -65,6 +65,7 @@ public class SignupActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         initView();
         initFirebase();
+        onClickBack();
         onClickBtn();
         onClickEditTextPassWordShow();
         onClickSignUp();
@@ -78,6 +79,13 @@ public class SignupActivity extends AppCompatActivity {
     private void initFirebase() {
         mFirebaseAuth = FirebaseAuth.getInstance();
         mDatabaseRef = FirebaseDatabase.getInstance().getReference();
+    }
+
+    private void onClickBack() {
+        signupBinding.ibBack.setOnClickListener(v->{
+            onBackPressed();
+            finish();
+        });
     }
 
 
