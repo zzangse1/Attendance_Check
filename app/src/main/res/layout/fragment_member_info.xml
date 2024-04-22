@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+    android:layout_height="match_parent">
 
     <com.google.android.material.appbar.MaterialToolbar
         android:id="@+id/toolbar_member_view"
@@ -11,18 +11,114 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
+        app:title="상세 정보"
         app:titleCentered="true"
-        app:titleTextAppearance="@style/AppEditText.Bold.S24"
-        app:title="상세 정보" />
+        app:titleTextAppearance="@style/AppEditText.Bold.S24" />
 
-    <Button
-        android:id="@+id/btn_info_test"
+
+    <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/btn_modify"
+        style="@style/AppEditText.White.S17"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        app:layout_constraintStart_toStartOf="parent"
+        android:layout_height="40dp"
+        android:layout_marginEnd="20dp"
+        android:background="@drawable/btn_selector"
+        android:text="수정"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/toolbar_member_view"
-        android:text="상세 정보 버튼"/>
+        app:layout_constraintTop_toBottomOf="@id/toolbar_member_view" />
+
+
+    <EditText
+        android:id="@+id/et_group_name"
+        android:layout_width="0dp"
+        android:layout_height="60dp"
+        android:layout_marginStart="20dp"
+        android:layout_marginTop="50dp"
+        android:layout_marginEnd="20dp"
+        android:background="@drawable/tv_background"
+        android:gravity="center"
+        android:text="그룹 이름"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/toolbar_member_view" />
+
+
+    <EditText
+        android:id="@+id/et_person_name"
+        android:layout_width="0dp"
+        android:layout_height="60dp"
+        android:layout_marginStart="20dp"
+        android:layout_marginTop="20dp"
+        android:layout_marginEnd="20dp"
+        android:background="@drawable/tv_background"
+        android:gravity="center"
+        android:text="이름"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/et_group_name"
+        app:layout_goneMarginTop="10dp" />
+
+
+    <EditText
+        android:id="@+id/et_person_number"
+        android:layout_width="0dp"
+        android:layout_height="60dp"
+        android:layout_marginStart="20dp"
+        android:layout_marginTop="20dp"
+        android:layout_marginEnd="20dp"
+        android:background="@drawable/tv_background"
+        android:gravity="center"
+        android:text="전화번호"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/et_person_name"
+        app:layout_goneMarginTop="10dp" />
+
+
+    <EditText
+        android:id="@+id/et_person_address"
+        android:layout_width="0dp"
+        android:layout_height="60dp"
+        android:layout_marginStart="20dp"
+        android:layout_marginTop="20dp"
+        android:layout_marginEnd="20dp"
+        android:background="@drawable/tv_background"
+        android:gravity="center"
+        android:text="주소"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/et_person_number" />
+
+
+    <EditText
+        android:id="@+id/et_person_sec_number"
+        android:layout_width="0dp"
+        android:layout_height="60dp"
+        android:layout_marginStart="20dp"
+        android:layout_marginTop="20dp"
+        android:layout_marginEnd="20dp"
+        android:background="@drawable/tv_background"
+        android:gravity="center"
+        android:text="비상연락망"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/et_person_address" />
+
+    <EditText
+        android:id="@+id/et_person_memo"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_marginStart="20dp"
+        android:layout_marginTop="20dp"
+        android:layout_marginEnd="20dp"
+        android:layout_marginBottom="10dp"
+        android:background="@drawable/tv_background"
+        android:gravity="center"
+        android:text="메모"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/et_person_sec_number" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>
