@@ -10,16 +10,11 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
 import com.zzangse.attendance_check.activity.SettingActivity;
-import com.zzangse.attendance_check.databinding.FragmentMemberModifyBinding;
 import com.zzangse.attendance_check.databinding.FragmentMemberViewBinding;
 
 public class MemberViewFragment extends Fragment {
     private FragmentMemberViewBinding binding;
-    private MemberInfoFragment memberInfoFragment;
 
-    public static MemberViewFragment newInstance() {
-        return new MemberViewFragment();
-    }
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -37,7 +32,7 @@ public class MemberViewFragment extends Fragment {
 
     private void test() {
         binding.btnViewTest.setOnClickListener(v->{
-            ((SettingActivity)getActivity()).replace(memberInfoFragment);
+            ((SettingActivity)getActivity()).onFragmentChanged(0);
         });
     }
 }
