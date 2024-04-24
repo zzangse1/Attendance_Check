@@ -123,14 +123,14 @@
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/rv_check"
-        android:layout_margin="10dp"
         android:layout_width="0dp"
         android:layout_height="0dp"
+        android:layout_margin="10dp"
         app:layout_constraintBottom_toBottomOf="parent"
-        tools:listitem="@layout/rv_check"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/view" />
+        app:layout_constraintTop_toBottomOf="@id/view"
+        tools:listitem="@layout/rv_check" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>
