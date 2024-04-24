@@ -20,15 +20,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
 
 import com.android.volley.Response;
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
-import com.google.firebase.auth.AuthResult;
-import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
 import com.zzangse.attendance_check.R;
-import com.zzangse.attendance_check.UserAccount;
 import com.zzangse.attendance_check.databinding.ActivitySignupBinding;
 import com.zzangse.attendance_check.request.SignupRequest;
 
@@ -41,18 +33,15 @@ public class SignupActivity extends AppCompatActivity {
     private ActivitySignupBinding binding;
     private boolean isVisibility = true;
     private String m_sex="";
-    private FirebaseAuth mFirebaseAuth; // 파이어 베이스 연결
-    private DatabaseReference mDatabaseRef; // 실시간 데이터 베이스
     // *** 정규식
     private static final String YYYYMMDD = "(19|20)\\d{2}(0[1-9]|1[012])(0[1-9]|[12][0-9]|3[01])";
-    private static final String REGEX_ID = "^[a-z0-9_-]+$";
+    private static final String REGEX_ID = "^[a-z0-9]{5,16}$";
     private static final String REGEX_PASSWORD = "^[a-zA-Z0-9!@#$]+$";
-    private static final String REGEX_EMAIL_ID = "^[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*@[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*.[a-zA-Z]{2,3}$";
     private static final String REGEX_NAME = "^[가-힣]{2,6}$";
     private static final String REGEX_PHONE_NUMBER = "^\\d{3}-?\\d{3,4}-?\\d{4}$";
-    private static final String WARNING_MSG_NO_EMAIL_ID = "•이메일: 필수 정보 입니다.";
-    private static final String WARNING_MSG_ERROR_ID = "•이메일: 사용할 수 없는 아이디입니다. 다른 아이디를 입력해 주세요.";
-    private static final String WARNING_MSG_RULE_EMAIL_ID = "•이메일: [test@test.com]와 같은 형식으로 작성해주세요.";
+    private static final String WARNING_MSG_NO_ID = "•아이디: 필수 정보 입니다.";
+    private static final String WARNING_MSG_ERROR_ID = "•아이디: 사용할 수 없는 아이디입니다. 다른 아이디를 입력해 주세요.";
+    private static final String WARNING_MSG_RULE_ID = "•아이디: 5~16자의 영문 소문자, 숫자를 사용해 주세요";
     private static final String WARNING_MSG_RULE_PASSWORD = "•비밀번호: 8~16자의 영문 대/소문자, 숫자, [!,@,#,$]를 사용해 주세요.";
     private static final String WARNING_MSG_NO_PASSWORD = "•비밀번호: 필수 정보입니다.";
     private static final String WARNING_MSG_NO_NICKNAME = "•닉네임: 필수 정보입니다.";
@@ -76,18 +65,13 @@ public class SignupActivity extends AppCompatActivity {
         initView();
         onClickBack();
         onClickBtn();
-        onClick();
+        onClickSignUp();
         onClickEditTextPassWordShow();
     }
 
     private void initView() {
         binding = ActivitySignupBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
-    }
-
-    private void initFirebase() {
-        mFirebaseAuth = FirebaseAuth.getInstance();
-        mDatabaseRef = FirebaseDatabase.getInstance().getReference();
     }
 
     private void onClickBack() {
@@ -114,39 +98,51 @@ public class SignupActivity extends AppCompatActivity {
     }
 
 
-//    private void onClickSignUp() {
-//        binding.btnSend.setOnClickListener(v -> {
-//            // id 체크
-//            m_emailId = binding.etEmailId.getText().toString();
-//            m_password = binding.etPassword.getText().toString();
-//            m_birth = binding.etBirth.getText().toString();
-//            m_nickName = binding.etNickName.getText().toString();
-//            m_name = binding.etName.getText().toString();
-//            m_phoneNumber = binding.etNumber.getText().toString();
-//
-//
-//            IS_VALID_ID = checkEmailId(m_emailId);
-//            IS_VALID_PASSWORD = checkPassword(m_password);
-//            IS_VALID_BIRTH = checkBirth(m_birth);
-//            IS_VALID_NICK_NAME = checkNickName(m_nickName);
-//            IS_VALID_NAME = checkName(m_name);
-//            IS_VALID_SEX = checkSex(m_sex);
-//            IS_VALID_PHONE_NUMBER = checkPhoneNumber(m_phoneNumber);
-//
-////            setCheckValid(IS_VALID_ID, IS_VALID_PASSWORD, IS_VALID_BIRTH,
-////                    IS_VALID_NICK_NAME, IS_VALID_NAME, IS_VALID_SEX, IS_VALID_PHONE_NUMBER);
-//
-//            setClearFocus();
-//        });
-//
-//    }
-
-    private void onClick() {
+    private void onClickSignUp() {
         binding.btnSend.setOnClickListener(v -> {
+            // id 체크
             String userID = binding.etId.getText().toString();
             String userPassword = binding.etPassword.getText().toString();
+            String m_birth = binding.etBirth.getText().toString();
+            String userNickName = binding.etNickName.getText().toString();
             String userName = binding.etName.getText().toString();
-            int userAge = Integer.parseInt(binding.etBirth.getText().toString());
+            String userPhoneNumber = binding.etNumber.getText().toString();
+
+
+            IS_VALID_ID = checkEmailId(userID);
+            IS_VALID_PASSWORD = checkPassword(userPassword);
+            IS_VALID_BIRTH = checkBirth(m_birth);
+            IS_VALID_NICK_NAME = checkNickName(userNickName);
+            IS_VALID_NAME = checkName(userName);
+            IS_VALID_SEX = checkSex(m_sex);
+            IS_VALID_PHONE_NUMBER = checkPhoneNumber(userPhoneNumber);
+
+            setCheckValid(IS_VALID_ID, IS_VALID_PASSWORD, IS_VALID_BIRTH,
+                    IS_VALID_NICK_NAME, IS_VALID_NAME, IS_VALID_SEX, IS_VALID_PHONE_NUMBER);
+
+            setClearFocus();
+        });
+
+    }
+
+    private void setCheckValid(boolean isValidId, boolean isValidPassword, boolean isValidBirth,
+                               boolean isValidNickName, boolean isValidName, boolean isValidSex, boolean isValidPhoneNumber) {
+        if (isValidId && isValidPassword && isValidBirth && isValidNickName && isValidName && isValidSex && isValidPhoneNumber) {
+            onClick();
+        } else {
+            Toast.makeText(getApplicationContext(), "회원등록 실패", Toast.LENGTH_SHORT).show();
+        }
+    }
+
+
+    private void onClick() {
+            String userID = binding.etId.getText().toString();
+            String userPassword = binding.etPassword.getText().toString();
+            String userNickName = binding.etNickName.getText().toString();
+            String userName = binding.etName.getText().toString();
+            int userBirth = Integer.parseInt(binding.etBirth.getText().toString());
+            String userSex = m_sex;
+            String userPhoneNumber = binding.etNumber.getText().toString();
 
             Response.Listener<String> listener = new Response.Listener<String>() {
                 @Override
@@ -172,10 +168,10 @@ public class SignupActivity extends AppCompatActivity {
                 }
             };
             Log.d("hello", "6");
-            SignupRequest request = new SignupRequest(userID, userPassword, userName, userAge, listener);
+            SignupRequest request = new SignupRequest(userID, userPassword,userNickName,
+                                    userName, userBirth,userSex,userPhoneNumber, listener);
             RequestQueue queue = Volley.newRequestQueue(SignupActivity.this);
             queue.add(request);
-        });
     }
 
 
@@ -243,20 +239,20 @@ public class SignupActivity extends AppCompatActivity {
 
     // 아이디 => 5~20자의 영문 소문자 ,숫자 특수기호_,-만 사용가능
     private boolean checkEmailId(String emailId) {
-        boolean isMatch = Pattern.matches(REGEX_EMAIL_ID, emailId);
+        boolean isMatch = Pattern.matches(REGEX_ID, emailId);
         // 아이디 입력 에러 구분
         Drawable drawable_ok = ContextCompat.getDrawable(getApplicationContext(),R.drawable.ic_person);
         Drawable drawable_error = ContextCompat.getDrawable(getApplicationContext(),R.drawable.ic_error_person);
         if (emailId.isEmpty()) {
             // 기입 안했을 때
             binding.etId.setCompoundDrawablesRelativeWithIntrinsicBounds(drawable_error,null,null,null);
-            binding.tvErrorId.setText(WARNING_MSG_NO_EMAIL_ID);
+            binding.tvErrorId.setText(WARNING_MSG_NO_ID);
             binding.tvErrorId.setVisibility(View.VISIBLE);
             return false;
         } else if (!isMatch) {
             // 정규식에 맞지 않을 때
             binding.etId.setCompoundDrawablesRelativeWithIntrinsicBounds(drawable_error,null,null,null);
-            binding.tvErrorId.setText(WARNING_MSG_RULE_EMAIL_ID);
+            binding.tvErrorId.setText(WARNING_MSG_RULE_ID);
             binding.tvErrorId.setVisibility(View.VISIBLE);
             return false;
         } else {
