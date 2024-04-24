@@ -14,6 +14,15 @@ import com.zzangse.attendance_check.databinding.FragmentMemberInfoBinding;
 
 public class MemberInfoFragment extends Fragment {
     private FragmentMemberInfoBinding binding;
+
+    public static MemberInfoFragment newInstance() {
+        MemberInfoFragment fragment = new MemberInfoFragment();
+        Bundle args = new Bundle();
+        args.putString("key", "value");
+        fragment.setArguments(args);
+        return fragment;
+    }
+
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -29,7 +38,9 @@ public class MemberInfoFragment extends Fragment {
 
     private void test() {
         binding.btnModify.setOnClickListener(v->{
-            ((SettingActivity)getActivity()).onFragmentChanged(1);
+            if (getActivity() instanceof SettingActivity) {
+                ((SettingActivity)getActivity()).onFragmentChanged(1);
+            }
         });
     }
 }
