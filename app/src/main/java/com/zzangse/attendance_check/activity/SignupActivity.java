@@ -1,9 +1,14 @@
 package com.zzangse.attendance_check.activity;
 
+import com.android.volley.RequestQueue;
+import com.android.volley.toolbox.Volley;
+
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.text.InputType;
+import android.util.Log;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
@@ -14,6 +19,7 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
 
+import com.android.volley.Response;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
@@ -24,13 +30,17 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.zzangse.attendance_check.R;
 import com.zzangse.attendance_check.UserAccount;
 import com.zzangse.attendance_check.databinding.ActivitySignupBinding;
+import com.zzangse.attendance_check.request.SignupRequest;
+
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.util.regex.Pattern;
 
 public class SignupActivity extends AppCompatActivity {
-    private ActivitySignupBinding signupBinding;
-    private String m_emailId, m_password, m_nickName, m_name, m_birth, m_sex = "", m_phoneNumber;
+    private ActivitySignupBinding binding;
     private boolean isVisibility = true;
+    private String m_sex="";
     private FirebaseAuth mFirebaseAuth; // 파이어 베이스 연결
     private DatabaseReference mDatabaseRef; // 실시간 데이터 베이스
     // *** 정규식
@@ -64,16 +74,15 @@ public class SignupActivity extends AppCompatActivity {
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         initView();
-        initFirebase();
         onClickBack();
         onClickBtn();
+        onClick();
         onClickEditTextPassWordShow();
-        onClickSignUp();
     }
 
     private void initView() {
-        signupBinding = ActivitySignupBinding.inflate(getLayoutInflater());
-        setContentView(signupBinding.getRoot());
+        binding = ActivitySignupBinding.inflate(getLayoutInflater());
+        setContentView(binding.getRoot());
     }
 
     private void initFirebase() {
@@ -82,7 +91,7 @@ public class SignupActivity extends AppCompatActivity {
     }
 
     private void onClickBack() {
-        signupBinding.ibBack.setOnClickListener(v->{
+        binding.ibBack.setOnClickListener(v->{
             onBackPressed();
             finish();
         });
@@ -91,75 +100,82 @@ public class SignupActivity extends AppCompatActivity {
 
     // 비밀번호 확인 기능
     private void onClickEditTextPassWordShow() {
-        signupBinding.ibShowPassword.setOnClickListener(v -> {
+        binding.ibShowPassword.setOnClickListener(v -> {
             if (!isVisibility) {
-                signupBinding.ibShowPassword.setImageResource(R.drawable.ic_visibility_off);
-                signupBinding.etPassword.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_PASSWORD);
+                binding.ibShowPassword.setImageResource(R.drawable.ic_visibility_off);
+                binding.etPassword.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_PASSWORD);
                 isVisibility = true;
             } else {
-                signupBinding.ibShowPassword.setImageResource(R.drawable.ic_visibility);
-                signupBinding.etPassword.setInputType(InputType.TYPE_CLASS_TEXT);
+                binding.ibShowPassword.setImageResource(R.drawable.ic_visibility);
+                binding.etPassword.setInputType(InputType.TYPE_CLASS_TEXT);
                 isVisibility = false;
             }
         });
     }
 
 
-    private void onClickSignUp() {
-        signupBinding.btnSend.setOnClickListener(v -> {
-            // id 체크
-            m_emailId = signupBinding.etEmailId.getText().toString();
-            m_password = signupBinding.etPassword.getText().toString();
-            m_birth = signupBinding.etBirth.getText().toString();
-            m_nickName = signupBinding.etNickName.getText().toString();
-            m_name = signupBinding.etName.getText().toString();
-            m_phoneNumber = signupBinding.etNumber.getText().toString();
+//    private void onClickSignUp() {
+//        binding.btnSend.setOnClickListener(v -> {
+//            // id 체크
+//            m_emailId = binding.etEmailId.getText().toString();
+//            m_password = binding.etPassword.getText().toString();
+//            m_birth = binding.etBirth.getText().toString();
+//            m_nickName = binding.etNickName.getText().toString();
+//            m_name = binding.etName.getText().toString();
+//            m_phoneNumber = binding.etNumber.getText().toString();
+//
+//
+//            IS_VALID_ID = checkEmailId(m_emailId);
+//            IS_VALID_PASSWORD = checkPassword(m_password);
+//            IS_VALID_BIRTH = checkBirth(m_birth);
+//            IS_VALID_NICK_NAME = checkNickName(m_nickName);
+//            IS_VALID_NAME = checkName(m_name);
+//            IS_VALID_SEX = checkSex(m_sex);
+//            IS_VALID_PHONE_NUMBER = checkPhoneNumber(m_phoneNumber);
+//
+////            setCheckValid(IS_VALID_ID, IS_VALID_PASSWORD, IS_VALID_BIRTH,
+////                    IS_VALID_NICK_NAME, IS_VALID_NAME, IS_VALID_SEX, IS_VALID_PHONE_NUMBER);
+//
+//            setClearFocus();
+//        });
+//
+//    }
 
+    private void onClick() {
+        binding.btnSend.setOnClickListener(v -> {
+            String userID = binding.etId.getText().toString();
+            String userPassword = binding.etPassword.getText().toString();
+            String userName = binding.etName.getText().toString();
+            int userAge = Integer.parseInt(binding.etBirth.getText().toString());
 
-            IS_VALID_ID = checkEmailId(m_emailId);
-            IS_VALID_PASSWORD = checkPassword(m_password);
-            IS_VALID_BIRTH = checkBirth(m_birth);
-            IS_VALID_NICK_NAME = checkNickName(m_nickName);
-            IS_VALID_NAME = checkName(m_name);
-            IS_VALID_SEX = checkSex(m_sex);
-            IS_VALID_PHONE_NUMBER = checkPhoneNumber(m_phoneNumber);
-
-            setCheckValid(IS_VALID_ID, IS_VALID_PASSWORD, IS_VALID_BIRTH,
-                    IS_VALID_NICK_NAME, IS_VALID_NAME, IS_VALID_SEX, IS_VALID_PHONE_NUMBER);
-
-            setClearFocus();
-        });
-
-    }
-
-    // 회원가입 처리
-    private void setCheckValid(boolean isValidId, boolean isValidPassword, boolean isValidBirthday, boolean isValidEmail, boolean isValidName, boolean isValidSex, boolean isValidPhoneNumber) {
-        // Firebase Auth 진행
-        if (isValidId && isValidPassword && isValidBirthday && isValidEmail && isValidName && isValidSex && isValidPhoneNumber) {
-            mFirebaseAuth.createUserWithEmailAndPassword(m_emailId, m_password).addOnCompleteListener(SignupActivity.this, new OnCompleteListener<AuthResult>() {
+            Response.Listener<String> listener = new Response.Listener<String>() {
                 @Override
-                public void onComplete(@NonNull Task<AuthResult> task) {
-                    if (task.isSuccessful()) {
-                        // firebase 삽입
-                        FirebaseUser firebaseUser = mFirebaseAuth.getCurrentUser();
-                        UserAccount account = new UserAccount();
-                        account.setIdToken(firebaseUser.getUid());
-                        account.setId(firebaseUser.getEmail());
-                        account.setBirth(m_birth);
-                        account.setPassword(m_password);
-                        account.setNickName(m_nickName);
-                        account.setName(m_name);
-                        account.setSex(m_sex);
-                        account.setNumber(m_phoneNumber);
-
-                        mDatabaseRef.child("UserAccount").child(firebaseUser.getUid()).setValue(account);
-                        Toast.makeText(SignupActivity.this, "회원가입성공", Toast.LENGTH_SHORT).show();
-                    } else {
-                        Toast.makeText(SignupActivity.this, "회원가입실패", Toast.LENGTH_SHORT).show();
+                public void onResponse(String s) {
+                    Log.d("hello", "1");
+                    try {
+                        JSONObject jsonObject = new JSONObject(s);
+                        boolean isSuccess = jsonObject.getBoolean("success");
+                        Log.d("hello", "2");
+                        if (isSuccess) {
+                            Log.d("hello", "3");
+                            Toast.makeText(getApplicationContext(), "회원등록 성공", Toast.LENGTH_SHORT).show();
+                            Intent intent = new Intent(SignupActivity.this, LoginActivity.class);
+                            startActivity(intent);
+                        } else {
+                            Log.d("hello", "4");
+                            Toast.makeText(getApplicationContext(), "회원등록 실패", Toast.LENGTH_SHORT).show();
+                        }
+                    } catch (JSONException e) {
+                        Log.d("hello", "5");
+                        throw new RuntimeException(e);
                     }
                 }
-            });
-        }
+            };
+            Log.d("hello", "6");
+            SignupRequest request = new SignupRequest(userID, userPassword, userName, userAge, listener);
+            RequestQueue queue = Volley.newRequestQueue(SignupActivity.this);
+            queue.add(request);
+        });
     }
 
 
@@ -176,13 +192,13 @@ public class SignupActivity extends AppCompatActivity {
         Drawable drawable_ok = ContextCompat.getDrawable(getApplicationContext(),R.drawable.et_unclick_password);
         Drawable drawable_error = ContextCompat.getDrawable(getApplicationContext(),R.drawable.et_error_sex);
         if (!sex.isEmpty()) {
-            signupBinding.etSexLayout.setBackground(drawable_ok);
-            signupBinding.tvErrorSex.setVisibility(View.GONE);
+            binding.etSexLayout.setBackground(drawable_ok);
+            binding.tvErrorSex.setVisibility(View.GONE);
             return true;
         } else {
-            signupBinding.etSexLayout.setBackground(drawable_error);
-            signupBinding.tvErrorSex.setText(WARNING_MSG_NO_SEX);
-            signupBinding.tvErrorSex.setVisibility(View.VISIBLE);
+            binding.etSexLayout.setBackground(drawable_error);
+            binding.tvErrorSex.setText(WARNING_MSG_NO_SEX);
+            binding.tvErrorSex.setVisibility(View.VISIBLE);
             return false;
         }
     }
@@ -192,13 +208,13 @@ public class SignupActivity extends AppCompatActivity {
         Drawable drawable_error = ContextCompat.getDrawable(getApplicationContext(),R.drawable.ic_error_person);
         boolean isMatch = Pattern.matches(REGEX_NAME, name);
         if (isMatch) {
-            signupBinding.etName.setCompoundDrawablesRelativeWithIntrinsicBounds(drawable_ok,null,null,null);
-            signupBinding.tvErrorName.setVisibility(View.GONE);
+            binding.etName.setCompoundDrawablesRelativeWithIntrinsicBounds(drawable_ok,null,null,null);
+            binding.tvErrorName.setVisibility(View.GONE);
             return true;
         } else {
-            signupBinding.etName.setCompoundDrawablesRelativeWithIntrinsicBounds(drawable_error,null,null,null);
-            signupBinding.tvErrorName.setText(WARNING_MSG_NO_NAME);
-            signupBinding.tvErrorName.setVisibility(View.VISIBLE);
+            binding.etName.setCompoundDrawablesRelativeWithIntrinsicBounds(drawable_error,null,null,null);
+            binding.tvErrorName.setText(WARNING_MSG_NO_NAME);
+            binding.tvErrorName.setVisibility(View.VISIBLE);
             return false;
         }
     }
@@ -208,18 +224,18 @@ public class SignupActivity extends AppCompatActivity {
         Drawable drawable_error = ContextCompat.getDrawable(getApplicationContext(),R.drawable.ic_error_nickname);
         boolean isMatchNickName = nickName.length() >= 2 && nickName.length() <= 8;
         if (nickName.isEmpty()) {
-            signupBinding.etNickName.setCompoundDrawablesRelativeWithIntrinsicBounds(drawable_error,null,null,null);
-            signupBinding.tvErrorNickName.setText(WARNING_MSG_NO_NICKNAME);
-            signupBinding.tvErrorNickName.setVisibility(View.VISIBLE);
+            binding.etNickName.setCompoundDrawablesRelativeWithIntrinsicBounds(drawable_error,null,null,null);
+            binding.tvErrorNickName.setText(WARNING_MSG_NO_NICKNAME);
+            binding.tvErrorNickName.setVisibility(View.VISIBLE);
             return false;
         } else if (!isMatchNickName) {
-            signupBinding.etNickName.setCompoundDrawablesRelativeWithIntrinsicBounds(drawable_error,null,null,null);
-            signupBinding.tvErrorNickName.setText(WARNING_MSG_RULE_NICKNAME);
-            signupBinding.tvErrorNickName.setVisibility(View.VISIBLE);
+            binding.etNickName.setCompoundDrawablesRelativeWithIntrinsicBounds(drawable_error,null,null,null);
+            binding.tvErrorNickName.setText(WARNING_MSG_RULE_NICKNAME);
+            binding.tvErrorNickName.setVisibility(View.VISIBLE);
             return false;
         } else {
-            signupBinding.etNickName.setCompoundDrawablesRelativeWithIntrinsicBounds(drawable_ok,null,null,null);
-            signupBinding.tvErrorNickName.setVisibility(View.GONE);
+            binding.etNickName.setCompoundDrawablesRelativeWithIntrinsicBounds(drawable_ok,null,null,null);
+            binding.tvErrorNickName.setVisibility(View.GONE);
             return true;
         }
     }
@@ -233,21 +249,21 @@ public class SignupActivity extends AppCompatActivity {
         Drawable drawable_error = ContextCompat.getDrawable(getApplicationContext(),R.drawable.ic_error_person);
         if (emailId.isEmpty()) {
             // 기입 안했을 때
-            signupBinding.etEmailId.setCompoundDrawablesRelativeWithIntrinsicBounds(drawable_error,null,null,null);
-            signupBinding.tvErrorId.setText(WARNING_MSG_NO_EMAIL_ID);
-            signupBinding.tvErrorId.setVisibility(View.VISIBLE);
+            binding.etId.setCompoundDrawablesRelativeWithIntrinsicBounds(drawable_error,null,null,null);
+            binding.tvErrorId.setText(WARNING_MSG_NO_EMAIL_ID);
+            binding.tvErrorId.setVisibility(View.VISIBLE);
             return false;
         } else if (!isMatch) {
             // 정규식에 맞지 않을 때
-            signupBinding.etEmailId.setCompoundDrawablesRelativeWithIntrinsicBounds(drawable_error,null,null,null);
-            signupBinding.tvErrorId.setText(WARNING_MSG_RULE_EMAIL_ID);
-            signupBinding.tvErrorId.setVisibility(View.VISIBLE);
+            binding.etId.setCompoundDrawablesRelativeWithIntrinsicBounds(drawable_error,null,null,null);
+            binding.tvErrorId.setText(WARNING_MSG_RULE_EMAIL_ID);
+            binding.tvErrorId.setVisibility(View.VISIBLE);
             return false;
         } else {
             // 정상적으로 입력 됐을 때
-            signupBinding.etEmailId.setCompoundDrawablesRelativeWithIntrinsicBounds(drawable_ok,null,null,null);
-            signupBinding.etEmailId.setBackgroundResource(R.drawable.selector_et_id);
-            signupBinding.tvErrorId.setVisibility(View.GONE);
+            binding.etId.setCompoundDrawablesRelativeWithIntrinsicBounds(drawable_ok,null,null,null);
+            binding.etId.setBackgroundResource(R.drawable.selector_et_id);
+            binding.tvErrorId.setVisibility(View.GONE);
             return true;
         }
     }
@@ -262,20 +278,20 @@ public class SignupActivity extends AppCompatActivity {
         // 비밀번호 입력 에러 구분
         if (password.isEmpty()) {
             // 기입 안했을 때
-            signupBinding.etPassword.setCompoundDrawablesRelativeWithIntrinsicBounds(drawable_error,null,null,null);
-            signupBinding.tvErrorPassword.setText(WARNING_MSG_NO_PASSWORD);
-            signupBinding.tvErrorPassword.setVisibility(View.VISIBLE);
+            binding.etPassword.setCompoundDrawablesRelativeWithIntrinsicBounds(drawable_error,null,null,null);
+            binding.tvErrorPassword.setText(WARNING_MSG_NO_PASSWORD);
+            binding.tvErrorPassword.setVisibility(View.VISIBLE);
             return false;
         } else if (!isMatch || isMatchPassword) {
             // 정규식에 맞지 않을 때
-            signupBinding.etPassword.setCompoundDrawablesRelativeWithIntrinsicBounds(drawable_error,null,null,null);
-            signupBinding.tvErrorPassword.setText(WARNING_MSG_RULE_PASSWORD);
-            signupBinding.tvErrorPassword.setVisibility(View.VISIBLE);
+            binding.etPassword.setCompoundDrawablesRelativeWithIntrinsicBounds(drawable_error,null,null,null);
+            binding.tvErrorPassword.setText(WARNING_MSG_RULE_PASSWORD);
+            binding.tvErrorPassword.setVisibility(View.VISIBLE);
             return false;
         } else {
             // 정상적으로 입력 됐을 때
-            signupBinding.etPassword.setCompoundDrawablesRelativeWithIntrinsicBounds(drawable_ok,null,null,null);
-            signupBinding.tvErrorPassword.setVisibility(View.GONE);
+            binding.etPassword.setCompoundDrawablesRelativeWithIntrinsicBounds(drawable_ok,null,null,null);
+            binding.tvErrorPassword.setVisibility(View.GONE);
             return true;
         }
     }
@@ -285,13 +301,13 @@ public class SignupActivity extends AppCompatActivity {
         Drawable drawable_error = ContextCompat.getDrawable(getApplicationContext(),R.drawable.ic_error_calendar);
         boolean isMatch = Pattern.matches(YYYYMMDD, birthday);
         if (isMatch) {
-            signupBinding.etBirth.setCompoundDrawablesRelativeWithIntrinsicBounds(drawable_ok,null,null,null);
-            signupBinding.tvErrorBirth.setVisibility(View.GONE);
+            binding.etBirth.setCompoundDrawablesRelativeWithIntrinsicBounds(drawable_ok,null,null,null);
+            binding.tvErrorBirth.setVisibility(View.GONE);
             return true;
         } else {
-            signupBinding.etBirth.setCompoundDrawablesRelativeWithIntrinsicBounds(drawable_error,null,null,null);
-            signupBinding.tvErrorBirth.setText(WARNING_MSG_NO_BIRTHDAY);
-            signupBinding.tvErrorBirth.setVisibility(View.VISIBLE);
+            binding.etBirth.setCompoundDrawablesRelativeWithIntrinsicBounds(drawable_error,null,null,null);
+            binding.tvErrorBirth.setText(WARNING_MSG_NO_BIRTHDAY);
+            binding.tvErrorBirth.setVisibility(View.VISIBLE);
             return false;
         }
     }
@@ -301,22 +317,22 @@ public class SignupActivity extends AppCompatActivity {
         Drawable drawable_error = ContextCompat.getDrawable(getApplicationContext(),R.drawable.ic_error_phone);
         boolean isMatch = Pattern.matches(REGEX_PHONE_NUMBER, phoneNumber);
         if (isMatch) {
-            signupBinding.etNumber.setCompoundDrawablesRelativeWithIntrinsicBounds(drawable_ok,null,null,null);
-            signupBinding.tvErrorPhoneNumber.setVisibility(View.GONE);
+            binding.etNumber.setCompoundDrawablesRelativeWithIntrinsicBounds(drawable_ok,null,null,null);
+            binding.tvErrorPhoneNumber.setVisibility(View.GONE);
             return true;
         } else {
-            signupBinding.etNumber.setCompoundDrawablesRelativeWithIntrinsicBounds(drawable_error,null,null,null);
-            signupBinding.tvErrorPhoneNumber.setText(WARNING_MSG_NO_PHONE_NUMBER);
-            signupBinding.tvErrorPhoneNumber.setVisibility(View.VISIBLE);
+            binding.etNumber.setCompoundDrawablesRelativeWithIntrinsicBounds(drawable_error,null,null,null);
+            binding.tvErrorPhoneNumber.setText(WARNING_MSG_NO_PHONE_NUMBER);
+            binding.tvErrorPhoneNumber.setVisibility(View.VISIBLE);
             return false;
         }
     }
 
     private void onClickBtn() {
         // 버튼 클릭 리스너 등록
-        signupBinding.btnMale.setOnClickListener(v -> updateButtonState(signupBinding.btnMale));
-        signupBinding.btnFemale.setOnClickListener(v -> updateButtonState(signupBinding.btnFemale));
-        signupBinding.btnNone.setOnClickListener(v -> updateButtonState(signupBinding.btnNone));
+        binding.btnMale.setOnClickListener(v -> updateButtonState(binding.btnMale));
+        binding.btnFemale.setOnClickListener(v -> updateButtonState(binding.btnFemale));
+        binding.btnNone.setOnClickListener(v -> updateButtonState(binding.btnNone));
     }
 
     private void updateButtonState(@NonNull Button selectedButton) {
@@ -326,19 +342,19 @@ public class SignupActivity extends AppCompatActivity {
         int unselectedBackgroundEnd = R.drawable.btn_unclick_sex_end;
         int unselectedTextColor = getColor(R.color.gray_100);
         m_sex = selectedButton.getText().toString();
-        signupBinding.btnMale.setBackgroundResource(unselectedBackgroundStart);
-        signupBinding.btnMale.setTextColor(unselectedTextColor);
-        signupBinding.btnFemale.setBackgroundResource(unselectedBackgroundCenter);
-        signupBinding.btnFemale.setTextColor(unselectedTextColor);
-        signupBinding.btnNone.setBackgroundResource(unselectedBackgroundEnd);
-        signupBinding.btnNone.setTextColor(unselectedTextColor);
+        binding.btnMale.setBackgroundResource(unselectedBackgroundStart);
+        binding.btnMale.setTextColor(unselectedTextColor);
+        binding.btnFemale.setBackgroundResource(unselectedBackgroundCenter);
+        binding.btnFemale.setTextColor(unselectedTextColor);
+        binding.btnNone.setBackgroundResource(unselectedBackgroundEnd);
+        binding.btnNone.setTextColor(unselectedTextColor);
 
         // 선택된 버튼의 상태 변경
         int selectedBackgroundColor;
         int selectedTextColor = getColor(R.color.navy_200);
-        if (selectedButton == signupBinding.btnMale) {
+        if (selectedButton == binding.btnMale) {
             selectedBackgroundColor = R.drawable.btn_click_sex_start;
-        } else if (selectedButton == signupBinding.btnFemale) {
+        } else if (selectedButton == binding.btnFemale) {
             selectedBackgroundColor = R.drawable.btn_click_sex_center;
         } else {
             selectedBackgroundColor = R.drawable.btn_click_sex_end;
