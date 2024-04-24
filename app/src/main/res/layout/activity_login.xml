@@ -39,7 +39,7 @@
             android:layout_height="wrap_content"
             android:maxLength="20"
             android:maxLines="1"
-            android:text="admin@test.com" />
+            android:text="admin" />
     </com.google.android.material.textfield.TextInputLayout>
 
     <com.google.android.material.textfield.TextInputLayout
@@ -62,7 +62,7 @@
             android:inputType="textPassword"
             android:maxLength="16"
             android:maxLines="1"
-            android:text="admin123" />
+            android:text="admin" />
     </com.google.android.material.textfield.TextInputLayout>
 
     <ImageButton
