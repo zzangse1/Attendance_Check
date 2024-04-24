@@ -30,18 +30,18 @@ public class CheckFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        test();
+      //  test();
     }
 
-    private void test() {
-        Bundle bundle = getArguments();
-        if (bundle != null) {
-            String id = bundle.getString("userID");
-            String ps = bundle.getString("userPW");
-            String nickName = bundle.getString("nickName");
-            checkBinding.tvId.setText(id);
-            checkBinding.tvPw.setText(ps);
-            checkBinding.tvNickname.setText(nickName);
-        }
-    }
+//    private void test() {
+//        Bundle bundle = getArguments();
+//        if (bundle != null) {
+//            String id = bundle.getString("userID");
+//            String ps = bundle.getString("userPW");
+//            String nickName = bundle.getString("nickName");
+//            checkBinding.tvId.setText(id);
+//            checkBinding.tvPw.setText(ps);
+//            checkBinding.tvNickname.setText(nickName);
+//        }
+//    }
 }
