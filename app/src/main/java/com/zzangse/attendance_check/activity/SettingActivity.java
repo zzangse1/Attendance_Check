@@ -3,6 +3,7 @@ package com.zzangse.attendance_check.activity;
 import android.os.Bundle;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 
 import com.zzangse.attendance_check.R;
@@ -24,33 +25,35 @@ public class SettingActivity extends AppCompatActivity {
         initFragment();
 
     }
-
-    private void initFragment() {
-        fragmentManager = getSupportFragmentManager();
-        viewFragment = new MemberViewFragment();
-        infoFragment = new MemberInfoFragment();
-        modifyFragment = new MemberModifyFragment();
-        fragmentManager.beginTransaction().add(R.id.fragment_setting,viewFragment).commit();
-    }
-
     private void initView() {
         activitySettingBinding = ActivitySettingBinding.inflate(getLayoutInflater());
         setContentView(activitySettingBinding.getRoot());
     }
 
+    private void initFragment() {
+        fragmentManager = getSupportFragmentManager();
+        viewFragment = MemberViewFragment.newInstance();
+        infoFragment = MemberInfoFragment.newInstance();
+        modifyFragment = MemberModifyFragment.newInstance();
+        fragmentManager.beginTransaction().add(R.id.fragment_setting, viewFragment).commit();
+    }
+
 
     public void onFragmentChanged(int index) {
+        Fragment selectedFragment = null;
+        String tag = null;
         if (index == 0) {
-            fragmentManager.beginTransaction()
-                    .replace(R.id.fragment_setting,infoFragment)
-                    .setReorderingAllowed(true)
-                    .addToBackStack("0")
-                    .commit();
+            selectedFragment= MemberInfoFragment.newInstance();
+            tag = "info_fragment";
         } else if (index == 1) {
+            selectedFragment = MemberModifyFragment.newInstance();
+            tag = "modify_fragment";
+        }
+        if (selectedFragment != null) {
             fragmentManager.beginTransaction()
-                    .replace(R.id.fragment_setting,modifyFragment)
+                    .replace(R.id.fragment_setting,selectedFragment,tag)
                     .setReorderingAllowed(true)
-                    .addToBackStack("1")
+                    .addToBackStack(tag)
                     .commit();
         }
     }
