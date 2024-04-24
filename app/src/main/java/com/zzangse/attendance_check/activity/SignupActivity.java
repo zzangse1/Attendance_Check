@@ -58,7 +58,7 @@ public class SignupActivity extends AppCompatActivity {
     private static boolean IS_VALID_SEX = false;
     private static boolean IS_VALID_PHONE_NUMBER = false;
 
-
+    // 할일
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
