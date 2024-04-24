@@ -14,14 +14,18 @@ public class SignupRequest  extends StringRequest {
     private Map<String,String> map;
 
 
-    public SignupRequest(String userID, String userPassword, String userName, int userAge,Response.Listener<String> listener) {
+    public SignupRequest(String userID, String userPassword,String userNickName,
+                         String userName, int userBirth,String userSex, String userPhoneNumber,Response.Listener<String> listener) {
         super(Method.POST, URL, listener, null);
 
         map = new HashMap<>();
         map.put("userID", userID);
         map.put("userPassword", userPassword);
+        map.put("userNickName", userNickName);
         map.put("userName", userName);
-        map.put("userAge", userAge+"");
+        map.put("userBirth", userBirth+"");
+        map.put("userSex", userSex);
+        map.put("userPhoneNumber", userPhoneNumber);
     }
 
     @Nullable
