@@ -21,7 +21,7 @@
         app:layout_constraintVertical_bias="0.5" />
 
     <com.google.android.material.textfield.TextInputLayout
-        android:id="@+id/et_email_layout"
+        android:id="@+id/et_id_layout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginStart="30dp"
@@ -33,12 +33,12 @@
         app:layout_constraintTop_toBottomOf="@id/tv_login_label">
 
         <com.google.android.material.textfield.TextInputEditText
-            android:id="@+id/et_email_id"
+            android:id="@+id/et_id"
             style="@style/AppEditText.S17"
             android:layout_width="match_parent"
-            android:maxLines="1"
-            android:maxLength="20"
             android:layout_height="wrap_content"
+            android:maxLength="20"
+            android:maxLines="1"
             android:text="admin@test.com" />
     </com.google.android.material.textfield.TextInputLayout>
 
@@ -52,16 +52,16 @@
         android:hint="비밀번호"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/et_email_layout">
+        app:layout_constraintTop_toBottomOf="@id/et_id_layout">
 
         <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/et_password"
             style="@style/AppEditText.S17"
             android:layout_width="match_parent"
-            android:maxLength="16"
-            android:maxLines="1"
             android:layout_height="wrap_content"
             android:inputType="textPassword"
+            android:maxLength="16"
+            android:maxLines="1"
             android:text="admin123" />
     </com.google.android.material.textfield.TextInputLayout>
 
@@ -74,8 +74,8 @@
         android:src="@drawable/ic_visibility_off"
         app:layout_constraintBottom_toBottomOf="@id/et_password_layout"
         app:layout_constraintEnd_toEndOf="@id/et_password_layout"
-        app:layout_constraintVertical_bias="0.6"
-        app:layout_constraintTop_toTopOf="@id/et_password_layout" />
+        app:layout_constraintTop_toTopOf="@id/et_password_layout"
+        app:layout_constraintVertical_bias="0.6" />
 
     <androidx.appcompat.widget.AppCompatButton
         android:id="@+id/btn_login"
