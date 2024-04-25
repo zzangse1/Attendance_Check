@@ -1,19 +1,30 @@
 package com.zzangse.attendance_check.fragment;
 
+import android.app.AlertDialog;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
-
+import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.toolbox.Volley;
+import com.google.android.material.textfield.TextInputEditText;
 import com.zzangse.attendance_check.R;
 import com.zzangse.attendance_check.activity.SettingActivity;
 import com.zzangse.attendance_check.databinding.FragmentEditBinding;
+import com.zzangse.attendance_check.request.GroupRequest;
+
+import org.json.JSONException;
+import org.json.JSONObject;
 
 public class EditFragment extends Fragment {
     private FragmentEditBinding binding;
@@ -48,9 +59,8 @@ public class EditFragment extends Fragment {
     }
 
     private void onClickGroupAdd() {
-        fragmentEditBinding.ibGroupAdd.setOnClickListener(v->{
-            Intent intent = new Intent(getActivity(), GroupAddActivity.class);
-            startActivity(intent);
+        binding.ibGroupAdd.setOnClickListener(v -> {
+            showDialog();
         });
     }
 
@@ -59,5 +69,57 @@ public class EditFragment extends Fragment {
             Intent intent = new Intent(getActivity(), SettingActivity.class);
             startActivity(intent);
         });
+    }
+
+    private void showDialog() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+        LayoutInflater inflater = requireActivity().getLayoutInflater();
+        View dialogView = inflater.inflate(R.layout.dialog_view, null);
+        Button btnOK = dialogView.findViewById(R.id.btn_ok);
+        Button btnCancel = dialogView.findViewById(R.id.btn_cancel);
+        TextInputEditText textInputEditText = dialogView.findViewById(R.id.et_group_name);
+
+        AlertDialog dialog = builder.setView(dialogView)
+                .setTitle("그룹 생성")
+                .setCancelable(false)
+                .create();
+        btnCancel.setOnClickListener(v -> {
+            Toast.makeText(getActivity(), "cancel", Toast.LENGTH_SHORT).show();
+            dialog.dismiss();
+        });
+        btnOK.setOnClickListener(v -> {
+            Toast.makeText(getActivity(), "ok", Toast.LENGTH_SHORT).show();
+            String groupName = textInputEditText.getText().toString();
+            setGroupDB(userID,groupName);
+            binding.tvTest.setText(userID+", "+groupName);
+            dialog.dismiss();
+        });
+        dialog.show();
+    }
+
+    private void setGroupDB(String userID, String groupName) {
+        Response.Listener<String> listener = new Response.Listener<String>() {
+            @Override
+            public void onResponse(String s) {
+                try {
+                    JSONObject jsonObject = new JSONObject(s);
+                    boolean isSuccess = jsonObject.getBoolean("success");
+                    if (isSuccess) {
+                        Toast.makeText(getActivity(), "db ok", Toast.LENGTH_SHORT).show();
+                    } else {
+                        Toast.makeText(getActivity(), "db no", Toast.LENGTH_SHORT).show();
+                    }
+                } catch (JSONException e) {
+                    throw new RuntimeException(e);
+                }
+            }
+        };
+        if (getActivity() != null) {
+            GroupRequest request = new GroupRequest(userID, groupName, listener);
+            RequestQueue queue = Volley.newRequestQueue(getActivity());
+            queue.add(request);
+        } else {
+            Log.d("EditFragment", "getActivity == null");
+        }
     }
 }
