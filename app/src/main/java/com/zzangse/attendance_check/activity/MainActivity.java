@@ -55,7 +55,13 @@ public class MainActivity extends AppCompatActivity {
         setContentView(mainBinding.getRoot());
     }
 
-    class BottomNavSelect implements NavigationBarView.OnItemSelectedListener{
+    private String initAccount() {
+        Intent intent = getIntent();
+        return intent != null ? intent.getStringExtra("userID") : "false";
+    }
+
+
+    class BottomNavSelect implements NavigationBarView.OnItemSelectedListener {
 
         @Override
         public boolean onNavigationItemSelected(@NonNull MenuItem item) {
@@ -70,7 +76,6 @@ public class MainActivity extends AppCompatActivity {
                 fragment = editFragment;
             } else if (item.getItemId() == R.id.menu_more) {
                 Log.d("BottomNavSelect", "프래그먼트 more 이동");
-                replace(moreFragment);
                 fragment = moreFragment;
             }
             if (fragment != null) {
