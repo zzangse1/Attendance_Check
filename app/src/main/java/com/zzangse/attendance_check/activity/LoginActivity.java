@@ -3,7 +3,6 @@ package com.zzangse.attendance_check.activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.InputType;
-import android.util.Log;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -25,8 +24,7 @@ public class LoginActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         initView();
-       // onClickLogin();
-        onClick();
+        onClickLogin();
         onClickEditTextPassWordShow();
         onClickSignUp();
     }
@@ -50,7 +48,7 @@ public class LoginActivity extends AppCompatActivity {
             }
         });
     }
-    private void onClick() {
+    private void onClickLogin() {
         binding.btnLogin.setOnClickListener(v -> {
             String userID = binding.etId.getText().toString();
             String userPassword = binding.etPassword.getText().toString();
@@ -62,12 +60,11 @@ public class LoginActivity extends AppCompatActivity {
                         JSONObject jsonObject = new JSONObject(s);
                         boolean isSuccess = jsonObject.getBoolean("success");
                         if (isSuccess) {
+                            // json 데이터에서 userID 키에 해당하는 값을 가져옴
                             String userID = jsonObject.getString("userID");
-                            String userPassword = jsonObject.getString("userPassword");
                             Toast.makeText(getApplicationContext(), "로그인 성공", Toast.LENGTH_SHORT).show();
                             Intent intent = new Intent(LoginActivity.this, MainActivity.class);
                             intent.putExtra("userID", userID);
-                            intent.putExtra("userPassword", userPassword);
                             startActivity(intent);
                         } else {
                             Toast.makeText(getApplicationContext(), "로그인 실패", Toast.LENGTH_SHORT).show();
@@ -82,45 +79,6 @@ public class LoginActivity extends AppCompatActivity {
             queue.add(request);
         });
 
-    }
-    private void onClickLogin(){
-        binding.btnLogin.setOnClickListener(v->{
-            String userID = binding.etId.getText().toString();
-            String userPW = binding.etPassword.getText().toString();
-
-            Response.Listener<String> listener = new Response.Listener<String>() {
-                @Override
-                public void onResponse(String response) {
-                    try {
-                        Log.d("hello2","1");
-                        JSONObject jsonObject = new JSONObject(response);
-                        boolean isSuccess = jsonObject.getBoolean("success");
-                        if (isSuccess) {
-                            Log.d("hello2","2");
-                            String userID = jsonObject.getString("userID");
-                            String userPW = jsonObject.getString("userPassword");
-                            Toast.makeText(getApplicationContext(), "로그인에 성공", Toast.LENGTH_SHORT).show();
-                            // 로그인 성공 시 메인액티비티로
-                            Intent intent = new Intent(LoginActivity.this, MainActivity.class);
-                            intent.putExtra("userID",userID);
-                            intent.putExtra("userPass",userPW);
-                            startActivity(intent);
-                        } else {
-                            Log.d("hello2","3");
-                            Toast.makeText(getApplicationContext(), "로그인에 실패", Toast.LENGTH_SHORT).show();
-                            return;
-                        }
-                    } catch (JSONException e) {
-                        Log.d("hello2","4");
-                        throw new RuntimeException(e);
-                    }
-                }
-            };
-            Log.d("hello2","5");
-            LoginRequest loginRequest = new LoginRequest(userID,userPW,listener);
-            RequestQueue queue = Volley.newRequestQueue(LoginActivity.this);
-            queue.add(loginRequest);
-        });
     }
 
     private void onClickSignUp() {

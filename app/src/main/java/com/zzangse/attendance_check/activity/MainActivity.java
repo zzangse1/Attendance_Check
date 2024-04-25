@@ -1,5 +1,6 @@
 package com.zzangse.attendance_check.activity;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.MenuItem;
@@ -20,6 +21,7 @@ import com.zzangse.attendance_check.databinding.ActivityMainBinding;
 
 public class MainActivity extends AppCompatActivity {
     private ActivityMainBinding mainBinding;
+    private FragmentManager fragmentManager;
     private CheckFragment checkFragment;
     private ChartFragment chartFragment;
     private EditFragment editFragment;
@@ -30,16 +32,22 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         initView();
+        initFragment();
+        setupBottomNav();
+    }
 
+    private void setupBottomNav() {
+        mainBinding.bottomNav.setOnItemSelectedListener(new BottomNavSelect());
+    }
+
+    private void initFragment() {
+        fragmentManager = getSupportFragmentManager();
         checkFragment = new CheckFragment();
         chartFragment = new ChartFragment();
         editFragment = new EditFragment();
         moreFragment = new MoreFragment();
 
-        replace(new CheckFragment());
-        BottomNavSelect bottomNavSelect = new BottomNavSelect();
-        mainBinding.bottomNav.setOnItemSelectedListener(bottomNavSelect);
-
+        replace(checkFragment);
     }
 
     private void initView() {
@@ -51,26 +59,33 @@ public class MainActivity extends AppCompatActivity {
 
         @Override
         public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+            Fragment fragment = null;
             if (item.getItemId() == R.id.menu_check) {
-                Log.d("BottomNavSelect", "프래그먼트 check 이동");
-                replace(checkFragment);
+                fragment = checkFragment;
             } else if (item.getItemId() == R.id.menu_chart) {
                 Log.d("BottomNavSelect", "프래그먼트 chart 이동");
-                replace(chartFragment);
-            }else if (item.getItemId() == R.id.menu_edit) {
+                fragment = chartFragment;
+            } else if (item.getItemId() == R.id.menu_edit) {
                 Log.d("BottomNavSelect", "프래그먼트 edit 이동");
-                replace(editFragment);
+                fragment = editFragment;
             } else if (item.getItemId() == R.id.menu_more) {
                 Log.d("BottomNavSelect", "프래그먼트 more 이동");
                 replace(moreFragment);
+                fragment = moreFragment;
+            }
+            if (fragment != null) {
+                replace(fragment);
+                Bundle bundle = new Bundle();
+                bundle.putString("userID", initAccount());
+                fragment.setArguments(bundle);
             }
             return true;
         }
     }
+
     private void replace(Fragment fragment) {
-        FragmentManager fragmentManager = getSupportFragmentManager();
         FragmentTransaction transaction = fragmentManager.beginTransaction();
-        transaction.replace(R.id.nav_host_fragment,fragment);
+        transaction.replace(R.id.nav_host_fragment, fragment);
         transaction.commit();
     }
 }
