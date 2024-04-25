@@ -22,10 +22,21 @@
         android:id="@+id/btn_test"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/toolbar_eidt"
         android:layout_marginStart="20dp"
-        android:text="그룹 이름(테스트)"/>
+        android:text="그룹 이름(테스트)"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/toolbar_eidt" />
+
+    <TextView
+        android:id="@+id/tv_test"
+        style="@style/AppEditText.S17"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:gravity="center"
+        app:layout_constraintBottom_toBottomOf="@id/btn_test"
+        app:layout_constraintEnd_toStartOf="@id/ib_group_add"
+        app:layout_constraintStart_toEndOf="@id/btn_test"
+        app:layout_constraintTop_toTopOf="@id/btn_test" />
 
     <ImageButton
         android:id="@+id/ib_group_add"
@@ -36,18 +47,17 @@
         android:background="@color/white"
         android:src="@drawable/ic_group_add"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/toolbar_eidt"
+        app:layout_constraintTop_toBottomOf="@id/toolbar_eidt" />
 
-        />
     <androidx.recyclerview.widget.RecyclerView
         android:layout_width="0dp"
         android:layout_height="0dp"
-        app:layout_constraintStart_toStartOf="parent"
         android:layout_margin="10dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/ib_group_add"
         app:layout_constraintBottom_toBottomOf="parent"
-        tools:listitem="@layout/rv_plain_name"/>
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/ib_group_add"
+        tools:listitem="@layout/rv_plain_name" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>
