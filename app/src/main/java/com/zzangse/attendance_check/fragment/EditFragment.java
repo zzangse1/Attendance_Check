@@ -12,12 +12,12 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.zzangse.attendance_check.R;
-import com.zzangse.attendance_check.activity.GroupAddActivity;
 import com.zzangse.attendance_check.activity.SettingActivity;
 import com.zzangse.attendance_check.databinding.FragmentEditBinding;
 
 public class EditFragment extends Fragment {
-    private FragmentEditBinding fragmentEditBinding;
+    private FragmentEditBinding binding;
+    private String userID;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -27,8 +27,16 @@ public class EditFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-       fragmentEditBinding = FragmentEditBinding.inflate(inflater);
-       return fragmentEditBinding.getRoot();
+        binding = FragmentEditBinding.inflate(inflater);
+        getArgs();
+        return binding.getRoot();
+    }
+
+    private void getArgs() {
+        Bundle args = getArguments();
+        if (args != null) {
+            userID = args.getString("userID");
+        }
     }
 
     @Override
@@ -47,7 +55,7 @@ public class EditFragment extends Fragment {
     }
 
     private void onClickTest() {
-        fragmentEditBinding.btnTest.setOnClickListener(v->{
+        binding.btnTest.setOnClickListener(v -> {
             Intent intent = new Intent(getActivity(), SettingActivity.class);
             startActivity(intent);
         });
