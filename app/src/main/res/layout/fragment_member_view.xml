@@ -19,7 +19,7 @@
         android:id="@+id/btn_view_test"
         android:layout_width="match_parent"
         android:layout_height="70dp"
-        android:background="@drawable/tv_background"
+        android:background="@drawable/plane_outline_background"
         android:text="홍길동"
         android:layout_marginTop="50dp"
         android:layout_marginStart="20dp"
