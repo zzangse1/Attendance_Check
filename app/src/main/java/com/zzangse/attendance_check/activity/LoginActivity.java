@@ -3,6 +3,7 @@ package com.zzangse.attendance_check.activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.InputType;
+import android.view.View;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -52,7 +53,7 @@ public class LoginActivity extends AppCompatActivity {
         binding.btnLogin.setOnClickListener(v -> {
             String userID = binding.etId.getText().toString();
             String userPassword = binding.etPassword.getText().toString();
-
+            binding.tvErrorLabel.setVisibility(View.GONE);
             Response.Listener<String> listener = new Response.Listener<String>() {
                 @Override
                 public void onResponse(String s) {
@@ -67,6 +68,7 @@ public class LoginActivity extends AppCompatActivity {
                             intent.putExtra("userID", userID);
                             startActivity(intent);
                         } else {
+                            binding.tvErrorLabel.setVisibility(View.VISIBLE);
                             Toast.makeText(getApplicationContext(), "로그인 실패", Toast.LENGTH_SHORT).show();
                         }
                     } catch (JSONException e) {
@@ -87,4 +89,6 @@ public class LoginActivity extends AppCompatActivity {
             startActivity(intent);
         });
     }
+
+
 }
