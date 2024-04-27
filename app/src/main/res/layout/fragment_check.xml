@@ -16,7 +16,8 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:title="출결 체크"
-        app:titleCentered="true" />
+        app:titleCentered="true"
+        app:titleTextAppearance="@style/AppToolbarText.S24" />
 
     <com.google.android.material.button.MaterialButton
         android:id="@+id/btn_left"
