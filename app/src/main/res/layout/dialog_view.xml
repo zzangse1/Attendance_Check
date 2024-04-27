@@ -24,6 +24,18 @@
 
     </com.google.android.material.textfield.TextInputLayout>
 
+    <TextView
+        android:id="@+id/tv_group_name_error"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        app:layout_constraintStart_toStartOf="@id/et_group_name_layout"
+        android:layout_marginStart="20dp"
+        android:text="2 ~ 10글자로 작성해주세요."
+        android:visibility="gone"
+        app:layout_constraintTop_toBottomOf="@id/et_group_name_layout"
+        android:layout_marginTop="10dp"
+        style="@style/AppEditText.S17" />
+
     <androidx.appcompat.widget.AppCompatButton
         android:id="@+id/btn_cancel"
         style="@style/AppEditText.S17"
@@ -34,7 +46,7 @@
         android:text="취소"
         app:layout_constraintEnd_toStartOf="@id/btn_ok"
         app:layout_constraintStart_toStartOf="@id/et_group_name_layout"
-        app:layout_constraintTop_toBottomOf="@id/et_group_name_layout" />
+        app:layout_constraintTop_toBottomOf="@id/tv_group_name_error" />
 
     <androidx.appcompat.widget.AppCompatButton
         android:id="@+id/btn_ok"
@@ -47,5 +59,5 @@
         android:text="확인"
         app:layout_constraintEnd_toEndOf="@id/et_group_name_layout"
         app:layout_constraintStart_toEndOf="@id/btn_cancel"
-        app:layout_constraintTop_toBottomOf="@id/et_group_name_layout" />
+        app:layout_constraintTop_toBottomOf="@id/tv_group_name_error" />
 </androidx.constraintlayout.widget.ConstraintLayout>
