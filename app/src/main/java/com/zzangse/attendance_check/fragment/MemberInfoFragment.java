@@ -18,7 +18,7 @@ public class MemberInfoFragment extends Fragment {
     public static MemberInfoFragment newInstance() {
         MemberInfoFragment fragment = new MemberInfoFragment();
         Bundle args = new Bundle();
-        args.putString("key", "value");
+        args.putString("groupName", "value");
         fragment.setArguments(args);
         return fragment;
     }
@@ -34,12 +34,19 @@ public class MemberInfoFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         test();
+        onClickBack();
+    }
+
+    private void onClickBack() {
+        binding.toolbarMemberInfo.setNavigationOnClickListener(v -> {
+            getActivity().onBackPressed();
+        });
     }
 
     private void test() {
         binding.btnModify.setOnClickListener(v->{
             if (getActivity() instanceof SettingActivity) {
-                ((SettingActivity)getActivity()).onFragmentChanged(1);
+                ((SettingActivity)getActivity()).onFragmentChanged(2);
             }
         });
     }
