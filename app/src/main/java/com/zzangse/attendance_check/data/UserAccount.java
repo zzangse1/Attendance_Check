@@ -1,4 +1,4 @@
-package com.zzangse.attendance_check;
+package com.zzangse.attendance_check.data;
 
 public class UserAccount {
     String idToken, id, password, nickName, name, birth, sex, number;
