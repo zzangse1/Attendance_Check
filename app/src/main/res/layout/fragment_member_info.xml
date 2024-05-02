@@ -5,11 +5,12 @@
     android:layout_height="match_parent">
 
     <com.google.android.material.appbar.MaterialToolbar
-        android:id="@+id/toolbar_member_view"
+        android:id="@+id/toolbar_member_info"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
+        app:navigationIcon="@drawable/ic_back2"
         app:layout_constraintTop_toTopOf="parent"
         app:title="상세 정보"
         app:titleCentered="true"
@@ -25,7 +26,7 @@
         android:background="@drawable/btn_selector"
         android:text="수정"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/toolbar_member_view" />
+        app:layout_constraintTop_toBottomOf="@id/toolbar_member_info" />
 
 
     <androidx.core.widget.NestedScrollView
