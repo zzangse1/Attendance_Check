@@ -1,7 +1,11 @@
-package com.zzangse.attendance_check;
+package com.zzangse.attendance_check.data;
 
 public class GroupName {
     private String groupName;
+
+    public GroupName() {
+
+    }
 
     public GroupName(String groupName) {
         this.groupName = groupName;
