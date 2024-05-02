@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
@@ -13,36 +14,39 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.widget.Toolbar;
+import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.toolbox.Volley;
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.android.material.textfield.TextInputLayout;
-import com.zzangse.attendance_check.GroupName;
+import com.zzangse.attendance_check.data.GroupName;
+import com.zzangse.attendance_check.adapter.GroupNameAdapter;
 import com.zzangse.attendance_check.R;
 import com.zzangse.attendance_check.activity.SettingActivity;
 import com.zzangse.attendance_check.databinding.FragmentEditBinding;
 import com.zzangse.attendance_check.request.GroupRequest;
+import com.zzangse.attendance_check.request.TestRequest;
 
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.net.HttpURLConnection;
-import java.net.MalformedURLException;
-import java.net.URL;
 import java.util.ArrayList;
 
 public class EditFragment extends Fragment {
     private FragmentEditBinding binding;
     private String userID;
-    ArrayList<GroupName> groupNames = new ArrayList<>();
-    
+    private ArrayList<GroupName> groupNameList = new ArrayList<>();
+    private GroupNameAdapter adapter;
+    private RecyclerView recyclerView;
+    GroupName groupName;
+
     // 그룹이름 공백 제한 규칙 만들기
     // http://webs.co.kr/index.php?document_srl=3312513&mid=nodejs
     // https://lcw126.tistory.com/102
@@ -72,23 +76,41 @@ public class EditFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         // 구현
-        onClickGroupAdd();
-        onClickTest();
         loadData();
+        initRecycler();
+        onClickGroupAdd();
     }
 
     private void onClickGroupAdd() {
-        binding.ibGroupAdd.setOnClickListener(v -> {
-            showDialog();
+        binding.toolbarEdit.setOnMenuItemClickListener(new Toolbar.OnMenuItemClickListener() {
+            @Override
+            public boolean onMenuItemClick(MenuItem item) {
+                showDialog();
+                return true;
+            }
         });
     }
 
-    private void onClickTest() {
-        binding.btnTest.setOnClickListener(v -> {
-            Intent intent = new Intent(getActivity(), SettingActivity.class);
-            startActivity(intent);
+
+    private void initRecycler() {
+        RecyclerView recyclerView = binding.rvEdit;
+        recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
+        adapter = new GroupNameAdapter(getContext(), groupNameList);
+        recyclerView.setAdapter(adapter);
+
+        adapter.setOnClick(new GroupNameAdapter.GroupNameAdapterClick() {
+            @Override
+            public void onClickInfo(GroupName groupName) {
+                Toast.makeText(getActivity(), groupName.getGroupName(), Toast.LENGTH_SHORT).show();
+                Intent intent = new Intent(getActivity(), SettingActivity.class);
+                intent.putExtra("groupName", groupName.getGroupName());
+                startActivity(intent);
+            }
         });
+
+
     }
+
 
     private void showDialog() {
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
@@ -114,10 +136,10 @@ public class EditFragment extends Fragment {
             String groupName = textInputEditText.getText().toString();
             if (checkGroupName(groupName)) {
                 setGroupDB(userID, groupName);
-                binding.tvTest.setText(userID + ", " + groupName);
                 dialog.dismiss();
             } else {
-                textInputLayout.setBoxStrokeColor(getResources().getColor(R.color.red));
+                int colorRed = ContextCompat.getColor(getContext(), R.color.red);
+                textInputLayout.setBoxStrokeColor(colorRed);
                 textView.setVisibility(View.VISIBLE);
             }
 
@@ -144,6 +166,8 @@ public class EditFragment extends Fragment {
                     boolean isSuccess = jsonObject.getBoolean("success");
                     if (isSuccess) {
                         Toast.makeText(getActivity(), "db ok", Toast.LENGTH_SHORT).show();
+                        loadData();
+                        //adapter.notifyDataSetChanged();
                     } else {
                         Toast.makeText(getActivity(), "db no", Toast.LENGTH_SHORT).show();
                     }
@@ -162,51 +186,29 @@ public class EditFragment extends Fragment {
     }
 
     private void loadData() {
-        new Thread(){
+        TestRequest testRequest = new TestRequest(getContext());
+        testRequest.TestRequest(userID, new TestRequest.VolleyCallback() {
             @Override
-            public void run() {
-                String serverAdress = "http://zzangse.dothome.co.kr/LoadGroupName.php";
+            public void onSuccess(JSONArray result) {
                 try {
-                    URL url = new URL(serverAdress);
-                    HttpURLConnection connection = (HttpURLConnection)url.openConnection();
-
-                    connection.setRequestMethod("GET");
-                    connection.setDoInput(true);
-                    connection.setUseCaches(false);
-
-                    InputStream is = connection.getInputStream();
-                    InputStreamReader isr = new InputStreamReader(is);
-                    BufferedReader reader = new BufferedReader(isr);
-                    StringBuffer buffer = new StringBuffer();
-                    while (true) {
-                        String line = reader.readLine();
-                        if(line==null) break;
-                        buffer.append(line + "\n");
-                        Log.d("TAG", line);
-                        binding.tvTestJson.setText(line);
+                    groupNameList.clear();
+                    for (int i = 0; i < result.length(); i++) {
+                        groupName = new GroupName();
+                        JSONObject jsonObject = result.getJSONObject(i);
+                        String dbGroupName = jsonObject.getString("groupName");
+                        groupName.setGroupName(dbGroupName);
+                        groupNameList.add(groupName);
                     }
-                    String[] rows = buffer.toString().split(",");
-                    Log.d("TAG", rows[0]);
-                    Log.i("TAG", rows.length + " ");
-                    for (String str : rows) {
-                        String[] datas = str.split(",");
-                        if (datas.length!=2)continue;
-
-                        int no = Integer.parseInt(datas[0]);
-                        String groupName = datas[0];
-                        groupNames.add(new GroupName(groupName));
-                        binding.tvTestJson.setText(groupName);
-                    }
-//                    runOnUiThread(()->{
-//                        adapter.notifyDataSetChanged(); //리사이클러뷰에 화면 갱신
-//                    });
-                } catch (MalformedURLException e) {
-                    throw new RuntimeException(e);
-                } catch (IOException e) {
-                    throw new RuntimeException(e);
+                    adapter.notifyDataSetChanged();
+                } catch (JSONException e) {
+                    e.printStackTrace();
                 }
-                super.run();
             }
-        }.start();
+
+            @Override
+            public void onError(String errorMessage) {
+                Log.d("userData", "error " + errorMessage);
+            }
+        });
     }
 }
