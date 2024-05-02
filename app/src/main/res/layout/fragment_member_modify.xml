@@ -6,12 +6,13 @@
 
 
     <com.google.android.material.appbar.MaterialToolbar
-        android:id="@+id/toolbar_member_view"
+        android:id="@+id/toolbar_member_modify"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
+        app:navigationIcon="@drawable/ic_back2"
         app:title="멤버 수정"
         app:titleCentered="true"
         app:titleTextAppearance="@style/AppEditText.Bold.S24" />
@@ -25,14 +26,14 @@
         android:background="@drawable/btn_selector"
         android:text="저장"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/toolbar_member_view" />
+        app:layout_constraintTop_toBottomOf="@id/toolbar_member_modify" />
 
     <androidx.core.widget.NestedScrollView
         android:layout_width="0dp"
         android:layout_height="0dp"
-        app:layout_constraintBottom_toBottomOf="parent"
         android:layout_marginTop="20dp"
         android:scrollbars="vertical"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/btn_save">
