@@ -63,9 +63,9 @@ public class SignupActivity extends AppCompatActivity {
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         initView();
-        onClickBack();
         onClickBtn();
         onClickSignUp();
+        onClickBack();
         onClickEditTextPassWordShow();
     }
 
@@ -75,12 +75,11 @@ public class SignupActivity extends AppCompatActivity {
     }
 
     private void onClickBack() {
-        binding.ibBack.setOnClickListener(v->{
+        binding.toolbarSignup.setNavigationOnClickListener(v -> {
             onBackPressed();
             finish();
         });
     }
-
 
     // 비밀번호 확인 기능
     private void onClickEditTextPassWordShow() {
