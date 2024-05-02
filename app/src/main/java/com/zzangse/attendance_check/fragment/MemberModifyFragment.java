@@ -32,8 +32,14 @@ public class MemberModifyFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         test();
+        onClickBack();
     }
 
+    private void onClickBack() {
+        binding.toolbarMemberModify.setNavigationOnClickListener(v -> {
+            getActivity().onBackPressed();
+        });
+    }
     private void test() {
         binding.btnSave.setOnClickListener(v->{
             Toast.makeText(getActivity(),"저장되었습니다.",Toast.LENGTH_SHORT).show();
