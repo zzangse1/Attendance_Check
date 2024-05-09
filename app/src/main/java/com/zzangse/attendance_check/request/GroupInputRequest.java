@@ -9,11 +9,11 @@ import com.android.volley.toolbox.StringRequest;
 import java.util.HashMap;
 import java.util.Map;
 
-public class GroupRequest extends StringRequest {
+public class GroupInputRequest extends StringRequest {
     private final static String URL = "http://zzangse.dothome.co.kr/Group_insert.php";
     private Map<String, String> map;
 
-    public GroupRequest(String userID, String groupName, Response.Listener<String> listener) {
+    public GroupInputRequest(String userID, String groupName, Response.Listener<String> listener) {
         super(Method.POST, URL, listener, null);
 
         map = new HashMap<>();
