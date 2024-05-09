@@ -77,7 +77,7 @@ public class EditFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         // 구현
-        loadData();
+        dataLoad();
         initRecycler();
         onClickGroupAdd();
     }
@@ -198,9 +198,10 @@ public class EditFragment extends Fragment {
         }
     }
 
-    private void loadData() {
-        TestRequest testRequest = new TestRequest(getContext());
-        testRequest.TestRequest(userID, new TestRequest.VolleyCallback() {
+    // group을 리스트에 넣어줌
+    private void dataLoad() {
+        GroupOutputRequest groupOutputRequest = new GroupOutputRequest(getContext());
+        groupOutputRequest.sendGroupOutputRequest(userID, new GroupOutputRequest.VolleyCallback() {
             @Override
             public void onSuccess(JSONArray result) {
                 try {
