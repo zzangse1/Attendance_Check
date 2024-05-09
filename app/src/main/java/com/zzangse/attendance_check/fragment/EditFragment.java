@@ -43,6 +43,7 @@ public class EditFragment extends Fragment {
     private FragmentEditBinding binding;
     private String userID;
     private ArrayList<GroupName> groupNameList = new ArrayList<>();
+    private final static String REGEX_GROUP_NAME = "^(?!\\s{2,10}$)\\S{2,10}$";
     private GroupNameAdapter adapter;
     private RecyclerView recyclerView;
     GroupName groupName;
