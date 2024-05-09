@@ -21,6 +21,7 @@ public class GroupAddActivity extends AppCompatActivity {
         setContentView(activityGroupAddBinding.getRoot());
     }
 
+    // 뒤로가기 API 33 미만 버전
     private void onClickBtn() {
         activityGroupAddBinding.btnOk.setOnClickListener(v->{
             Toast.makeText(this,"생성되었습니다.",Toast.LENGTH_SHORT).show();
