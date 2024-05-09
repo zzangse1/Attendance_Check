@@ -5,38 +5,75 @@
     android:layout_height="wrap_content"
     android:paddingBottom="40dp">
 
+    <TextView
+        android:id="@+id/tv_title"
+        style="@style/AppEditText.Bold.S24"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="30dp"
+        android:layout_marginTop="30dp"
+        android:text="그룹 생성하기"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/et_group_name_layout"
         android:layout_width="0dp"
         android:layout_height="70dp"
-        app:boxStrokeColor="@color/navy_200"
         android:layout_margin="20dp"
         android:hint="그룹 이름"
+        app:boxStrokeColor="@color/navy_200"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
+        app:layout_constraintTop_toBottomOf="@id/tv_title">
 
         <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/et_group_name"
             android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:imeOptions="actionDone"
             android:maxLength="10"
-            android:layout_height="match_parent" />
+            android:singleLine="true" />
 
     </com.google.android.material.textfield.TextInputLayout>
 
     <TextView
         android:id="@+id/tv_group_name_error"
+        style="@style/AppEditText.Red.S14"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        app:layout_constraintStart_toStartOf="@id/et_group_name_layout"
         android:layout_marginStart="20dp"
-        android:text="2 ~ 10글자로 작성해주세요."
-        android:visibility="gone"
-        app:layout_constraintTop_toBottomOf="@id/et_group_name_layout"
         android:layout_marginTop="10dp"
-        style="@style/AppEditText.Red.S14" />
+        android:text="2 ~ 10글자로 작성해주세요.(공백 x)"
+        android:visibility="gone"
+        app:layout_constraintStart_toStartOf="@id/et_group_name_layout"
+        app:layout_constraintTop_toBottomOf="@id/et_group_name_layout" />
 
-    <androidx.appcompat.widget.AppCompatButton
+    <TextView
+        android:id="@+id/btn_cancel"
+        style="@style/AppEditText.Red_200.S17"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="40dp"
+        android:text="취소"
+        app:layout_constraintEnd_toStartOf="@id/btn_ok"
+        app:layout_constraintTop_toTopOf="@id/btn_ok" />
+
+    <TextView
+        android:id="@+id/btn_ok"
+        style="@style/AppEditText.Navy.S17"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="30dp"
+        android:layout_marginTop="30dp"
+        android:layout_marginEnd="30dp"
+        android:text="생성"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/et_group_name_layout"
+
+        />
+
+    <!--androidx.appcompat.widget.AppCompatButton
         android:id="@+id/btn_cancel"
         style="@style/AppEditText.S17"
         android:layout_width="0dp"
@@ -59,5 +96,5 @@
         android:text="확인"
         app:layout_constraintEnd_toEndOf="@id/et_group_name_layout"
         app:layout_constraintStart_toEndOf="@id/btn_cancel"
-        app:layout_constraintTop_toBottomOf="@id/tv_group_name_error" />
+        app:layout_constraintTop_toBottomOf="@id/tv_group_name_error" /-->
 </androidx.constraintlayout.widget.ConstraintLayout>
