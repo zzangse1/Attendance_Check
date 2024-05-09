@@ -4,6 +4,7 @@ import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageButton;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -30,6 +31,9 @@ public class GroupNameAdapter extends RecyclerView.Adapter<GroupNameAdapter.View
 
     public interface GroupNameAdapterClick {
         void onClickInfo(GroupName groupName);
+
+        void onDelete(GroupName groupName);
+
     }
 
     @NonNull
@@ -51,6 +55,15 @@ public class GroupNameAdapter extends RecyclerView.Adapter<GroupNameAdapter.View
                     groupNameAdapterClick.onClickInfo(groupName);
                 }
             }
+
+        });
+        holder.ib_delete.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (groupNameAdapterClick != null) {
+                    groupNameAdapterClick.onDelete(groupName);
+                }
+            }
         });
 
     }
@@ -62,10 +75,12 @@ public class GroupNameAdapter extends RecyclerView.Adapter<GroupNameAdapter.View
 
     public class ViewHolder extends RecyclerView.ViewHolder {
         TextView tv_groupName;
+        ImageButton ib_delete;
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
             this.tv_groupName = itemView.findViewById(R.id.rv_groupName);
+            this.ib_delete = itemView.findViewById(R.id.ib_delete);
         }
 
         public void bind(GroupName groupName) {
