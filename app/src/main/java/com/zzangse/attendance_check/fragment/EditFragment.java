@@ -109,7 +109,19 @@ public class EditFragment extends Fragment {
             }
         });
 
-
+    private void dataDelete(String groupName) {
+        DeleteGroupNameRequest request = new DeleteGroupNameRequest(userID, groupName,
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+                        // 요청에 대한 응답 처리
+                        Log.d("GroupDeleteRequest", "Response: " + response);
+                    }
+                });
+        if (getActivity() != null) {
+            RequestQueue queue = Volley.newRequestQueue(getActivity());
+            queue.add(request);
+        }
     }
 
 
