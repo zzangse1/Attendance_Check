@@ -8,7 +8,6 @@ import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -25,13 +24,14 @@ import com.android.volley.Response;
 import com.android.volley.toolbox.Volley;
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.android.material.textfield.TextInputLayout;
-import com.zzangse.attendance_check.data.GroupName;
-import com.zzangse.attendance_check.adapter.GroupNameAdapter;
 import com.zzangse.attendance_check.R;
 import com.zzangse.attendance_check.activity.SettingActivity;
+import com.zzangse.attendance_check.adapter.GroupNameAdapter;
+import com.zzangse.attendance_check.data.GroupName;
 import com.zzangse.attendance_check.databinding.FragmentEditBinding;
-import com.zzangse.attendance_check.request.GroupRequest;
-import com.zzangse.attendance_check.request.TestRequest;
+import com.zzangse.attendance_check.request.DeleteGroupNameRequest;
+import com.zzangse.attendance_check.request.GroupInputRequest;
+import com.zzangse.attendance_check.request.GroupOutputRequest;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -46,13 +46,8 @@ public class EditFragment extends Fragment {
     private final static String REGEX_GROUP_NAME = "^(?!\\s{2,10}$)\\S{2,10}$";
     private GroupNameAdapter adapter;
     private RecyclerView recyclerView;
-    GroupName groupName;
+    private GroupName groupName;
 
-    // 그룹이름 공백 제한 규칙 만들기
-    // http://webs.co.kr/index.php?document_srl=3312513&mid=nodejs
-    // https://lcw126.tistory.com/102
-    // https://velog.io/@thwjd9393/%EC%82%AC%EC%9A%A9%EC%9E%90%EC%9D%98-%EC%9A%94%EC%B2%AD%EA%B7%9C%EC%95%BDwith-AndroidGETPOSTDB%EC%A0%80%EC%9E%A5
-    // https://webnautes.tistory.com/1189#google_vignette
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -86,7 +81,7 @@ public class EditFragment extends Fragment {
         binding.toolbarEdit.setOnMenuItemClickListener(new Toolbar.OnMenuItemClickListener() {
             @Override
             public boolean onMenuItemClick(MenuItem item) {
-                showDialog();
+                showGroupAddDialog();
                 return true;
             }
         });
@@ -107,7 +102,14 @@ public class EditFragment extends Fragment {
                 intent.putExtra("groupName", groupName.getGroupName());
                 startActivity(intent);
             }
+
+            @Override
+            public void onDelete(GroupName groupName) {
+                int pos = groupNameList.indexOf(groupName);
+                showDeleteDialog(pos, groupName.getGroupName());
+            }
         });
+    }
 
     private void dataDelete(String groupName) {
         DeleteGroupNameRequest request = new DeleteGroupNameRequest(userID, groupName,
@@ -124,19 +126,39 @@ public class EditFragment extends Fragment {
         }
     }
 
-
-    private void showDialog() {
-        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+    private void showDeleteDialog(int pos, String groupName) {
+        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity(), R.style.RoundedDialog);
         LayoutInflater inflater = requireActivity().getLayoutInflater();
-        View dialogView = inflater.inflate(R.layout.dialog_view, null);
-        Button btnOK = dialogView.findViewById(R.id.btn_ok);
-        Button btnCancel = dialogView.findViewById(R.id.btn_cancel);
+        View dialogView = inflater.inflate(R.layout.dialog_delete_group, null);
+        TextView btnOk = dialogView.findViewById(R.id.btn_ok);
+        TextView btnCancel = dialogView.findViewById(R.id.btn_cancel);
+
+        AlertDialog dialog = builder.setView(dialogView)
+                .setCancelable(false)
+                .create();
+        btnCancel.setOnClickListener(v -> {
+            dialog.dismiss();
+        });
+        btnOk.setOnClickListener(v -> {
+            dataDelete(groupName);
+            groupNameList.remove(pos);
+            adapter.notifyItemRemoved(pos);
+            dialog.dismiss();
+        });
+        dialog.show();
+    }
+
+    private void showGroupAddDialog() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity(), R.style.RoundedDialog);
+        LayoutInflater inflater = requireActivity().getLayoutInflater();
+        View dialogView = inflater.inflate(R.layout.dialog_add_group, null);
+        TextView btnOK = dialogView.findViewById(R.id.btn_ok);
+        TextView btnCancel = dialogView.findViewById(R.id.btn_cancel);
         TextInputLayout textInputLayout = dialogView.findViewById(R.id.et_group_name_layout);
         TextView textView = dialogView.findViewById(R.id.tv_group_name_error);
         TextInputEditText textInputEditText = dialogView.findViewById(R.id.et_group_name);
 
         AlertDialog dialog = builder.setView(dialogView)
-                .setTitle("그룹 생성")
                 .setCancelable(false)
                 .create();
         btnCancel.setOnClickListener(v -> {
@@ -161,7 +183,7 @@ public class EditFragment extends Fragment {
     }
 
     private boolean checkGroupName(String groupName) {
-        boolean isCheck = 2 <= groupName.length() && groupName.length() <= 10;
+        boolean isCheck = groupName.matches(REGEX_GROUP_NAME);
         if (isCheck) {
             Toast.makeText(getActivity(), "db입력 허용", Toast.LENGTH_SHORT).show();
             return true;
@@ -170,6 +192,8 @@ public class EditFragment extends Fragment {
             return false;
         }
     }
+
+    // group을 생성
     private void setGroupDB(String userID, String groupName) {
         Response.Listener<String> listener = new Response.Listener<String>() {
             @Override
@@ -179,8 +203,7 @@ public class EditFragment extends Fragment {
                     boolean isSuccess = jsonObject.getBoolean("success");
                     if (isSuccess) {
                         Toast.makeText(getActivity(), "db ok", Toast.LENGTH_SHORT).show();
-                        loadData();
-                        //adapter.notifyDataSetChanged();
+                        dataLoad();
                     } else {
                         Toast.makeText(getActivity(), "db no", Toast.LENGTH_SHORT).show();
                     }
@@ -190,7 +213,7 @@ public class EditFragment extends Fragment {
             }
         };
         if (getActivity() != null) {
-            GroupRequest request = new GroupRequest(userID, groupName, listener);
+            GroupInputRequest request = new GroupInputRequest(userID, groupName, listener);
             RequestQueue queue = Volley.newRequestQueue(getActivity());
             queue.add(request);
         } else {
