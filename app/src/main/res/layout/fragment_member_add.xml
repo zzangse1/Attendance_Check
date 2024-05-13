@@ -59,9 +59,21 @@
                     android:id="@+id/et_member_add_name"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
+                    android:inputType="text"
                     android:maxLines="1" />
 
             </com.google.android.material.textfield.TextInputLayout>
+
+            <TextView
+                android:id="@+id/tv_error_name"
+                style="@style/AppEditText.Red.S14"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:text="이름을 입력해주세요"
+                android:visibility="gone"
+                app:layout_constraintStart_toStartOf="@id/et_member_add_name_layout"
+                app:layout_constraintTop_toBottomOf="@id/et_member_add_name_layout" />
 
             <com.google.android.material.textfield.TextInputLayout
                 android:id="@+id/et_member_add_number_layout"
@@ -74,14 +86,27 @@
                 app:boxStrokeColor="@color/navy_200"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/et_member_add_name_layout">
+                app:layout_constraintTop_toBottomOf="@id/tv_error_name">
 
                 <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/et_member_add_number"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
+                    android:inputType="number"
+                    android:maxLength="11"
                     android:maxLines="1" />
             </com.google.android.material.textfield.TextInputLayout>
+
+            <TextView
+                android:id="@+id/tv_error_number"
+                style="@style/AppEditText.Red.S14"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:text="전화번호를 입력해주세요"
+                android:visibility="gone"
+                app:layout_constraintStart_toStartOf="@id/et_member_add_number_layout"
+                app:layout_constraintTop_toBottomOf="@id/et_member_add_number_layout" />
 
             <com.google.android.material.textfield.TextInputLayout
                 android:id="@+id/et_member_add_number2_layout"
@@ -94,14 +119,27 @@
                 app:boxStrokeColor="@color/navy_200"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/et_member_add_number_layout">
+                app:layout_constraintTop_toBottomOf="@id/tv_error_number">
 
                 <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/et_member_add_number2"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
+                    android:inputType="number"
+                    android:maxLength="11"
                     android:maxLines="1" />
             </com.google.android.material.textfield.TextInputLayout>
+
+            <TextView
+                android:id="@+id/tv_error_number2"
+                style="@style/AppEditText.Red.S14"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:text="비상연락망을 입력해주세요"
+                android:visibility="gone"
+                app:layout_constraintStart_toStartOf="@id/et_member_add_number2_layout"
+                app:layout_constraintTop_toBottomOf="@id/et_member_add_number2_layout" />
 
             <com.google.android.material.textfield.TextInputLayout
                 android:id="@+id/et_member_add_address_layout"
@@ -114,14 +152,27 @@
                 app:boxStrokeColor="@color/navy_200"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/et_member_add_number2_layout">
+                app:layout_constraintTop_toBottomOf="@id/tv_error_number2">
 
                 <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/et_member_add_address"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
+                    android:inputType="text"
                     android:maxLines="1" />
             </com.google.android.material.textfield.TextInputLayout>
+
+            <TextView
+                android:id="@+id/tv_error_address"
+                style="@style/AppEditText.Red.S14"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:text="주소를 입력해주세요"
+                android:visibility="gone"
+                app:layout_constraintStart_toStartOf="@id/et_member_add_address_layout"
+                app:layout_constraintTop_toBottomOf="@id/et_member_add_address_layout" />
+
 
             <com.google.android.material.textfield.TextInputLayout
                 android:id="@+id/et_member_add_memo_layout"
@@ -134,14 +185,25 @@
                 app:boxStrokeColor="@color/navy_200"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/et_member_add_address_layout">
+                app:layout_constraintTop_toBottomOf="@id/tv_error_address">
 
                 <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/et_member_add_memo"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:maxLines="1" />
+                    android:inputType="textMultiLine"
+                    android:gravity="left|top"
+                    android:maxLength="300"
+                    android:singleLine="false" />
             </com.google.android.material.textfield.TextInputLayout>
+
+            <EditText
+                android:layout_width="0dp"
+                android:layout_height="100dp"
+                android:layout_marginTop="10dp"
+                app:layout_constraintEnd_toEndOf="@id/et_member_add_memo_layout"
+                app:layout_constraintStart_toStartOf="@id/et_member_add_memo_layout"
+                app:layout_constraintTop_toBottomOf="@id/et_member_add_memo_layout" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
     </androidx.core.widget.NestedScrollView>

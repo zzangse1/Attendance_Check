@@ -10,8 +10,8 @@
         android:layout_height="wrap_content"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:navigationIcon="@drawable/ic_back2"
         app:layout_constraintTop_toTopOf="parent"
+        app:navigationIcon="@drawable/ic_back2"
         app:title="상세 정보"
         app:titleCentered="true"
         app:titleTextAppearance="@style/AppEditText.Bold.S24" />
@@ -46,6 +46,7 @@
 
             <TextView
                 android:id="@+id/et_group_name"
+                style="@style/AppEditText.S17"
                 android:layout_width="0dp"
                 android:layout_height="60dp"
                 android:layout_marginStart="20dp"
@@ -60,6 +61,7 @@
 
             <TextView
                 android:id="@+id/et_person_name"
+                style="@style/AppEditText.S17"
                 android:layout_width="0dp"
                 android:layout_height="60dp"
                 android:layout_marginStart="20dp"
@@ -76,6 +78,7 @@
 
             <TextView
                 android:id="@+id/et_person_number"
+                style="@style/AppEditText.S17"
                 android:layout_width="0dp"
                 android:layout_height="60dp"
                 android:layout_marginStart="20dp"
@@ -92,6 +95,7 @@
 
             <TextView
                 android:id="@+id/et_person_address"
+                style="@style/AppEditText.S17"
                 android:layout_width="0dp"
                 android:layout_height="60dp"
                 android:layout_marginStart="20dp"
@@ -107,6 +111,7 @@
 
             <TextView
                 android:id="@+id/et_person_sec_number"
+                style="@style/AppEditText.S17"
                 android:layout_width="0dp"
                 android:layout_height="60dp"
                 android:layout_marginStart="20dp"
@@ -121,6 +126,7 @@
 
             <TextView
                 android:id="@+id/et_person_memo"
+                style="@style/AppEditText.S17"
                 android:layout_width="0dp"
                 android:layout_height="250dp"
                 android:layout_marginStart="20dp"
