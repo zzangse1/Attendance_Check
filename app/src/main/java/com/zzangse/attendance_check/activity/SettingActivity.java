@@ -23,6 +23,7 @@ public class SettingActivity extends AppCompatActivity {
     private MemberInfoFragment infoFragment;
     private MemberModifyFragment modifyFragment;
     private String groupName = "";
+    private String userID;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -37,8 +38,8 @@ public class SettingActivity extends AppCompatActivity {
     private void initFragment() {
         getGroupName();
         fragmentManager = getSupportFragmentManager();
-        viewFragment = MemberViewFragment.newInstance(groupName);
-        addFragment = MemberAddFragment.newInstance();
+        viewFragment = MemberViewFragment.newInstance(groupName,userID);
+        addFragment = MemberAddFragment.newInstance(groupName,userID);
         infoFragment = MemberInfoFragment.newInstance();
         modifyFragment = MemberModifyFragment.newInstance();
         fragmentManager.beginTransaction().add(R.id.fragment_setting, viewFragment).commit();
@@ -47,7 +48,9 @@ public class SettingActivity extends AppCompatActivity {
     private void getGroupName() {
         Intent intent = getIntent();
         groupName = intent.getStringExtra("groupName");
+        userID = intent.getStringExtra("userID");
         Log.d("groupName", groupName);
+        Log.d("userID", userID);
     }
 
 
@@ -58,11 +61,16 @@ public class SettingActivity extends AppCompatActivity {
             selectedFragment= MemberInfoFragment.newInstance();
             tag = "info_fragment";
         } else if (index == 1) {
-            selectedFragment = MemberAddFragment.newInstance();
+            selectedFragment = MemberAddFragment.newInstance(groupName,userID);
             tag = "add_fragment";
         } else if (index == 2) {
             selectedFragment = MemberModifyFragment.newInstance();
             tag = "modify_fragment";
+        } else if (index == 3) {
+            selectedFragment = MemberViewFragment.newInstance(groupName,userID);
+            tag = "view_fragment";
+            // 백스택 초기화
+            fragmentManager.popBackStack(null,FragmentManager.POP_BACK_STACK_INCLUSIVE);
         }
         if (selectedFragment != null) {
             fragmentManager.beginTransaction()
