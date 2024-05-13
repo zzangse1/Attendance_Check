@@ -10,17 +10,19 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
+import com.zzangse.attendance_check.activity.SettingActivity;
 import com.zzangse.attendance_check.databinding.FragmentMemberModifyBinding;
 
 public class MemberModifyFragment extends Fragment {
     private FragmentMemberModifyBinding binding;
 
-    public static MemberModifyFragment newInstance(){
-      MemberModifyFragment fragment = new MemberModifyFragment();
+    public static MemberModifyFragment newInstance() {
+        MemberModifyFragment fragment = new MemberModifyFragment();
         Bundle args = new Bundle();
         fragment.setArguments(args);
         return fragment;
     }
+
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -31,7 +33,7 @@ public class MemberModifyFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        test();
+        onClickSaveBtn();
         onClickBack();
     }
 
@@ -40,9 +42,17 @@ public class MemberModifyFragment extends Fragment {
             getActivity().onBackPressed();
         });
     }
-    private void test() {
-        binding.btnSave.setOnClickListener(v->{
-            Toast.makeText(getActivity(),"저장되었습니다.",Toast.LENGTH_SHORT).show();
+
+    private void onClickSaveBtn() {
+        binding.btnSave.setOnClickListener(v -> {
+            Toast.makeText(getActivity(), "저장되었습니다.", Toast.LENGTH_SHORT).show();
+            moveToMemberViewFragment();
         });
+    }
+
+    private void moveToMemberViewFragment() {
+        if (getActivity() instanceof SettingActivity) {
+            ((SettingActivity) getActivity()).onFragmentChanged(3);
+        }
     }
 }
