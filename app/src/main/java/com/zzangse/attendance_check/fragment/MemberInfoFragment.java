@@ -33,8 +33,8 @@ public class MemberInfoFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        test();
         onClickBack();
+        onClickModifyBtn();
     }
 
     private void onClickBack() {
@@ -43,11 +43,18 @@ public class MemberInfoFragment extends Fragment {
         });
     }
 
-    private void test() {
+    // 질문
+    private void onClickModifyBtn() {
         binding.btnModify.setOnClickListener(v->{
-            if (getActivity() instanceof SettingActivity) {
-                ((SettingActivity)getActivity()).onFragmentChanged(2);
-            }
+            moveToFragmentModify();
+           // this::moveToFragmentModify);
         });
+
+    }
+
+    private void moveToFragmentModify(){//View v) {
+        if (getActivity() instanceof SettingActivity) {
+            ((SettingActivity) getActivity()).onFragmentChanged(2);
+        }
     }
 }
