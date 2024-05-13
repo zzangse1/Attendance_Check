@@ -89,7 +89,7 @@ public class EditFragment extends Fragment {
 
 
     private void initRecycler() {
-        RecyclerView recyclerView = binding.rvEdit;
+        recyclerView = binding.rvEdit;
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         adapter = new GroupNameAdapter(getContext(), groupNameList);
         recyclerView.setAdapter(adapter);
@@ -100,6 +100,7 @@ public class EditFragment extends Fragment {
                 Toast.makeText(getActivity(), groupName.getGroupName(), Toast.LENGTH_SHORT).show();
                 Intent intent = new Intent(getActivity(), SettingActivity.class);
                 intent.putExtra("groupName", groupName.getGroupName());
+                intent.putExtra("userID", userID);
                 startActivity(intent);
             }
 
@@ -127,11 +128,14 @@ public class EditFragment extends Fragment {
     }
 
     private void showDeleteDialog(int pos, String groupName) {
+        String dialogTitle = "그룹 삭제하기";
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity(), R.style.RoundedDialog);
         LayoutInflater inflater = requireActivity().getLayoutInflater();
-        View dialogView = inflater.inflate(R.layout.dialog_delete_group, null);
+        View dialogView = inflater.inflate(R.layout.dialog_delete, null);
+        TextView tvTitle = dialogView.findViewById(R.id.tv_title);
         TextView btnOk = dialogView.findViewById(R.id.btn_ok);
         TextView btnCancel = dialogView.findViewById(R.id.btn_cancel);
+        tvTitle.setText(dialogTitle);
 
         AlertDialog dialog = builder.setView(dialogView)
                 .setCancelable(false)
