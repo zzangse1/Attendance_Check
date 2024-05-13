@@ -44,6 +44,7 @@
 
             <EditText
                 android:id="@+id/et_group_name"
+                style="@style/AppEditText.S17"
                 android:layout_width="0dp"
                 android:layout_height="60dp"
                 android:layout_marginStart="20dp"
@@ -58,6 +59,7 @@
 
             <EditText
                 android:id="@+id/et_person_name"
+                style="@style/AppEditText.S17"
                 android:layout_width="0dp"
                 android:layout_height="60dp"
                 android:layout_marginStart="20dp"
@@ -79,6 +81,7 @@
                 android:layout_marginStart="20dp"
                 android:layout_marginTop="20dp"
                 android:layout_marginEnd="20dp"
+                style="@style/AppEditText.S17"
                 android:background="@drawable/plane_outline_background"
                 android:gravity="center"
                 android:text="전화번호(수정)"
@@ -97,6 +100,7 @@
                 android:layout_marginEnd="20dp"
                 android:background="@drawable/plane_outline_background"
                 android:gravity="center"
+                style="@style/AppEditText.S17"
                 android:text="주소(수정)"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
@@ -110,6 +114,7 @@
                 android:layout_marginStart="20dp"
                 android:layout_marginTop="20dp"
                 android:layout_marginEnd="20dp"
+                style="@style/AppEditText.S17"
                 android:background="@drawable/plane_outline_background"
                 android:gravity="center"
                 android:text="비상연락망(수정)"
@@ -128,6 +133,7 @@
                 android:background="@drawable/plane_outline_background"
                 android:gravity="center"
                 android:text="메모(수정)"
+                style="@style/AppEditText.S17"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
