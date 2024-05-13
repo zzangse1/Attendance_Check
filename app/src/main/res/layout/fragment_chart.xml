@@ -6,7 +6,6 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     tools:context=".fragment.ChartFragment">
 
-    <!-- TODO: Update blank fragment layout -->
     <com.google.android.material.appbar.MaterialToolbar
         android:id="@+id/toolbar_chart"
         android:layout_width="match_parent"
@@ -16,6 +15,6 @@
         app:layout_constraintTop_toTopOf="parent"
         app:titleCentered="true"
         app:titleTextAppearance="@style/AppEditText.Bold.S24"
-        app:title="출결 통계" />
+        app:title="@string/fragment_chart_title" />
 
 </FrameLayout>

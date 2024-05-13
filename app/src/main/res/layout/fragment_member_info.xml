@@ -12,7 +12,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:navigationIcon="@drawable/ic_back2"
-        app:title="상세 정보"
+        app:title="@string/fragment_member_info_title"
         app:titleCentered="true"
         app:titleTextAppearance="@style/AppEditText.Bold.S24" />
 

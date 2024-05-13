@@ -13,7 +13,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:navigationIcon="@drawable/ic_back2"
-        app:title="멤버 수정"
+        app:title="@string/fragment_member_modify_title"
         app:titleCentered="true"
         app:titleTextAppearance="@style/AppEditText.Bold.S24" />
 

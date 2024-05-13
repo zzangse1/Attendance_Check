@@ -14,7 +14,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="50dp"
-        android:text="로그인"
+        android:text="@string/login_title_label"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
@@ -83,7 +83,7 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="10dp"
-        android:text="아이디 및 비밀번호를 확인해주세요."
+        android:text="@string/login_error_label"
         android:visibility="gone"
         app:layout_constraintStart_toStartOf="@id/et_password_layout"
         app:layout_constraintTop_toBottomOf="@id/et_password_layout" />
@@ -97,7 +97,7 @@
         android:layout_marginTop="35dp"
         android:layout_marginEnd="30dp"
         android:background="@drawable/btn_selector"
-        android:text="이메일로 로그인"
+        android:text="@string/login_btn_label"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/et_password_layout" />
@@ -110,7 +110,7 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="80dp"
         android:layout_marginTop="20dp"
-        android:text="회원가입"
+        android:text="@string/login_signup_label"
         app:layout_constraintEnd_toStartOf="@id/tv_find"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/btn_login" />
@@ -131,7 +131,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginEnd="80dp"
-        android:text="계정 찾기"
+        android:text="@string/login_id_find_label"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@id/tv_singup"
         app:layout_constraintTop_toBottomOf="@id/btn_login"
@@ -153,7 +153,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="20dp"
-        android:text="소셜로 로그인"
+        android:text="@string/login_sns_label"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/view_line2" />

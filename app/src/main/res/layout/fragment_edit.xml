@@ -15,7 +15,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:menu="@menu/toolbar_menu"
-        app:title="그룹 조회"
+        app:title="@string/fragment_edit_title"
         app:titleCentered="true"
         app:titleTextAppearance="@style/AppToolbarText.S24" />
 

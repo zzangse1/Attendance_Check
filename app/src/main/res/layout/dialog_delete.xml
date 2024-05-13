@@ -12,7 +12,7 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="30dp"
         android:layout_marginTop="30dp"
-        android:text="삭제하기"
+        android:text="@string/dialog_delete_title_label"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
@@ -22,7 +22,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="20dp"
-        android:text="삭제 후 되돌릴 수 없습니다!!!"
+        android:text="@string/dialog_delete_warning_label"
         app:layout_constraintStart_toStartOf="@id/tv_title"
         app:layout_constraintTop_toBottomOf="@id/tv_title" />
 
@@ -41,14 +41,14 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginEnd="40dp"
-            android:text="취소" />
+            android:text="@string/plain_cancel" />
 
         <TextView
             android:id="@+id/btn_ok"
             style="@style/AppEditText.Navy.S17"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="삭제" />
+            android:text="@string/plain_remove" />
     </LinearLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

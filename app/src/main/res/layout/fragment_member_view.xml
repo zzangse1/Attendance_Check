@@ -14,7 +14,7 @@
         app:layout_constraintTop_toTopOf="parent"
         app:menu="@menu/toolbar_menu"
         app:navigationIcon="@drawable/ic_back2"
-        app:title="멤버 조회"
+        app:title="@string/fragment_member_view_title"
         app:titleCentered="true"
         app:titleTextAppearance="@style/AppEditText.Bold.S24" />
 
@@ -28,7 +28,7 @@
         android:layout_marginEnd="20dp"
         android:background="@drawable/plane_fill_background"
         android:gravity="center"
-        android:text="groupName"
+        tools:text="그룹이름표시"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/toolbar_member_view" />

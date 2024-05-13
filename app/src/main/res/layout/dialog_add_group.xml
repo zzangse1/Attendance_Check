@@ -12,7 +12,7 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="30dp"
         android:layout_marginTop="30dp"
-        android:text="그룹 생성하기"
+        android:text="@string/dialog_add_group_title_label"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
@@ -21,7 +21,7 @@
         android:layout_width="0dp"
         android:layout_height="70dp"
         android:layout_margin="20dp"
-        android:hint="그룹 이름"
+        android:hint="@string/dialog_add_group_group_name_hint"
         app:boxStrokeColor="@color/navy_200"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -55,7 +55,7 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginEnd="40dp"
-        android:text="취소"
+        android:text="@string/plain_cancel"
         app:layout_constraintEnd_toStartOf="@id/btn_ok"
         app:layout_constraintTop_toTopOf="@id/btn_ok" />
 
@@ -67,7 +67,7 @@
         android:layout_marginStart="30dp"
         android:layout_marginTop="30dp"
         android:layout_marginEnd="30dp"
-        android:text="생성"
+        android:text="@string/plain_create"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@id/et_group_name_layout"
 

@@ -14,7 +14,7 @@
         app:navigationIcon="@drawable/ic_back2"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:title="회원 가입"
+        app:title="@string/signup_title_label"
         app:titleCentered="true"
         app:titleTextAppearance="@style/AppEditText.Bold.S24" />
 
@@ -45,7 +45,7 @@
                 android:background="@drawable/selector_et_id"
                 android:drawableStart="@drawable/ic_person"
                 android:drawablePadding="20dp"
-                android:hint="아이디"
+                android:hint="@string/plain_id"
                 android:inputType="text"
                 android:maxLength="16"
                 android:nextFocusDown="@id/et_password"
@@ -64,7 +64,7 @@
                 android:background="@drawable/selector_et_password"
                 android:drawableStart="@drawable/ic_lock"
                 android:drawablePadding="20dp"
-                android:hint="비밀번호"
+                android:hint="@string/plain_password"
                 android:inputType="textPassword"
                 android:nextFocusDown="@id/et_nick_name"
                 android:paddingStart="20dp"
@@ -94,7 +94,7 @@
                 android:background="@drawable/selector_et_nickname"
                 android:drawableStart="@drawable/ic_nickname"
                 android:drawablePadding="20dp"
-                android:hint="닉네임"
+                android:hint="@string/plain_nickname"
                 android:inputType="text"
                 android:maxLength="8"
                 android:nextFocusDown="@id/et_name"
@@ -148,7 +148,7 @@
                 android:background="@drawable/selector_et_id"
                 android:drawableStart="@drawable/ic_person"
                 android:drawablePadding="20dp"
-                android:hint="이름"
+                android:hint="@string/plain_name"
                 android:inputType="text"
                 android:nextFocusDown="@id/et_birth"
                 android:paddingStart="20dp"
@@ -166,7 +166,7 @@
                 android:background="@drawable/selector_et_password"
                 android:drawableStart="@drawable/ic_calendar"
                 android:drawablePadding="20dp"
-                android:hint="생년월일 8자리"
+                android:hint="@string/signup_birth_label"
                 android:inputType="date"
                 android:maxLength="8"
                 android:nextFocusDown="@id/et_number"
@@ -204,7 +204,7 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
                     android:background="@drawable/selector_btn_start_sex"
-                    android:text="남자" />
+                    android:text="@string/signup_male_label" />
 
                 <androidx.appcompat.widget.AppCompatButton
                     android:id="@+id/btn_female"
@@ -213,7 +213,7 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
                     android:background="@drawable/selector_btn_center_sex"
-                    android:text="여자" />
+                    android:text="@string/signup_btn_female_label" />
 
                 <androidx.appcompat.widget.AppCompatButton
                     android:id="@+id/btn_none"
@@ -222,7 +222,7 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
                     android:background="@drawable/selector_btn_end_sex"
-                    android:text="선택안함" />
+                    android:text="@string/signup_btn_none_label" />
             </LinearLayout>
 
 
@@ -236,7 +236,7 @@
                 android:background="@drawable/selector_et_nickname"
                 android:drawableStart="@drawable/ic_phone"
                 android:drawablePadding="20dp"
-                android:hint="휴대전화번호"
+                android:hint="@string/plain_number"
                 android:inputType="number"
                 android:maxLength="11"
                 android:paddingStart="20dp"
@@ -302,7 +302,7 @@
         android:layout_marginEnd="20dp"
         android:layout_marginBottom="10dp"
         android:background="@drawable/btn_selector"
-        android:text="인증요청"
+        android:text="@string/signup_request_label"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
