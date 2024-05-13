@@ -3,6 +3,7 @@ package com.zzangse.attendance_check.activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.InputType;
+import android.util.Log;
 import android.view.View;
 import android.widget.Toast;
 
@@ -21,6 +22,7 @@ import org.json.JSONObject;
 public class LoginActivity extends AppCompatActivity {
     private ActivityLoginBinding binding;
     private boolean isVisibility = true;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -37,7 +39,7 @@ public class LoginActivity extends AppCompatActivity {
 
 
     private void onClickEditTextPassWordShow() {
-        binding.ibShowPassword.setOnClickListener(v->{
+        binding.ibShowPassword.setOnClickListener(v -> {
             if (!isVisibility) {
                 binding.ibShowPassword.setImageResource(R.drawable.ic_visibility_off);
                 binding.etPassword.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_PASSWORD);
@@ -49,8 +51,10 @@ public class LoginActivity extends AppCompatActivity {
             }
         });
     }
+
     private void onClickLogin() {
         binding.btnLogin.setOnClickListener(v -> {
+            Log.d("TEST", "BTN");
             String userID = binding.etId.getText().toString();
             String userPassword = binding.etPassword.getText().toString();
             binding.tvErrorLabel.setVisibility(View.GONE);
@@ -63,6 +67,8 @@ public class LoginActivity extends AppCompatActivity {
                         if (isSuccess) {
                             // json 데이터에서 userID 키에 해당하는 값을 가져옴
                             String userID = jsonObject.getString("userID");
+                            Log.d("TEST", userID);
+                            Log.d("TEST", userPassword);
                             Toast.makeText(getApplicationContext(), "로그인 성공", Toast.LENGTH_SHORT).show();
                             Intent intent = new Intent(LoginActivity.this, MainActivity.class);
                             intent.putExtra("userID", userID);
@@ -84,8 +90,8 @@ public class LoginActivity extends AppCompatActivity {
     }
 
     private void onClickSignUp() {
-        binding.tvSingup.setOnClickListener(v->{
-            Intent intent = new Intent(LoginActivity.this,SignupActivity.class);
+        binding.tvSingup.setOnClickListener(v -> {
+            Intent intent = new Intent(LoginActivity.this, SignupActivity.class);
             startActivity(intent);
         });
     }
