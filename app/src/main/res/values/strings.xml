@@ -9,6 +9,7 @@
     <string name="login_id_find_label">계정 찾기</string>
     <string name="login_sns_label">소셜로 로그인</string>
 
+    <!-- plain_label -->
     <string name="plain_id">아이디</string>
     <string name="plain_password">비밀번호</string>
     <string name="plain_nickname">닉네임</string>
@@ -22,6 +23,14 @@
     <string name="plain_remove">삭제</string>
     <string name="plain_memo">메모</string>
     <string name="plain_more">더보기</string>
+
+    <!-- modify_label -->
+    <string name="modify_group_name">그룹 이름(수정)</string>
+    <string name="modify_name">이름(수정)</string>
+    <string name="modify_number">휴대전화번호(수정)</string>
+    <string name="modify_number2">비상연락망(수정)</string>
+    <string name="modify_address">주소(수정)</string>
+    <string name="modify_memo">메모(수정)</string>
 
     <!-- activity_signup -->
     <string name="signup_title_label">회원 가입</string>
@@ -50,6 +59,7 @@
     <string name="menu_check">출결</string>
     <string name="menu_chart">통계</string>
     <string name="menu_edit">편집</string>
+
 
 
 </resources>
