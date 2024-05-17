@@ -22,11 +22,11 @@ import org.json.JSONException;
 import java.util.HashMap;
 import java.util.Map;
 
-public class GroupOutputRequest {
+public class LoadGroupRequest {
     private Context context;
-    private static final String BASE_URL = "http://zzangse.dothome.co.kr/LoadGroupName.php";
+    private static final String BASE_URL = "http://zzangse.store/load_group.php";
 
-    public GroupOutputRequest(Context context) {
+    public LoadGroupRequest(Context context) {
         this.context = context;
     }
 
@@ -95,6 +95,7 @@ public class GroupOutputRequest {
 
     public interface VolleyCallback {
         void onSuccess(JSONArray result);
+
         void onError(String errorMessage);
     }
 }
