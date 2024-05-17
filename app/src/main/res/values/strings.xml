@@ -12,11 +12,15 @@
     <string name="plain_id">아이디</string>
     <string name="plain_password">비밀번호</string>
     <string name="plain_nickname">닉네임</string>
+    <string name="plain_group_name">그룹 이름</string>
     <string name="plain_name">이름</string>
     <string name="plain_number">휴대전화번호</string>
+    <string name="plain_number2">비상연락망</string>
+    <string name="plain_address">주소</string>
     <string name="plain_cancel">취소</string>
     <string name="plain_create">생성</string>
     <string name="plain_remove">삭제</string>
+    <string name="plain_memo">메모</string>
     <string name="plain_more">더보기</string>
 
     <!-- activity_signup -->
@@ -29,7 +33,6 @@
 
     <!-- dialog_add_group -->
     <string name="dialog_add_group_title_label">그룹 생성하기</string>
-    <string name="dialog_add_group_group_name_hint">그룹 이름</string>
 
     <!-- dialog_delete -->
     <string name="dialog_delete_title_label">삭제하기</string>
@@ -47,7 +50,6 @@
     <string name="menu_check">출결</string>
     <string name="menu_chart">통계</string>
     <string name="menu_edit">편집</string>
-
 
 
 </resources>
