@@ -24,12 +24,15 @@ public class SettingActivity extends AppCompatActivity {
     private MemberModifyFragment modifyFragment;
     private String groupName = "";
     private String userID;
+    private int priNum;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         initView();
         initFragment();
     }
+
     private void initView() {
         binding = ActivitySettingBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
@@ -38,43 +41,46 @@ public class SettingActivity extends AppCompatActivity {
     private void initFragment() {
         getGroupName();
         fragmentManager = getSupportFragmentManager();
-        viewFragment = MemberViewFragment.newInstance(groupName,userID);
-        addFragment = MemberAddFragment.newInstance(groupName,userID);
-        infoFragment = MemberInfoFragment.newInstance();
-        modifyFragment = MemberModifyFragment.newInstance();
+        viewFragment = MemberViewFragment.newInstance(groupName, userID);
+        addFragment = MemberAddFragment.newInstance(groupName, userID);
+        infoFragment = MemberInfoFragment.newInstance(priNum);
+        modifyFragment = MemberModifyFragment.newInstance(priNum);
         fragmentManager.beginTransaction().add(R.id.fragment_setting, viewFragment).commit();
     }
+
 
     private void getGroupName() {
         Intent intent = getIntent();
         groupName = intent.getStringExtra("groupName");
         userID = intent.getStringExtra("userID");
+
         Log.d("groupName", groupName);
         Log.d("userID", userID);
     }
 
 
-    public void onFragmentChanged(int index) {
+    public void onFragmentChanged(int index,int priNum) {
         Fragment selectedFragment = null;
         String tag = null;
         if (index == 0) {
-            selectedFragment= MemberInfoFragment.newInstance();
+            selectedFragment = MemberInfoFragment.newInstance(priNum);
             tag = "info_fragment";
         } else if (index == 1) {
-            selectedFragment = MemberAddFragment.newInstance(groupName,userID);
+            selectedFragment = MemberAddFragment.newInstance(groupName, userID);
             tag = "add_fragment";
         } else if (index == 2) {
-            selectedFragment = MemberModifyFragment.newInstance();
+            Log.d("setting", priNum + "");
+            selectedFragment = MemberModifyFragment.newInstance(priNum);
             tag = "modify_fragment";
         } else if (index == 3) {
-            selectedFragment = MemberViewFragment.newInstance(groupName,userID);
+            selectedFragment = MemberViewFragment.newInstance(groupName, userID);
             tag = "view_fragment";
             // 백스택 초기화
-            fragmentManager.popBackStack(null,FragmentManager.POP_BACK_STACK_INCLUSIVE);
+            fragmentManager.popBackStack(null, FragmentManager.POP_BACK_STACK_INCLUSIVE);
         }
         if (selectedFragment != null) {
             fragmentManager.beginTransaction()
-                    .replace(R.id.fragment_setting,selectedFragment,tag)
+                    .replace(R.id.fragment_setting, selectedFragment, tag)
                     .setReorderingAllowed(true)
                     .addToBackStack(tag)
                     .commit();
