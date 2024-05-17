@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
@@ -43,7 +44,7 @@
             android:layout_height="wrap_content">
 
             <EditText
-                android:id="@+id/et_group_name"
+                android:id="@+id/et_modify_group_name"
                 style="@style/AppEditText.S17"
                 android:layout_width="0dp"
                 android:layout_height="60dp"
@@ -51,14 +52,14 @@
                 android:layout_marginEnd="20dp"
                 android:background="@drawable/plane_outline_background"
                 android:gravity="center"
-                android:text="그룹 이름(수정)"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
+                app:layout_constraintTop_toTopOf="parent"
+                tools:text="그룹 이름(수정)" />
 
 
             <EditText
-                android:id="@+id/et_person_name"
+                android:id="@+id/et_modify_person_name"
                 style="@style/AppEditText.S17"
                 android:layout_width="0dp"
                 android:layout_height="60dp"
@@ -67,32 +68,33 @@
                 android:layout_marginEnd="20dp"
                 android:background="@drawable/plane_outline_background"
                 android:gravity="center"
-                android:text="이름(수정)"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/et_group_name"
+                app:layout_constraintTop_toBottomOf="@id/et_modify_group_name"
+                app:layout_goneMarginTop="10dp"
+                tools:text="이름(수정)" />
+
+
+            <EditText
+                android:id="@+id/et_modify_person_number"
+                style="@style/AppEditText.S17"
+                android:layout_width="0dp"
+                android:layout_height="60dp"
+                android:layout_marginStart="20dp"
+                android:layout_marginTop="20dp"
+                android:layout_marginEnd="20dp"
+                android:background="@drawable/plane_outline_background"
+                android:gravity="center"
+                tools:text="전화번호(수정)"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/et_modify_person_name"
                 app:layout_goneMarginTop="10dp" />
 
 
             <EditText
-                android:id="@+id/et_person_number"
-                android:layout_width="0dp"
-                android:layout_height="60dp"
-                android:layout_marginStart="20dp"
-                android:layout_marginTop="20dp"
-                android:layout_marginEnd="20dp"
+                android:id="@+id/et_modify_person_number2"
                 style="@style/AppEditText.S17"
-                android:background="@drawable/plane_outline_background"
-                android:gravity="center"
-                android:text="전화번호(수정)"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/et_person_name"
-                app:layout_goneMarginTop="10dp" />
-
-
-            <EditText
-                android:id="@+id/et_person_address"
                 android:layout_width="0dp"
                 android:layout_height="60dp"
                 android:layout_marginStart="20dp"
@@ -100,30 +102,31 @@
                 android:layout_marginEnd="20dp"
                 android:background="@drawable/plane_outline_background"
                 android:gravity="center"
-                style="@style/AppEditText.S17"
-                android:text="주소(수정)"
+                tools:text="비상연락망(수정)"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/et_person_number" />
+                app:layout_constraintTop_toBottomOf="@id/et_modify_person_number" />
 
 
             <EditText
-                android:id="@+id/et_person_sec_number"
+
+                android:id="@+id/et_modify_person_address"
+                style="@style/AppEditText.S17"
                 android:layout_width="0dp"
                 android:layout_height="60dp"
                 android:layout_marginStart="20dp"
                 android:layout_marginTop="20dp"
                 android:layout_marginEnd="20dp"
-                style="@style/AppEditText.S17"
                 android:background="@drawable/plane_outline_background"
                 android:gravity="center"
-                android:text="비상연락망(수정)"
+                tools:text="주소(수정)"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/et_person_address" />
+                app:layout_constraintTop_toBottomOf="@id/et_modify_person_number2" />
 
             <EditText
-                android:id="@+id/et_person_memo"
+                android:id="@+id/et_modify_person_memo"
+                style="@style/AppEditText.S17"
                 android:layout_width="0dp"
                 android:layout_height="250dp"
                 android:layout_marginStart="20dp"
@@ -132,12 +135,11 @@
                 android:layout_marginBottom="10dp"
                 android:background="@drawable/plane_outline_background"
                 android:gravity="center"
-                android:text="메모(수정)"
-                style="@style/AppEditText.S17"
+                tools:text="메모(수정)"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/et_person_sec_number" />
+                app:layout_constraintTop_toBottomOf="@id/et_modify_person_address" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
     </androidx.core.widget.NestedScrollView>
