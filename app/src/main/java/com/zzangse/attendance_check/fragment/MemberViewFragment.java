@@ -120,7 +120,7 @@ public class MemberViewFragment extends Fragment {
         TextView tvTittle = dialogView.findViewById(R.id.tv_title);
         TextView tvMember = dialogView.findViewById(R.id.tv_delete_target);
         TextView btnOK = dialogView.findViewById(R.id.btn_ok);
-        TextView btnCanvel = dialogView.findViewById(R.id.btn_cancel);
+        TextView btnCancel = dialogView.findViewById(R.id.btn_cancel);
 
         tvMember.setText(String.format("[ %s ] 삭제 하시겠습니까?", memberName));
         tvTittle.setText(dialogTitle);
@@ -128,7 +128,7 @@ public class MemberViewFragment extends Fragment {
         AlertDialog dialog = builder.setView(dialogView)
                 .setCancelable(false)
                 .create();
-        btnCanvel.setOnClickListener(v->{
+        btnCancel.setOnClickListener(v->{
             dialog.dismiss();
         });
         btnOK.setOnClickListener(v->{
