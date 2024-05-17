@@ -21,14 +21,14 @@
         android:layout_width="0dp"
         android:layout_height="70dp"
         android:layout_margin="20dp"
-        android:hint="@string/dialog_add_group_group_name_hint"
+        android:hint="@string/plain_group_name"
         app:boxStrokeColor="@color/navy_200"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/tv_title">
 
         <com.google.android.material.textfield.TextInputEditText
-            android:id="@+id/et_group_name"
+            android:id="@+id/et_modify_group_name"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:imeOptions="actionDone"
@@ -69,32 +69,5 @@
         android:layout_marginEnd="30dp"
         android:text="@string/plain_create"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/et_group_name_layout"
-
-        />
-
-    <!--androidx.appcompat.widget.AppCompatButton
-        android:id="@+id/btn_cancel"
-        style="@style/AppEditText.S17"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="20dp"
-        android:background="@drawable/plane_outline_background"
-        android:text="취소"
-        app:layout_constraintEnd_toStartOf="@id/btn_ok"
-        app:layout_constraintStart_toStartOf="@id/et_group_name_layout"
-        app:layout_constraintTop_toBottomOf="@id/tv_group_name_error" />
-
-    <androidx.appcompat.widget.AppCompatButton
-        android:id="@+id/btn_ok"
-        style="@style/AppEditText.White.S17"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="30dp"
-        android:layout_marginTop="20dp"
-        android:background="@drawable/plane_fill_background"
-        android:text="확인"
-        app:layout_constraintEnd_toEndOf="@id/et_group_name_layout"
-        app:layout_constraintStart_toEndOf="@id/btn_cancel"
-        app:layout_constraintTop_toBottomOf="@id/tv_group_name_error" /-->
+        app:layout_constraintTop_toBottomOf="@id/et_group_name_layout" />
 </androidx.constraintlayout.widget.ConstraintLayout>
