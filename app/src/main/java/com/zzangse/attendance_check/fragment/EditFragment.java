@@ -29,9 +29,9 @@ import com.zzangse.attendance_check.activity.SettingActivity;
 import com.zzangse.attendance_check.adapter.GroupNameAdapter;
 import com.zzangse.attendance_check.data.GroupName;
 import com.zzangse.attendance_check.databinding.FragmentEditBinding;
-import com.zzangse.attendance_check.request.RemoveGroupNameRequest;
 import com.zzangse.attendance_check.request.InsertGroupRequest;
 import com.zzangse.attendance_check.request.LoadGroupRequest;
+import com.zzangse.attendance_check.request.RemoveGroupNameRequest;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -131,10 +131,13 @@ public class EditFragment extends Fragment {
         LayoutInflater inflater = requireActivity().getLayoutInflater();
         View dialogView = inflater.inflate(R.layout.dialog_delete, null);
         TextView tvTitle = dialogView.findViewById(R.id.tv_title);
+        TextView tvGroup = dialogView.findViewById(R.id.tv_delete_target);
         TextView btnOk = dialogView.findViewById(R.id.btn_ok);
         TextView btnCancel = dialogView.findViewById(R.id.btn_cancel);
-        tvTitle.setText(dialogTitle);
 
+        tvGroup.setText(String.format("[ %s ] 삭제 하시겠습니까?",groupName));
+
+        tvTitle.setText(dialogTitle);
         AlertDialog dialog = builder.setView(dialogView)
                 .setCancelable(false)
                 .create();
@@ -170,7 +173,7 @@ public class EditFragment extends Fragment {
         btnOK.setOnClickListener(v -> {
             String groupName = textInputEditText.getText().toString();
             if (checkGroupName(groupName)) {
-                setGroupDB(userID, groupName);
+                insertGroup(userID, groupName);
                 dialog.dismiss();
             } else {
                 int colorRed = ContextCompat.getColor(getContext(), R.color.red);
@@ -192,7 +195,7 @@ public class EditFragment extends Fragment {
     }
 
     // group을 생성
-    private void setGroupDB(String userID, String groupName) {
+    private void insertGroup(String userID, String groupName) {
         Response.Listener<String> listener = new Response.Listener<String>() {
             @Override
             public void onResponse(String s) {
