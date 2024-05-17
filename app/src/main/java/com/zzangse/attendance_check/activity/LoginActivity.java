@@ -14,7 +14,7 @@ import com.android.volley.Response;
 import com.android.volley.toolbox.Volley;
 import com.zzangse.attendance_check.R;
 import com.zzangse.attendance_check.databinding.ActivityLoginBinding;
-import com.zzangse.attendance_check.request.LoginRequest;
+import com.zzangse.attendance_check.request.SignInRequest;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -82,7 +82,7 @@ public class LoginActivity extends AppCompatActivity {
                     }
                 }
             };
-            LoginRequest request = new LoginRequest(userID, userPassword, listener);
+            SignInRequest request = new SignInRequest(userID, userPassword, listener);
             RequestQueue queue = Volley.newRequestQueue(LoginActivity.this);
             queue.add(request);
         });
