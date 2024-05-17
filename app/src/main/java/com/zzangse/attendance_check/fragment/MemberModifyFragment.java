@@ -1,6 +1,8 @@
 package com.zzangse.attendance_check.fragment;
 
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -53,6 +55,7 @@ public class MemberModifyFragment extends Fragment {
         onClickSaveBtn();
         onClickBack();
         loadMemberData();
+        textWatcher();
     }
 
     private void onClickBack() {
@@ -70,6 +73,25 @@ public class MemberModifyFragment extends Fragment {
         binding.etModifyPersonMemo.setText(memberInfo.getInfoMemo());
     }
 
+    private void textWatcher() {
+        binding.etModifyPersonMemo.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                int memoLength = binding.etModifyPersonMemo.length();
+                binding.etModifyPersonMemoLayout.setHint("메모(수정) ( " + memoLength + " / 300 )");
+            }
+        });
+    }
 
     private void loadMemberData() {
         LoadMemberViewRequest loadMemberViewRequest = new LoadMemberViewRequest(getContext());
