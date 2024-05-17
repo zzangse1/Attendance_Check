@@ -22,7 +22,7 @@ import androidx.core.content.ContextCompat;
 import com.android.volley.Response;
 import com.zzangse.attendance_check.R;
 import com.zzangse.attendance_check.databinding.ActivitySignupBinding;
-import com.zzangse.attendance_check.request.SignupRequest;
+import com.zzangse.attendance_check.request.SignUpRequest;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -146,19 +146,17 @@ public class SignupActivity extends AppCompatActivity {
         Response.Listener<String> listener = new Response.Listener<String>() {
             @Override
             public void onResponse(String s) {
-                Log.d("hello", "1");
                 try {
                     JSONObject jsonObject = new JSONObject(s);
                     boolean isSuccess = jsonObject.getBoolean("success");
-                    Log.d("hello", "2");
+                    String issue = jsonObject.getString("message");
                     if (isSuccess) {
-                        Log.d("hello", "3");
                         Toast.makeText(getApplicationContext(), "회원등록 성공", Toast.LENGTH_SHORT).show();
                         Intent intent = new Intent(SignupActivity.this, LoginActivity.class);
                         startActivity(intent);
                     } else {
-                        Log.d("hello", "4");
-                        Toast.makeText(getApplicationContext(), "회원등록 실패", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(getApplicationContext(), issue, Toast.LENGTH_SHORT).show();
+                        isDuplication();
                     }
                 } catch (JSONException e) {
                     Log.d("hello", "5");
@@ -167,12 +165,20 @@ public class SignupActivity extends AppCompatActivity {
             }
         };
         Log.d("hello", "6");
-        SignupRequest request = new SignupRequest(userID, userPassword, userNickName,
+        SignUpRequest request = new SignUpRequest(userID, userPassword, userNickName,
                 userName, userBirth, userSex, userPhoneNumber, listener);
         RequestQueue queue = Volley.newRequestQueue(SignupActivity.this);
         queue.add(request);
     }
 
+    private void isDuplication() {
+//        Drawable drawable_ok = ContextCompat.getDrawable(getApplicationContext(), R.drawable.ic_person);
+        Drawable drawable_error_person = ContextCompat.getDrawable(getApplicationContext(), R.drawable.ic_error_person);
+        Drawable drawable_error_phone = ContextCompat.getDrawable(getApplicationContext(), R.drawable.ic_error_phone);
+        // 기입 안했을 때
+        binding.etId.setCompoundDrawablesRelativeWithIntrinsicBounds(drawable_error_person, null, null, null);
+        binding.etNumber.setCompoundDrawablesRelativeWithIntrinsicBounds(drawable_error_phone, null, null, null);
+    }
 
     private void setClearFocus() {
         InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
