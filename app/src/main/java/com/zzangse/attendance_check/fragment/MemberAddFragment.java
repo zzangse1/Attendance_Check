@@ -19,7 +19,7 @@ import com.android.volley.Response;
 import com.android.volley.toolbox.Volley;
 import com.zzangse.attendance_check.R;
 import com.zzangse.attendance_check.databinding.FragmentMemberAddBinding;
-import com.zzangse.attendance_check.request.AddMemberRequest;
+import com.zzangse.attendance_check.request.InsertMemberRequest;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -184,7 +184,7 @@ public class MemberAddFragment extends Fragment {
                 }
             }
         };
-        AddMemberRequest request = new AddMemberRequest(userID, groupName, name, number, number2,
+        InsertMemberRequest request = new InsertMemberRequest(userID, groupName, name, number, number2,
                 address, memo, listener);
         if (getActivity() != null) {
             Log.d("add", userID + groupName + name + number + number2 + address + memo);
