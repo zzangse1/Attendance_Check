@@ -29,9 +29,9 @@ import com.zzangse.attendance_check.activity.SettingActivity;
 import com.zzangse.attendance_check.adapter.GroupNameAdapter;
 import com.zzangse.attendance_check.data.GroupName;
 import com.zzangse.attendance_check.databinding.FragmentEditBinding;
-import com.zzangse.attendance_check.request.DeleteGroupNameRequest;
-import com.zzangse.attendance_check.request.GroupInputRequest;
-import com.zzangse.attendance_check.request.GroupOutputRequest;
+import com.zzangse.attendance_check.request.RemoveGroupNameRequest;
+import com.zzangse.attendance_check.request.InsertGroupRequest;
+import com.zzangse.attendance_check.request.LoadGroupRequest;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -54,8 +54,7 @@ public class EditFragment extends Fragment {
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         binding = FragmentEditBinding.inflate(inflater);
         getArgs();
         return binding.getRoot();
@@ -113,14 +112,13 @@ public class EditFragment extends Fragment {
     }
 
     private void dataDelete(String groupName) {
-        DeleteGroupNameRequest request = new DeleteGroupNameRequest(userID, groupName,
-                new Response.Listener<String>() {
-                    @Override
-                    public void onResponse(String response) {
-                        // 요청에 대한 응답 처리
-                        Log.d("GroupDeleteRequest", "Response: " + response);
-                    }
-                });
+        RemoveGroupNameRequest request = new RemoveGroupNameRequest(userID, groupName, new Response.Listener<String>() {
+            @Override
+            public void onResponse(String response) {
+                // 요청에 대한 응답 처리
+                Log.d("GroupDeleteRequest", "Response: " + response);
+            }
+        });
         if (getActivity() != null) {
             RequestQueue queue = Volley.newRequestQueue(getActivity());
             queue.add(request);
@@ -160,18 +158,16 @@ public class EditFragment extends Fragment {
         TextView btnCancel = dialogView.findViewById(R.id.btn_cancel);
         TextInputLayout textInputLayout = dialogView.findViewById(R.id.et_group_name_layout);
         TextView textView = dialogView.findViewById(R.id.tv_group_name_error);
-        TextInputEditText textInputEditText = dialogView.findViewById(R.id.et_group_name);
+        TextInputEditText textInputEditText = dialogView.findViewById(R.id.et_modify_group_name);
 
         AlertDialog dialog = builder.setView(dialogView)
                 .setCancelable(false)
                 .create();
         btnCancel.setOnClickListener(v -> {
-            Toast.makeText(getActivity(), "cancel", Toast.LENGTH_SHORT).show();
             dialog.dismiss();
         });
 
         btnOK.setOnClickListener(v -> {
-            Toast.makeText(getActivity(), "ok", Toast.LENGTH_SHORT).show();
             String groupName = textInputEditText.getText().toString();
             if (checkGroupName(groupName)) {
                 setGroupDB(userID, groupName);
@@ -189,10 +185,8 @@ public class EditFragment extends Fragment {
     private boolean checkGroupName(String groupName) {
         boolean isCheck = groupName.matches(REGEX_GROUP_NAME);
         if (isCheck) {
-            Toast.makeText(getActivity(), "db입력 허용", Toast.LENGTH_SHORT).show();
             return true;
         } else {
-            Toast.makeText(getActivity(), "db입력 불허", Toast.LENGTH_SHORT).show();
             return false;
         }
     }
@@ -205,11 +199,13 @@ public class EditFragment extends Fragment {
                 try {
                     JSONObject jsonObject = new JSONObject(s);
                     boolean isSuccess = jsonObject.getBoolean("success");
+                    String error = jsonObject.getString("message");
+                    Log.d("test", isSuccess + ", " + error);
                     if (isSuccess) {
                         Toast.makeText(getActivity(), "db ok", Toast.LENGTH_SHORT).show();
                         dataLoad();
                     } else {
-                        Toast.makeText(getActivity(), "db no", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(getActivity(), error, Toast.LENGTH_SHORT).show();
                     }
                 } catch (JSONException e) {
                     throw new RuntimeException(e);
@@ -217,7 +213,7 @@ public class EditFragment extends Fragment {
             }
         };
         if (getActivity() != null) {
-            GroupInputRequest request = new GroupInputRequest(userID, groupName, listener);
+            InsertGroupRequest request = new InsertGroupRequest(userID, groupName, listener);
             RequestQueue queue = Volley.newRequestQueue(getActivity());
             queue.add(request);
         } else {
@@ -227,8 +223,8 @@ public class EditFragment extends Fragment {
 
     // group을 리스트에 넣어줌
     private void dataLoad() {
-        GroupOutputRequest groupOutputRequest = new GroupOutputRequest(getContext());
-        groupOutputRequest.sendGroupOutputRequest(userID, new GroupOutputRequest.VolleyCallback() {
+        LoadGroupRequest loadGroupRequest = new LoadGroupRequest(getContext());
+        loadGroupRequest.sendGroupOutputRequest(userID, new LoadGroupRequest.VolleyCallback() {
             @Override
             public void onSuccess(JSONArray result) {
                 try {
