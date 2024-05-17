@@ -139,7 +139,7 @@ public class SignupActivity extends AppCompatActivity {
         String userPassword = binding.etPassword.getText().toString();
         String userNickName = binding.etNickName.getText().toString();
         String userName = binding.etName.getText().toString();
-        int userBirth = Integer.parseInt(binding.etBirth.getText().toString());
+        String userBirth = binding.etBirth.getText().toString();
         String userSex = m_sex;
         String userPhoneNumber = binding.etNumber.getText().toString();
 
