@@ -1,15 +1,22 @@
 package com.zzangse.attendance_check.fragment;
 
+import android.app.AlertDialog;
+import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
+import com.google.android.material.snackbar.Snackbar;
+import com.zzangse.attendance_check.R;
 import com.zzangse.attendance_check.activity.SettingActivity;
 import com.zzangse.attendance_check.data.MemberInfo;
 import com.zzangse.attendance_check.databinding.FragmentMemberInfoBinding;
@@ -55,6 +62,7 @@ public class MemberInfoFragment extends Fragment {
         onClickBack();
         onClickModifyBtn();
         loadMemberInfo(priNum);
+        onClickPhoneNumber();
     }
 
 
@@ -73,13 +81,62 @@ public class MemberInfoFragment extends Fragment {
 
     }
 
+    private void showDeleteDialog(String number) {
+        String dialogTitle = "전화 걸기";
+        android.app.AlertDialog.Builder builder = new android.app.AlertDialog.Builder(getActivity(), R.style.RoundedDialog);
+        LayoutInflater inflater = requireActivity().getLayoutInflater();
+        View dialogView = inflater.inflate(R.layout.dialog_delete, null);
+        TextView tvTitle = dialogView.findViewById(R.id.tv_title);
+        TextView tvTarget = dialogView.findViewById(R.id.tv_delete_target);
+        TextView tvLabel = dialogView.findViewById(R.id.tv_delete_label);
+        TextView btnOk = dialogView.findViewById(R.id.btn_ok);
+        TextView btnCancel = dialogView.findViewById(R.id.btn_cancel);
+
+        tvTarget.setText("전화창으로 이동합니다.");
+        tvLabel.setVisibility(View.GONE);
+        btnOk.setText("이동");
+        tvTitle.setText(dialogTitle);
+
+        AlertDialog dialog = builder.setView(dialogView)
+                .setCancelable(false)
+                .create();
+        btnCancel.setOnClickListener(v -> {
+            dialog.dismiss();
+        });
+        btnOk.setOnClickListener(v -> {
+            moveToCall(number);
+            dialog.dismiss();
+        });
+        dialog.show();
+    }
+
+    private void moveToCall(String number) {
+        Intent intent = new Intent(Intent.ACTION_DIAL);
+        intent.setData(Uri.parse("tel:" + number));
+        startActivity(intent);
+    }
+
+    public void onClickPhoneNumber() {
+        binding.tvInfoPersonNumber.setOnClickListener(v -> {
+           String number = binding.tvInfoPersonNumber.getText().toString();
+           Toast.makeText(getContext(), "전화번호 이동", Toast.LENGTH_SHORT).show();
+           showDeleteDialog(number);
+        });
+        binding.tvInfoPersonNumber2.setOnClickListener(v -> {
+            Toast.makeText(getContext(), "전화번호 이동", Toast.LENGTH_SHORT).show();
+            String number = binding.tvInfoPersonNumber2.getText().toString(); // 수정된 부분
+            showDeleteDialog(number);
+        });
+    }
+
+
     private void setMemberInfo(MemberInfo memberInfo) {
-            binding.tvInfoGroupName.setText(memberInfo.getInfoGroupName());
-            binding.tvInfoPersonName.setText(memberInfo.getInfoName());
-            binding.tvInfoPersonNumber.setText(memberInfo.getInfoNumber());
-            binding.tvInfoPersonNumber2.setText(memberInfo.getInfoNumber2());
-            binding.tvInfoPersonAddress.setText(memberInfo.getInfoAddress());
-            binding.tvInfoPersonMemo.setText(memberInfo.getInfoMemo());
+        binding.tvInfoGroupName.setText(memberInfo.getInfoGroupName());
+        binding.tvInfoPersonName.setText(memberInfo.getInfoName());
+        binding.tvInfoPersonNumber.setText(memberInfo.getInfoNumber());
+        binding.tvInfoPersonNumber2.setText(memberInfo.getInfoNumber2());
+        binding.tvInfoPersonAddress.setText(memberInfo.getInfoAddress());
+        binding.tvInfoPersonMemo.setText(memberInfo.getInfoMemo());
     }
 
     private void loadMemberInfo(int priNum) {
