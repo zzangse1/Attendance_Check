@@ -1,13 +1,15 @@
 package com.zzangse.attendance_check.data;
 
 public class MemberInfo {
+    private int priNum;
     private String infoGroupName, infoName, infoNumber, infoNumber2, infoAddress, infoMemo;
 
     public MemberInfo() {
 
     }
 
-    public MemberInfo(String infoName) {
+    public MemberInfo(int priNum,String infoName) {
+        this.priNum = priNum;
         this.infoName = infoName;
     }
 
@@ -18,6 +20,14 @@ public class MemberInfo {
         this.infoNumber2 = infoNumber2;
         this.infoAddress = infoAddress;
         this.infoMemo = infoMemo;
+    }
+
+    public int getPriNum() {
+        return priNum;
+    }
+
+    public void setPriNum(int priNum) {
+        this.priNum = priNum;
     }
 
     public String getInfoGroupName() {
@@ -66,6 +76,19 @@ public class MemberInfo {
 
     public void setInfoMemo(String infoMemo) {
         this.infoMemo = infoMemo;
+    }
+
+    @Override
+    public String toString() {
+        return "MemberInfo{" +
+                "priNum=" + priNum +
+                ", infoGroupName='" + infoGroupName + '\'' +
+                ", infoName='" + infoName + '\'' +
+                ", infoNumber='" + infoNumber + '\'' +
+                ", infoNumber2='" + infoNumber2 + '\'' +
+                ", infoAddress='" + infoAddress + '\'' +
+                ", infoMemo='" + infoMemo + '\'' +
+                '}';
     }
 }
 
