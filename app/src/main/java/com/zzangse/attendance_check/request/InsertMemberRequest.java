@@ -9,13 +9,13 @@ import com.android.volley.toolbox.StringRequest;
 import java.util.HashMap;
 import java.util.Map;
 
-public class AddMemberRequest extends StringRequest {
-    private final static String URL ="http://zzangse.dothome.co.kr/MemberInsert.php";
-    private Map<String,String> map;
+public class InsertMemberRequest extends StringRequest {
+    private final static String URL = "http://zzangse.store/insert_member.php";
+    private Map<String, String> map;
 
 
-    public AddMemberRequest(String userID, String groupName,String name, String number, String number2,
-                            String address, String memo,Response.Listener<String> listener) {
+    public InsertMemberRequest(String userID, String groupName, String name, String number, String number2,
+                               String address, String memo, Response.Listener<String> listener) {
         super(Method.POST, URL, listener, null);
 
         map = new HashMap<>();
