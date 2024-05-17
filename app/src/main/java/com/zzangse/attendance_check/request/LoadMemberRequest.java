@@ -22,11 +22,11 @@ import org.json.JSONException;
 import java.util.HashMap;
 import java.util.Map;
 
-public class MemberOutputRequest {
+public class LoadMemberRequest {
     private Context context;
-    private static final String BASE_URL = "http://zzangse.dothome.co.kr/LoadMemberName.php";
+    private static final String BASE_URL = "http://zzangse.store/load_member.php";
 
-    public MemberOutputRequest(Context context) {
+    public LoadMemberRequest(Context context) {
         this.context = context;
     }
 
@@ -45,7 +45,7 @@ public class MemberOutputRequest {
 
     public void sendMemberOutputRequest(final String userID, final String groupName, final VolleyCallback callback) {
         if (!isNetworkAvailable()) {
-            callback.onError("No internet connetion");
+            callback.onError("No internet connection");
             return;
         }
         StringRequest stringRequest = new StringRequest(Request.Method.POST, getBaseUrl(),
@@ -93,7 +93,6 @@ public class MemberOutputRequest {
         // 요청 큐에 추가
         Volley.newRequestQueue(context).add(stringRequest);
     }
-
 
 
     public interface VolleyCallback {
