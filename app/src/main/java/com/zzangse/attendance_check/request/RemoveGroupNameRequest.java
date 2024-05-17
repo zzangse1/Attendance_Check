@@ -9,11 +9,11 @@ import com.android.volley.toolbox.StringRequest;
 import java.util.HashMap;
 import java.util.Map;
 
-public class DeleteGroupNameRequest extends StringRequest {
-    private final static String URL = "http://zzangse.dothome.co.kr/Delete_Group.php";
+public class RemoveGroupNameRequest extends StringRequest {
+    private final static String URL = "http://zzangse.store/remove_group.php";
     private Map<String, String> map;
 
-    public DeleteGroupNameRequest(String userID, String groupName, Response.Listener<String> listener) {
+    public RemoveGroupNameRequest(String userID, String groupName, Response.Listener<String> listener) {
         super(Method.POST, URL, listener, null);
 
         map = new HashMap<>();
