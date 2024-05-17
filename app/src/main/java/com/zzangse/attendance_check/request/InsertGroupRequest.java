@@ -9,15 +9,15 @@ import com.android.volley.toolbox.StringRequest;
 import java.util.HashMap;
 import java.util.Map;
 
-public class GroupInputRequest extends StringRequest {
-    private final static String URL = "http://zzangse.dothome.co.kr/Group_insert.php";
+public class InsertGroupRequest extends StringRequest {
+    private final static String URL = "http://zzangse.store/insert_group.php";
     private Map<String, String> map;
 
-    public GroupInputRequest(String userID, String groupName, Response.Listener<String> listener) {
+    public InsertGroupRequest(String userID, String groupName, Response.Listener<String> listener) {
         super(Method.POST, URL, listener, null);
 
         map = new HashMap<>();
-        map.put("userID",userID);
+        map.put("userID", userID);
         map.put("groupName", groupName);
     }
 
