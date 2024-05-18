@@ -18,6 +18,17 @@
         app:titleCentered="true"
         app:titleTextAppearance="@style/AppEditText.Bold.S24" />
 
+    <TextView
+        android:id="@+id/tv_pri"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        style="@style/AppEditText.S17"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toStartOf="@id/btn_save"
+        app:layout_constraintTop_toTopOf="@id/btn_save"
+        android:text="123"
+        />
+
     <androidx.appcompat.widget.AppCompatButton
         android:id="@+id/btn_save"
         style="@style/AppEditText.White.S17"
