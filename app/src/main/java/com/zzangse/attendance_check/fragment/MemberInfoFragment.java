@@ -15,7 +15,6 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
-import com.google.android.material.snackbar.Snackbar;
 import com.zzangse.attendance_check.R;
 import com.zzangse.attendance_check.activity.SettingActivity;
 import com.zzangse.attendance_check.data.MemberInfo;
@@ -26,10 +25,13 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.util.ArrayList;
+
 public class MemberInfoFragment extends Fragment {
     private FragmentMemberInfoBinding binding;
     private int priNum;
     private MemberInfo memberInfo;
+    private ArrayList<String> memberInfoList;
 
     public static MemberInfoFragment newInstance(int priNum) {
         MemberInfoFragment fragment = new MemberInfoFragment();
@@ -156,6 +158,7 @@ public class MemberInfoFragment extends Fragment {
                         String infoMemo = jsonObject.getString("infoMemo");
                         Log.d("TEST", groupName + ", " + infoName);
                         memberInfo = new MemberInfo(groupName, infoName, infoPhoneNumber, infoPhoneNumber2, infoAddress, infoMemo);
+
                     }
                 } catch (JSONException e) {
                     //throw new RuntimeException(e);
@@ -169,6 +172,17 @@ public class MemberInfoFragment extends Fragment {
                 Log.d("TEST", errorMessage);
             }
         });
+    }
+
+    private void test(MemberInfo memberInfo) {
+//                        Bundle bundle = new Bundle();
+//                        bundle.putString("groupName", memberInfo.getInfoGroupName());
+//                        bundle.putString("infoName", memberInfo.getInfoName());
+//                        bundle.putString("infoPhoneNumber", memberInfo.getInfoNumber());
+//                        bundle.putString("infoPhoneNumber2", memberInfo.getInfoNumber2());
+//                        bundle.putString("infoAddress", memberInfo.getInfoAddress());
+//                        bundle.putString("infoMemo", memberInfo.getInfoMemo());
+//                        getChildFragmentManager().setFragmentResult("memberInfo", bundle);
     }
 
     private void moveToFragmentModify() {//View v) {
