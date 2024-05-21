@@ -32,12 +32,9 @@ public class MemberAddFragment extends Fragment {
     private int COLOR_RED;
     private int COLOR_NAVY;
 
-    public static MemberAddFragment newInstance(String groupName, String userID) {
+    public static MemberAddFragment newInstance(Bundle bundle) {
         MemberAddFragment fragment = new MemberAddFragment();
-        Bundle args = new Bundle();
-        args.putString("groupName", groupName);
-        args.putString("userID", userID);
-        fragment.setArguments(args);
+        fragment.setArguments(bundle);
         return fragment;
     }
 
