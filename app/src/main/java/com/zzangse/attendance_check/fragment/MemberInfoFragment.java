@@ -25,19 +25,15 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.util.ArrayList;
-
 public class MemberInfoFragment extends Fragment {
     private FragmentMemberInfoBinding binding;
     private int priNum;
+    private String userID;
     private MemberInfo memberInfo;
-    private ArrayList<String> memberInfoList;
 
-    public static MemberInfoFragment newInstance(int priNum) {
+    public static MemberInfoFragment newInstance(Bundle bundle) {
         MemberInfoFragment fragment = new MemberInfoFragment();
-        Bundle args = new Bundle();
-        args.putInt("priNum", priNum);
-        fragment.setArguments(args);
+        fragment.setArguments(bundle);
         return fragment;
     }
 
@@ -45,10 +41,7 @@ public class MemberInfoFragment extends Fragment {
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        if (getArguments() != null) {
-            priNum = getArguments().getInt("priNum");
-            Log.d("asd", priNum + "");
-        }
+
     }
 
     @Nullable
@@ -61,6 +54,11 @@ public class MemberInfoFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+        if (getArguments() != null) {
+            userID = getArguments().getString("userID", userID);
+            priNum = getArguments().getInt("priNum");
+            Log.d("정보에서 priNum", priNum + "");
+        }
         onClickBack();
         onClickModifyBtn();
         loadMemberInfo(priNum);
@@ -77,8 +75,7 @@ public class MemberInfoFragment extends Fragment {
     // 질문
     private void onClickModifyBtn() {
         binding.btnModify.setOnClickListener(v -> {
-            moveToFragmentModify();
-            // this::moveToFragmentModify);
+            setBundle();
         });
 
     }
@@ -120,9 +117,9 @@ public class MemberInfoFragment extends Fragment {
 
     public void onClickPhoneNumber() {
         binding.tvInfoPersonNumber.setOnClickListener(v -> {
-           String number = binding.tvInfoPersonNumber.getText().toString();
-           Toast.makeText(getContext(), "전화번호 이동", Toast.LENGTH_SHORT).show();
-           showDeleteDialog(number);
+            String number = binding.tvInfoPersonNumber.getText().toString();
+            Toast.makeText(getContext(), "전화번호 이동", Toast.LENGTH_SHORT).show();
+            showDeleteDialog(number);
         });
         binding.tvInfoPersonNumber2.setOnClickListener(v -> {
             Toast.makeText(getContext(), "전화번호 이동", Toast.LENGTH_SHORT).show();
@@ -142,7 +139,6 @@ public class MemberInfoFragment extends Fragment {
     }
 
     private void loadMemberInfo(int priNum) {
-        Log.d("asdf", priNum + "");
         LoadMemberViewRequest loadMemberViewRequest = new LoadMemberViewRequest(getContext());
         loadMemberViewRequest.loadMemberViewRequest(priNum, new LoadMemberViewRequest.VolleyCallback() {
             @Override
@@ -158,7 +154,6 @@ public class MemberInfoFragment extends Fragment {
                         String infoMemo = jsonObject.getString("infoMemo");
                         Log.d("TEST", groupName + ", " + infoName);
                         memberInfo = new MemberInfo(groupName, infoName, infoPhoneNumber, infoPhoneNumber2, infoAddress, infoMemo);
-
                     }
                 } catch (JSONException e) {
                     //throw new RuntimeException(e);
@@ -174,21 +169,25 @@ public class MemberInfoFragment extends Fragment {
         });
     }
 
-    private void test(MemberInfo memberInfo) {
-//                        Bundle bundle = new Bundle();
-//                        bundle.putString("groupName", memberInfo.getInfoGroupName());
-//                        bundle.putString("infoName", memberInfo.getInfoName());
-//                        bundle.putString("infoPhoneNumber", memberInfo.getInfoNumber());
-//                        bundle.putString("infoPhoneNumber2", memberInfo.getInfoNumber2());
-//                        bundle.putString("infoAddress", memberInfo.getInfoAddress());
-//                        bundle.putString("infoMemo", memberInfo.getInfoMemo());
-//                        getChildFragmentManager().setFragmentResult("memberInfo", bundle);
+    private void setBundle() {
+        Bundle bundle = new Bundle();
+        bundle.putInt("priNum",priNum);
+        bundle.putString("userID", userID);
+        bundle.putString("groupName", memberInfo.getInfoGroupName());
+        bundle.putString("infoName", memberInfo.getInfoName());
+        bundle.putString("infoPhoneNumber", memberInfo.getInfoNumber());
+        bundle.putString("infoPhoneNumber2", memberInfo.getInfoNumber2());
+        bundle.putString("infoAddress", memberInfo.getInfoAddress());
+        bundle.putString("infoMemo", memberInfo.getInfoMemo());
+
+        Log.d("테스트", memberInfo.getInfoGroupName());
+        moveToFragmentModify(bundle);
     }
 
-    private void moveToFragmentModify() {//View v) {
+    private void moveToFragmentModify(Bundle bundle) {
         if (getActivity() instanceof SettingActivity) {
             Log.d("view -> info", priNum + "");
-            ((SettingActivity) getActivity()).onFragmentChanged(2, priNum);
+            ((SettingActivity) getActivity()).onFragmentChanged(2, bundle);
         }
     }
 }
