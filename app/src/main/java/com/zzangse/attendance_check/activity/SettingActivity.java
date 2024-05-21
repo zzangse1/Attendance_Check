@@ -7,6 +7,7 @@ import android.util.Log;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
 
 import com.zzangse.attendance_check.R;
 import com.zzangse.attendance_check.databinding.ActivitySettingBinding;
@@ -41,10 +42,27 @@ public class SettingActivity extends AppCompatActivity {
     private void initFragment() {
         getGroupName();
         fragmentManager = getSupportFragmentManager();
-        viewFragment = MemberViewFragment.newInstance(groupName, userID);
-        addFragment = MemberAddFragment.newInstance(groupName, userID);
-        infoFragment = MemberInfoFragment.newInstance(priNum);
-        modifyFragment = MemberModifyFragment.newInstance(priNum);
+
+        Bundle viewBundle = new Bundle();
+        viewBundle.putString("groupName", groupName);
+        viewBundle.putString("userID", userID);
+        viewFragment = MemberViewFragment.newInstance(viewBundle);
+
+        Bundle addBundle = new Bundle();
+        addBundle.putString("groupName", groupName);
+        addBundle.putString("userID", userID);
+        addFragment = MemberAddFragment.newInstance(addBundle);
+
+        Bundle infoBundle = new Bundle();
+        infoBundle.putInt("priNum", priNum);
+        infoBundle.putString("userID",userID);
+        infoFragment = MemberInfoFragment.newInstance(infoBundle);
+
+        Bundle modifyBundle = new Bundle();
+        modifyBundle.putInt("priNum", priNum);
+        modifyBundle.putString("userID",userID);
+        modifyFragment = MemberModifyFragment.newInstance(modifyBundle);
+
         fragmentManager.beginTransaction().add(R.id.fragment_setting, viewFragment).commit();
     }
 
@@ -58,32 +76,35 @@ public class SettingActivity extends AppCompatActivity {
         Log.d("userID", userID);
     }
 
-
-    public void onFragmentChanged(int index,int priNum) {
+    public void onFragmentChanged(int index, Bundle bundle) {
         Fragment selectedFragment = null;
         String tag = null;
         if (index == 0) {
-            selectedFragment = MemberInfoFragment.newInstance(priNum);
+            selectedFragment = MemberInfoFragment.newInstance(bundle);
             tag = "info_fragment";
         } else if (index == 1) {
-            selectedFragment = MemberAddFragment.newInstance(groupName, userID);
+            selectedFragment = MemberAddFragment.newInstance(bundle);
             tag = "add_fragment";
         } else if (index == 2) {
             Log.d("setting", priNum + "");
-            selectedFragment = MemberModifyFragment.newInstance(priNum);
+            selectedFragment = MemberModifyFragment.newInstance(bundle);
             tag = "modify_fragment";
         } else if (index == 3) {
-            selectedFragment = MemberViewFragment.newInstance(groupName, userID);
+            selectedFragment = MemberViewFragment.newInstance(bundle);
             tag = "view_fragment";
             // 백스택 초기화
             fragmentManager.popBackStack(null, FragmentManager.POP_BACK_STACK_INCLUSIVE);
         }
         if (selectedFragment != null) {
-            fragmentManager.beginTransaction()
+            FragmentTransaction transaction = fragmentManager.beginTransaction()
                     .replace(R.id.fragment_setting, selectedFragment, tag)
-                    .setReorderingAllowed(true)
-                    .addToBackStack(tag)
-                    .commit();
+                    .setReorderingAllowed(true);
+
+            // view_fragment로 돌아가는 트랜잭션은 백스택에 추가하지 않음
+            if (index != 3) {
+                transaction.addToBackStack(tag);
+            }
+            transaction.commit();
         }
     }
 }
