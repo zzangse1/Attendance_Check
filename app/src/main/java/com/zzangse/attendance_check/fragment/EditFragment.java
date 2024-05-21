@@ -132,10 +132,12 @@ public class EditFragment extends Fragment {
         View dialogView = inflater.inflate(R.layout.dialog_delete, null);
         TextView tvTitle = dialogView.findViewById(R.id.tv_title);
         TextView tvGroup = dialogView.findViewById(R.id.tv_delete_target);
+        TextView tvScript = dialogView.findViewById(R.id.tv_script);
         TextView btnOk = dialogView.findViewById(R.id.btn_ok);
         TextView btnCancel = dialogView.findViewById(R.id.btn_cancel);
 
-        tvGroup.setText(String.format("[ %s ] 삭제 하시겠습니까?",groupName));
+        tvScript.setVisibility(View.VISIBLE);
+        tvGroup.setText(String.format("[ %s ] 삭제 하시겠습니까?", groupName));
 
         tvTitle.setText(dialogTitle);
         AlertDialog dialog = builder.setView(dialogView)
