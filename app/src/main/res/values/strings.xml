@@ -46,6 +46,7 @@
     <!-- dialog_delete -->
     <string name="dialog_delete_title_label">삭제하기</string>
     <string name="dialog_delete_warning_label">삭제 후 되돌릴 수 없습니다!!!</string>
+    <string name="dialog_tv_script">그룹에 소속되어있는 멤버의 정보도 함께 삭제됩니다.</string>
 
     <!-- 프래그먼트 타이틀 -->
     <string name="fragment_chart_title">출결 통계</string>
