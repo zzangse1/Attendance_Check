@@ -1,17 +1,18 @@
 package com.zzangse.attendance_check.data;
 
 public class UserAccount {
-    String idToken, id, password, nickName, name, birth, sex, number;
+    String  id, password, nickName, name, birth, sex, number;
+    int priNum;
 
     public UserAccount() {
     }
 
-    public String getIdToken() {
-        return idToken;
+    public int getPriNum() {
+        return priNum;
     }
 
-    public void setIdToken(String idToken) {
-        this.idToken = idToken;
+    public void setPriNum(int priNum) {
+        this.priNum = priNum;
     }
 
     public String getId() {
