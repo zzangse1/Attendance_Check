@@ -17,35 +17,19 @@ import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.toolbox.Volley;
 import com.zzangse.attendance_check.activity.SettingActivity;
-import com.zzangse.attendance_check.data.MemberInfo;
 import com.zzangse.attendance_check.databinding.FragmentMemberModifyBinding;
-import com.zzangse.attendance_check.request.LoadMemberViewRequest;
 import com.zzangse.attendance_check.request.ModifyMemberRequest;
-
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
 
 public class MemberModifyFragment extends Fragment {
     private FragmentMemberModifyBinding binding;
     private int priNum;
-    private MemberInfo memberInfo;
+    private String userID, groupName;
     private String modifyGroupName, modifyName, modifyNumber, modifyNumber2, modifyAddress, modifyMemo;
 
-    public static MemberModifyFragment newInstance(int priNum) {
+    public static MemberModifyFragment newInstance(Bundle bundle) {
         MemberModifyFragment fragment = new MemberModifyFragment();
-        Bundle args = new Bundle();
-        args.putInt("priNum", priNum);
-        fragment.setArguments(args);
+        fragment.setArguments(bundle);
         return fragment;
-    }
-
-    @Override
-    public void onCreate(@Nullable Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        if (getArguments() != null) {
-            priNum = getArguments().getInt("priNum");
-        }
     }
 
     @Nullable
@@ -58,22 +42,33 @@ public class MemberModifyFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+        getBundle();
         onClickSaveBtn();
         onClickBack();
-        loadMemberData();
         textWatcher();
-
-        //  test();
     }
 
-    private void getMemberInfo() {
-        binding.tvPri.setText(priNum + "");
-        String newGroupName = binding.etModifyGroupName.getText().toString();
-        // newName = binding.etModifyPersonName.getText().toString();
-        String newPhoneNumber = binding.etModifyPersonNumber.getText().toString();
-        String newPhoneNumber2 = binding.etModifyPersonNumber2.getText().toString();
-        String newAddress = binding.etModifyPersonAddress.getText().toString();
-        String newMemo = binding.etModifyPersonMemo.getText().toString();
+    private void getBundle() {
+        if (getArguments() != null) {
+            userID = getArguments().getString("userID", userID);
+            priNum = getArguments().getInt("priNum");
+            groupName = getArguments().getString("groupName");
+            String infoName = getArguments().getString("infoName");
+            String infoPhoneNumber = getArguments().getString("infoPhoneNumber");
+            String infoPhoneNumber2 = getArguments().getString("infoPhoneNumber2");
+            String infoAddress = getArguments().getString("infoAddress");
+            String infoMemo = getArguments().getString("infoMemo");
+            setMemberInfo(groupName, infoName, infoPhoneNumber, infoPhoneNumber2, infoAddress, infoMemo);
+        }
+    }
+
+    private void setMemberInfo(String groupName, String infoName, String infoPhoneNumber, String infoPhoneNumber2, String infoAddress, String infoMemo) {
+        binding.etModifyGroupName.setText(groupName);
+        binding.etModifyPersonName.setText(infoName);
+        binding.etModifyPersonNumber.setText(infoPhoneNumber);
+        binding.etModifyPersonNumber2.setText(infoPhoneNumber2);
+        binding.etModifyPersonAddress.setText(infoAddress);
+        binding.etModifyPersonMemo.setText(infoMemo);
     }
 
     private void onClickBack() {
@@ -82,14 +77,6 @@ public class MemberModifyFragment extends Fragment {
         });
     }
 
-    private void setMemberInfo(MemberInfo memberInfo) {
-        binding.etModifyGroupName.setText(memberInfo.getInfoGroupName());
-        binding.etModifyPersonName.setText(memberInfo.getInfoName());
-        binding.etModifyPersonNumber.setText(memberInfo.getInfoNumber());
-        binding.etModifyPersonNumber2.setText(memberInfo.getInfoNumber2());
-        binding.etModifyPersonAddress.setText(memberInfo.getInfoAddress());
-        binding.etModifyPersonMemo.setText(memberInfo.getInfoMemo());
-    }
 
     private void textWatcher() {
         binding.etModifyPersonMemo.addTextChangedListener(new TextWatcher() {
@@ -107,35 +94,6 @@ public class MemberModifyFragment extends Fragment {
             public void afterTextChanged(Editable s) {
                 int memoLength = binding.etModifyPersonMemo.length();
                 binding.etModifyPersonMemoLayout.setHint("메모(수정) ( " + memoLength + " / 300 )");
-            }
-        });
-    }
-
-    private void loadMemberData() {
-        LoadMemberViewRequest loadMemberViewRequest = new LoadMemberViewRequest(getContext());
-        loadMemberViewRequest.loadMemberViewRequest(priNum, new LoadMemberViewRequest.VolleyCallback() {
-            @Override
-            public void onSuccess(JSONArray result) {
-                for (int i = 0; i < result.length(); i++) {
-                    try {
-                        JSONObject jsonObject = result.getJSONObject(i);
-                        String groupName = jsonObject.getString("groupName");
-                        String infoName = jsonObject.getString("infoName");
-                        String infoPhoneNumber = jsonObject.getString("infoPhoneNumber");
-                        String infoPhoneNumber2 = jsonObject.getString("infoPhoneNumber2");
-                        String infoAddress = jsonObject.getString("infoAddress");
-                        String infoMemo = jsonObject.getString("infoMemo");
-                        memberInfo = new MemberInfo(groupName, infoName, infoPhoneNumber, infoPhoneNumber2, infoAddress, infoMemo);
-                    } catch (JSONException e) {
-                        throw new RuntimeException(e);
-                    }
-                    setMemberInfo(memberInfo);
-                }
-            }
-
-            @Override
-            public void onError(String errorMessage) {
-
             }
         });
     }
@@ -168,30 +126,13 @@ public class MemberModifyFragment extends Fragment {
         }
     }
 
-//    private void test() {
-//        getParentFragmentManager().setFragmentResultListener("memberInfo", this, new FragmentResultListener() {
-//            @Override
-//            public void onFragmentResult(@NonNull String requestKey, @NonNull Bundle result) {
-//                String groupName = result.getString("groupName");
-//                String infoName = result.getString("infoName");
-//                String infoPhoneNumber = result.getString("infoPhoneNumber");
-//                String infoPhoneNumber2 = result.getString("infoPhoneNumber2");
-//                String infoAddress = result.getString("infoAddress");
-//                String infoMemo = result.getString("infoMemo");
-//                Log.d("AAA", groupName);
-//                Log.d("AAA", infoName);
-//                Log.d("AAA", infoPhoneNumber);
-//                Log.d("AAA", infoPhoneNumber2);
-//                Log.d("AAA", infoAddress);
-//                Log.d("AAA", infoMemo);
-//            }
-//        });
-//    }
-
     private void moveToMemberViewFragment() {
         if (getActivity() instanceof SettingActivity) {
             Log.d("modify -> view", priNum + "");
-            ((SettingActivity) getActivity()).onFragmentChanged(3, 0);
+            Bundle bundle = new Bundle();
+            bundle.putString("groupName", groupName);
+            bundle.putString("userID", userID);
+            ((SettingActivity) getActivity()).onFragmentChanged(3, bundle);
 
         }
     }
