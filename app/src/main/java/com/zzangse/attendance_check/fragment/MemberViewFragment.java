@@ -43,13 +43,11 @@ public class MemberViewFragment extends Fragment {
     private RecyclerView recyclerView;
     private ArrayList<MemberInfo> memberNameList = new ArrayList<>();
     private MemberInfo memberInfo;
+    private int priNum;
 
-    public static MemberViewFragment newInstance(String groupName, String userID) {
+    public static MemberViewFragment newInstance(Bundle bundle) {
         MemberViewFragment fragment = new MemberViewFragment();
-        Bundle args = new Bundle();
-        args.putString("groupName", groupName);
-        args.putString("userID", userID);
-        fragment.setArguments(args);
+        fragment.setArguments(bundle);
         return fragment;
     }
 
@@ -67,6 +65,10 @@ public class MemberViewFragment extends Fragment {
         super.onViewCreated(view, savedInstanceState);
         // 구현
         //moveToMemberInfoFragment();
+        if (getArguments() != null) {
+            priNum = getArguments().getInt("priNum");
+            groupName = getArguments().getString("groupName");
+        }
         onClickBack();
         initRecycler();
         setGroupName();
@@ -84,14 +86,16 @@ public class MemberViewFragment extends Fragment {
             @Override
             public void onClickInfo(MemberInfo memberInfo) {
                 Log.d("onClickInfo", memberInfo.getPriNum() + ", " + memberInfo.getInfoName());
-                moveToMemberInfoFragment(memberInfo.getPriNum());
+                priNum = memberInfo.getPriNum();
+              //  moveToMemberInfoFragment(memberInfo.getPriNum());
+                moveToMemberInfoFragment();
             }
 
             @Override
             public void onDelete(MemberInfo memberInfo) {
                 Toast.makeText(getActivity(), "delete", Toast.LENGTH_SHORT).show();
                 int pos = memberNameList.indexOf(memberInfo);
-                showDeleteDialog(memberInfo.getPriNum(), pos,memberInfo.getInfoName());
+                showDeleteDialog(memberInfo.getPriNum(), pos, memberInfo.getInfoName());
             }
         });
     }
@@ -112,7 +116,7 @@ public class MemberViewFragment extends Fragment {
         });
     }
 
-    private void showDeleteDialog(int priNum,int pos,String memberName) {
+    private void showDeleteDialog(int priNum, int pos, String memberName) {
         String dialogTitle = "멤버 삭제하기";
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity(), R.style.RoundedDialog);
         LayoutInflater inflater = requireActivity().getLayoutInflater();
@@ -128,10 +132,10 @@ public class MemberViewFragment extends Fragment {
         AlertDialog dialog = builder.setView(dialogView)
                 .setCancelable(false)
                 .create();
-        btnCancel.setOnClickListener(v->{
+        btnCancel.setOnClickListener(v -> {
             dialog.dismiss();
         });
-        btnOK.setOnClickListener(v->{
+        btnOK.setOnClickListener(v -> {
             dataDelete(priNum);
             memberNameList.remove(pos);
             adapter.notifyItemRemoved(pos);
@@ -141,7 +145,7 @@ public class MemberViewFragment extends Fragment {
     }
 
     private void dataDelete(int priNum) {
-        Toast.makeText(getActivity(),priNum+"멤버삭제",Toast.LENGTH_SHORT).show();
+        Toast.makeText(getActivity(), priNum + "멤버삭제", Toast.LENGTH_SHORT).show();
         RemoveMemberNameRequest request = new RemoveMemberNameRequest(priNum, new Response.Listener<String>() {
             @Override
             public void onResponse(String s) {
@@ -157,13 +161,14 @@ public class MemberViewFragment extends Fragment {
     private void setGroupName() {
         groupName = getArguments().getString("groupName");
         userID = getArguments().getString("userID");
-        binding.tvGroupName.setText("그룹 [ "+groupName+" ]");
+        binding.tvGroupName.setText("그룹 [ " + groupName + " ]");
     }
 
 
     private void dataLoad() {
+        Log.d("데이터 로드  ", userID + ", " + groupName);
         LoadMemberRequest loadMemberRequest = new LoadMemberRequest(getContext());
-        loadMemberRequest.sendMemberOutputRequest(userID,groupName,new LoadMemberRequest.VolleyCallback(){
+        loadMemberRequest.sendMemberOutputRequest(userID, groupName, new LoadMemberRequest.VolleyCallback() {
 
             @Override
             public void onSuccess(JSONArray result) {
@@ -200,15 +205,21 @@ public class MemberViewFragment extends Fragment {
 
     private void moveToMemberAddFragment() {
         if (getActivity() instanceof SettingActivity) {
-            ((SettingActivity) getActivity()).onFragmentChanged(1,0);
-            Toast.makeText(getActivity(), "추가로 이동", Toast.LENGTH_SHORT).show();
+            Bundle bundle = new Bundle();
+            bundle.putString("groupName", groupName);
+            bundle.putString("userID", userID);
+            Log.d("추가로 이동", groupName + ", " + userID);
+            ((SettingActivity) getActivity()).onFragmentChanged(1, bundle);
         }
     }
 
-    private void moveToMemberInfoFragment(int priNum) {
+    private void moveToMemberInfoFragment() {
         if (getActivity() instanceof SettingActivity) {
-            Toast.makeText(getActivity(), "정보로 이동", Toast.LENGTH_SHORT).show();
-            ((SettingActivity) getActivity()).onFragmentChanged(0,priNum);
+            Bundle bundle = new Bundle();
+            bundle.putInt("priNum", priNum);
+            bundle.putString("userID",userID);
+            Log.d("정보로 이동", priNum + "");
+            ((SettingActivity) getActivity()).onFragmentChanged(0, bundle);
         }
     }
 }
