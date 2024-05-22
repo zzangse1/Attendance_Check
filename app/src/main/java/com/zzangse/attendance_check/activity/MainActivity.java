@@ -80,15 +80,19 @@ public class MainActivity extends AppCompatActivity {
             }
             if (fragment != null) {
                 replace(fragment);
-                Bundle bundle = new Bundle();
-                bundle.putString("userID", initAccount());
-                fragment.setArguments(bundle);
             }
             return true;
         }
     }
 
+    private void setBundle(Fragment fragment) {
+        Bundle bundle = new Bundle();
+        bundle.putString("userID", initAccount());
+        fragment.setArguments(bundle);
+    }
     private void replace(Fragment fragment) {
+        setBundle(fragment);
+
         FragmentTransaction transaction = fragmentManager.beginTransaction();
         transaction.replace(R.id.nav_host_fragment, fragment);
         transaction.commit();
