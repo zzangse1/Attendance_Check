@@ -15,12 +15,12 @@ import com.zzangse.attendance_check.R;
 
 import java.util.ArrayList;
 
-public class GroupNameAdapter extends RecyclerView.Adapter<GroupNameAdapter.ViewHolder> {
+public class EditGroupNameAdapter extends RecyclerView.Adapter<EditGroupNameAdapter.ViewHolder> {
     private ArrayList<GroupName> list;
     private Context context;
     private GroupNameAdapterClick groupNameAdapterClick;
 
-    public GroupNameAdapter(Context context, ArrayList<GroupName> list) {
+    public EditGroupNameAdapter(Context context, ArrayList<GroupName> list) {
         this.context = context;
         this.list = list;
     }
@@ -38,13 +38,13 @@ public class GroupNameAdapter extends RecyclerView.Adapter<GroupNameAdapter.View
 
     @NonNull
     @Override
-    public GroupNameAdapter.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+    public EditGroupNameAdapter.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(context).inflate(R.layout.rv_plain_name, parent, false);
         return new ViewHolder(view);
     }
 
     @Override
-    public void onBindViewHolder(@NonNull GroupNameAdapter.ViewHolder holder, int position) {
+    public void onBindViewHolder(@NonNull EditGroupNameAdapter.ViewHolder holder, int position) {
         GroupName groupName = list.get(position);
         holder.bind(groupName);
 
