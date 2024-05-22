@@ -61,6 +61,9 @@
     <string name="menu_chart">통계</string>
     <string name="menu_edit">편집</string>
 
+    <!-- 체크 프래그먼트 -->
+    <string name="fragment_check_iv_script">textView안에 있는 화살표</string>
+    <string name="plain_choice">선택</string>
 
 
 </resources>
