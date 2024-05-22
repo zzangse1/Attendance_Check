@@ -45,7 +45,7 @@ public class LoadGroupRequest {
 
     public void sendGroupOutputRequest(final String userID, final VolleyCallback callback) {
         if (!isNetworkAvailable()) {
-            callback.onError("No internet connetion");
+            callback.onError("No internet connection");
             return;
         }
         StringRequest stringRequest = new StringRequest(Request.Method.POST, getBaseUrl(),
