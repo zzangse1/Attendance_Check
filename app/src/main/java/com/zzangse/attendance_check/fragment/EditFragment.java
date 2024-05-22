@@ -26,7 +26,7 @@ import com.google.android.material.textfield.TextInputEditText;
 import com.google.android.material.textfield.TextInputLayout;
 import com.zzangse.attendance_check.R;
 import com.zzangse.attendance_check.activity.SettingActivity;
-import com.zzangse.attendance_check.adapter.GroupNameAdapter;
+import com.zzangse.attendance_check.adapter.EditGroupNameAdapter;
 import com.zzangse.attendance_check.data.GroupName;
 import com.zzangse.attendance_check.databinding.FragmentEditBinding;
 import com.zzangse.attendance_check.request.InsertGroupRequest;
@@ -44,7 +44,7 @@ public class EditFragment extends Fragment {
     private String userID;
     private ArrayList<GroupName> groupNameList = new ArrayList<>();
     private final static String REGEX_GROUP_NAME = "^(?!\\s{2,10}$)\\S{2,10}$";
-    private GroupNameAdapter adapter;
+    private EditGroupNameAdapter adapter;
     private RecyclerView recyclerView;
     private GroupName groupName;
 
@@ -90,10 +90,10 @@ public class EditFragment extends Fragment {
     private void initRecycler() {
         recyclerView = binding.rvEdit;
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
-        adapter = new GroupNameAdapter(getContext(), groupNameList);
+        adapter = new EditGroupNameAdapter(getContext(), groupNameList);
         recyclerView.setAdapter(adapter);
 
-        adapter.setOnClick(new GroupNameAdapter.GroupNameAdapterClick() {
+        adapter.setOnClick(new EditGroupNameAdapter.GroupNameAdapterClick() {
             @Override
             public void onClickInfo(GroupName groupName) {
                 Toast.makeText(getActivity(), groupName.getGroupName(), Toast.LENGTH_SHORT).show();
