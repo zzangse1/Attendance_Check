@@ -26,11 +26,11 @@
         android:layout_width="0dp"
         android:layout_height="50dp"
         android:layout_marginStart="20dp"
+        android:layout_marginTop="20dp"
         android:layout_marginEnd="20dp"
         android:background="@drawable/plane_outline_background"
         android:gravity="center"
         android:text="@string/modify_group_name"
-        app:layout_constraintBottom_toTopOf="@id/tv_date"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/toolbar_check" />
@@ -50,12 +50,11 @@
         android:id="@+id/btn_left"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="50dp"
-        android:layout_marginEnd="10dp"
+        android:layout_marginTop="20dp"
         android:background="@drawable/ic_arrow_left"
-        app:layout_constraintBottom_toBottomOf="@id/tv_date"
+        app:layout_constraintEnd_toStartOf="@id/tv_date"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@id/tv_date" />
+        app:layout_constraintTop_toBottomOf="@id/tv_group_name" />
 
     <TextView
         android:id="@+id/tv_date"
@@ -64,19 +63,18 @@
         android:layout_height="wrap_content"
         android:text="4월 20일"
         app:layout_constraintBottom_toTopOf="@id/view"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toStartOf="@id/btn_right"
+        app:layout_constraintStart_toEndOf="@id/btn_left"
         app:layout_constraintTop_toBottomOf="@id/tv_group_name" />
 
     <Button
         android:id="@+id/btn_right"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginEnd="50dp"
         android:background="@drawable/ic_arrow_right"
-        app:layout_constraintBottom_toBottomOf="@id/tv_date"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="@id/tv_date" />
+        app:layout_constraintStart_toEndOf="@id/tv_date"
+        app:layout_constraintTop_toTopOf="@id/btn_left" />
 
     <View
         android:id="@+id/view"
@@ -129,6 +127,16 @@
         app:layout_constraintEnd_toEndOf="@id/view"
         app:layout_constraintStart_toEndOf="@id/circle_yellow"
         app:layout_constraintTop_toTopOf="@id/circle_yellow" />
+
+    <TextView
+        android:id="@+id/tv_member_null"
+        style="@style/AppEditText.Bold.S32"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:visibility="gone"
+        app:layout_constraintStart_toStartOf="@id/view"
+        app:layout_constraintTop_toBottomOf="@id/view" />
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/rv_check"
