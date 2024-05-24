@@ -34,15 +34,39 @@
             android:layout_height="match_parent" />
     </com.google.android.material.textfield.TextInputLayout>
 
+    <TextView
+        android:id="@+id/tv_error"
+        style="@style/AppEditText.Bold"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="20dp"
+        android:layout_marginTop="20dp"
+        android:visibility="gone"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/et_group_name_layout" />
+
+    <TextView
+        android:id="@+id/tv_error2"
+        style="@style/AppEditText.S17"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="20dp"
+        android:text="단어의 철자가 정확한지 확인해보세요."
+        android:inputType="textMultiLine"
+        android:layout_marginTop="10dp"
+        android:visibility="gone"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/tv_error" />
+
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/rv_group_name_list"
         android:layout_width="0dp"
         android:layout_height="300dp"
         android:layout_margin="20dp"
+        app:layout_constraintBottom_toTopOf="@id/btn_layout"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/et_group_name_layout"
-        app:layout_constraintBottom_toTopOf="@id/btn_layout"
         tools:listitem="@layout/rv_group_name_dialog" />
 
     <LinearLayout
