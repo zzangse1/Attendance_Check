@@ -33,6 +33,10 @@ public class CheckGroupNameAdapter extends RecyclerView.Adapter<CheckGroupNameAd
         notifyDataSetChanged();
     }
 
+    public boolean listNull(ArrayList<GroupName> filteredList) {
+        list = filteredList;
+        return list.isEmpty();
+    }
 
     public interface GroupNameAdapterClick {
         void onClickInfo(GroupName groupName);
