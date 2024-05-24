@@ -10,8 +10,10 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
+import androidx.lifecycle.ViewModelProvider;
 
 import com.google.android.material.navigation.NavigationBarView;
+import com.zzangse.attendance_check.data.GroupViewModel;
 import com.zzangse.attendance_check.fragment.ChartFragment;
 import com.zzangse.attendance_check.fragment.CheckFragment;
 import com.zzangse.attendance_check.fragment.EditFragment;
@@ -20,13 +22,13 @@ import com.zzangse.attendance_check.R;
 import com.zzangse.attendance_check.databinding.ActivityMainBinding;
 
 public class MainActivity extends AppCompatActivity {
-    private ActivityMainBinding mainBinding;
+    private ActivityMainBinding binding;
     private FragmentManager fragmentManager;
     private CheckFragment checkFragment;
     private ChartFragment chartFragment;
     private EditFragment editFragment;
     private MoreFragment moreFragment;
-
+    private GroupViewModel groupViewModel;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -34,10 +36,17 @@ public class MainActivity extends AppCompatActivity {
         initView();
         initFragment();
         setupBottomNav();
+
+        groupViewModel = new ViewModelProvider(this).get(GroupViewModel.class);
+
     }
 
+
+    public GroupViewModel getGroupViewModel() {
+        return groupViewModel;
+    }
     private void setupBottomNav() {
-        mainBinding.bottomNav.setOnItemSelectedListener(new BottomNavSelect());
+        binding.bottomNav.setOnItemSelectedListener(new BottomNavSelect());
     }
 
     private void initFragment() {
@@ -51,8 +60,8 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void initView() {
-        mainBinding = ActivityMainBinding.inflate(getLayoutInflater());
-        setContentView(mainBinding.getRoot());
+        binding = ActivityMainBinding.inflate(getLayoutInflater());
+        setContentView(binding.getRoot());
     }
 
     private String initAccount() {
@@ -90,9 +99,9 @@ public class MainActivity extends AppCompatActivity {
         bundle.putString("userID", initAccount());
         fragment.setArguments(bundle);
     }
+
     private void replace(Fragment fragment) {
         setBundle(fragment);
-
         FragmentTransaction transaction = fragmentManager.beginTransaction();
         transaction.replace(R.id.nav_host_fragment, fragment);
         transaction.commit();
