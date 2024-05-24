@@ -35,7 +35,7 @@
                 app:layout_constraintTop_toTopOf="parent" />
 
             <TextView
-                android:id="@+id/rv_check_result"
+                android:id="@+id/tv_rv_check_result"
                 style="@style/AppEditText.Bold.S24"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
