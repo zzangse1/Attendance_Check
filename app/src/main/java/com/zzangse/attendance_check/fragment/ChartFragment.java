@@ -5,17 +5,20 @@ import android.os.Bundle;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.Observer;
+import androidx.lifecycle.ViewModelProvider;
 
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.zzangse.attendance_check.R;
+import com.zzangse.attendance_check.data.GroupViewModel;
 import com.zzangse.attendance_check.databinding.FragmentChartBinding;
 
 
 public class ChartFragment extends Fragment {
     private FragmentChartBinding binding;
+    private GroupViewModel groupViewModel;
 
 
     @Override
@@ -23,6 +26,14 @@ public class ChartFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         binding = FragmentChartBinding.inflate(inflater);
+        groupViewModel = new ViewModelProvider(requireActivity()).get(GroupViewModel.class);
+        groupViewModel.getGroupName().observe(getViewLifecycleOwner(), new Observer<String>() {
+            @Override
+            public void onChanged(String s) {
+                binding.tvTest.setText(s);
+            }
+        });
+
         return binding.getRoot();
     }
 
