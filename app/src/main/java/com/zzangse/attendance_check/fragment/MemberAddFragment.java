@@ -24,7 +24,7 @@ import com.zzangse.attendance_check.request.InsertMemberRequest;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-public class MemberAddFragment extends Fragment {
+public class MemberAddFragment extends Fragment{
     private FragmentMemberAddBinding binding;
     private String groupName;
     private String userID;
@@ -132,6 +132,7 @@ public class MemberAddFragment extends Fragment {
 
     private void onClickSaveBtn() {
         binding.btnSave.setOnClickListener(v -> {
+            Log.d("저장버튼누름", "저장버튼누름");
             getMemberInfo();
         });
     }
@@ -172,11 +173,14 @@ public class MemberAddFragment extends Fragment {
                     boolean isSuccess = jsonObject.getBoolean("success");
                     if (isSuccess) {
                         Toast.makeText(getActivity(), "DB ok", Toast.LENGTH_SHORT).show();
+                        Log.d("DB접속 ", "저장완료");
                         getActivity().onBackPressed();
                     } else {
                         Toast.makeText(getActivity(), "DB false", Toast.LENGTH_SHORT).show();
+                        Log.d("DB접속 ", "저장실패");
                     }
                 } catch (JSONException e) {
+                    Log.e("DB에러", "JSON예외 발생: "+ e);
                     throw new RuntimeException(e);
                 }
             }
@@ -184,7 +188,13 @@ public class MemberAddFragment extends Fragment {
         InsertMemberRequest request = new InsertMemberRequest(userID, groupName, name, number, number2,
                 address, memo, listener);
         if (getActivity() != null) {
-            Log.d("add", userID + groupName + name + number + number2 + address + memo);
+            Log.d("저장버튼", "userID: " + userID);
+            Log.d("저장버튼", "groupName: " + groupName);
+            Log.d("저장버튼", "name: " + name);
+            Log.d("저장버튼", "number: " + number);
+            Log.d("저장버튼", "number2: " + number2);
+            Log.d("저장버튼", "address: " + address);
+            Log.d("저장버튼", "memo: " + memo);
             RequestQueue queue = Volley.newRequestQueue(getActivity());
             queue.add(request);
         }
