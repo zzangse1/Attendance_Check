@@ -16,6 +16,8 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.widget.Toolbar;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.Observer;
+import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -28,6 +30,7 @@ import com.zzangse.attendance_check.R;
 import com.zzangse.attendance_check.activity.SettingActivity;
 import com.zzangse.attendance_check.adapter.EditGroupNameAdapter;
 import com.zzangse.attendance_check.data.GroupName;
+import com.zzangse.attendance_check.data.GroupViewModel;
 import com.zzangse.attendance_check.databinding.FragmentEditBinding;
 import com.zzangse.attendance_check.request.InsertGroupRequest;
 import com.zzangse.attendance_check.request.LoadGroupRequest;
@@ -47,6 +50,9 @@ public class EditFragment extends Fragment {
     private EditGroupNameAdapter adapter;
     private RecyclerView recyclerView;
     private GroupName groupName;
+    private String deleteGroupName;
+    private String choiceGroupName;
+    private GroupViewModel groupViewModel;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -57,6 +63,7 @@ public class EditFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         binding = FragmentEditBinding.inflate(inflater);
         getArgs();
+        test();
         return binding.getRoot();
     }
 
@@ -65,6 +72,20 @@ public class EditFragment extends Fragment {
         if (args != null) {
             userID = args.getString("userID");
         }
+    }
+
+    private void test() {
+        groupViewModel = new ViewModelProvider(requireActivity()).get(GroupViewModel.class);
+        groupViewModel.getGroupName().observe(getViewLifecycleOwner(), new Observer<String>() {
+            @Override
+            public void onChanged(String s) {
+                choiceGroupName = s;
+            }
+        });
+    }
+
+    private void viewModelDelete() {
+        groupViewModel.setGroupName("그룹 이름(수정)");
     }
 
     @Override
@@ -120,6 +141,9 @@ public class EditFragment extends Fragment {
             }
         });
         if (getActivity() != null) {
+            if (choiceGroupName.equals(groupName)) {
+                viewModelDelete();
+            }
             RequestQueue queue = Volley.newRequestQueue(getActivity());
             queue.add(request);
         }
