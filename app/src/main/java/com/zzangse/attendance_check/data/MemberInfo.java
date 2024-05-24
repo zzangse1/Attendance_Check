@@ -3,13 +3,18 @@ package com.zzangse.attendance_check.data;
 public class MemberInfo {
     private int priNum;
     private String infoGroupName, infoName, infoNumber, infoNumber2, infoAddress, infoMemo;
+    private String infoCheck, infoDate;
 
     public MemberInfo() {
 
     }
 
-    public MemberInfo(int priNum,String infoName) {
+    public MemberInfo(int priNum, String infoName) {
         this.priNum = priNum;
+        this.infoName = infoName;
+    }
+
+    public MemberInfo(String infoName) {
         this.infoName = infoName;
     }
 
@@ -20,6 +25,22 @@ public class MemberInfo {
         this.infoNumber2 = infoNumber2;
         this.infoAddress = infoAddress;
         this.infoMemo = infoMemo;
+    }
+
+    public String getInfoCheck() {
+        return infoCheck;
+    }
+
+    public void setInfoCheck(String infoCheck) {
+        this.infoCheck = infoCheck;
+    }
+
+    public String getInfoDate() {
+        return infoDate;
+    }
+
+    public void setInfoDate(String infoDate) {
+        this.infoDate = infoDate;
     }
 
     public int getPriNum() {
