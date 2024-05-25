@@ -1,4 +1,4 @@
-package com.zzangse.attendance_check.fragment;
+package com.zzangse.attendance_check.fragmentmain;
 
 import android.app.AlertDialog;
 import android.content.Intent;
