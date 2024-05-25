@@ -14,8 +14,10 @@ public class MemberInfo {
         this.infoName = infoName;
     }
 
-    public MemberInfo(String infoName) {
+    public MemberInfo(int priNum, String infoName,String infoNumber) {
+        this.priNum = priNum;
         this.infoName = infoName;
+        this.infoNumber = infoNumber;
     }
 
     public MemberInfo(String infoGroupName, String infoName, String infoNumber, String infoNumber2, String infoAddress, String infoMemo) {
