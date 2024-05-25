@@ -1,4 +1,4 @@
-package com.zzangse.attendance_check.fragment;
+package com.zzangse.attendance_check.fragmentsetting;
 
 import android.os.Bundle;
 import android.util.Log;
