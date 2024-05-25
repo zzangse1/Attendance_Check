@@ -14,10 +14,10 @@ import androidx.lifecycle.ViewModelProvider;
 
 import com.google.android.material.navigation.NavigationBarView;
 import com.zzangse.attendance_check.data.GroupViewModel;
-import com.zzangse.attendance_check.fragment.ChartFragment;
-import com.zzangse.attendance_check.fragment.CheckFragment;
-import com.zzangse.attendance_check.fragment.EditFragment;
-import com.zzangse.attendance_check.fragment.MoreFragment;
+import com.zzangse.attendance_check.fragmentmain.ChartFragment;
+import com.zzangse.attendance_check.fragmentmain.CheckFragment;
+import com.zzangse.attendance_check.fragmentmain.EditFragment;
+import com.zzangse.attendance_check.fragmentmain.MoreFragment;
 import com.zzangse.attendance_check.R;
 import com.zzangse.attendance_check.databinding.ActivityMainBinding;
 
