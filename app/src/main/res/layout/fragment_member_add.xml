@@ -50,7 +50,7 @@
                 android:layout_marginStart="20dp"
                 android:layout_marginEnd="20dp"
                 android:hint="이름"
-                app:boxStrokeColor="@color/navy_200"
+                app:boxStrokeColor="@color/navy_300"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent">
@@ -83,7 +83,7 @@
                 android:layout_marginTop="10dp"
                 android:layout_marginEnd="20dp"
                 android:hint="전화 번호"
-                app:boxStrokeColor="@color/navy_200"
+                app:boxStrokeColor="@color/navy_300"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/tv_error_name">
@@ -116,7 +116,7 @@
                 android:layout_marginTop="10dp"
                 android:layout_marginEnd="20dp"
                 android:hint="비상연락망"
-                app:boxStrokeColor="@color/navy_200"
+                app:boxStrokeColor="@color/navy_300"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/tv_error_number">
@@ -149,7 +149,7 @@
                 android:layout_marginTop="10dp"
                 android:layout_marginEnd="20dp"
                 android:hint="주소"
-                app:boxStrokeColor="@color/navy_200"
+                app:boxStrokeColor="@color/navy_300"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/tv_error_number2">
@@ -182,7 +182,7 @@
                 android:layout_marginTop="10dp"
                 android:layout_marginEnd="20dp"
                 android:hint="메모"
-                app:boxStrokeColor="@color/navy_200"
+                app:boxStrokeColor="@color/navy_300"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/tv_error_address">

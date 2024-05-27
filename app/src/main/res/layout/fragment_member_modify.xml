@@ -61,7 +61,7 @@
                 android:layout_marginStart="20dp"
                 android:layout_marginEnd="20dp"
                 android:hint="@string/modify_group_name"
-                app:boxStrokeColor="@color/navy_200"
+                app:boxStrokeColor="@color/navy_300"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent">
@@ -84,7 +84,7 @@
                 android:layout_marginTop="20dp"
                 android:layout_marginEnd="20dp"
                 android:hint="@string/modify_name"
-                app:boxStrokeColor="@color/navy_200"
+                app:boxStrokeColor="@color/navy_300"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/et_modify_group_name_layout">
@@ -106,7 +106,7 @@
                 android:layout_marginTop="20dp"
                 android:layout_marginEnd="20dp"
                 android:hint="@string/modify_number"
-                app:boxStrokeColor="@color/navy_200"
+                app:boxStrokeColor="@color/navy_300"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/et_modify_person_name_layout">
@@ -129,7 +129,7 @@
                 android:layout_marginTop="20dp"
                 android:layout_marginEnd="20dp"
                 android:hint="@string/modify_number2"
-                app:boxStrokeColor="@color/navy_200"
+                app:boxStrokeColor="@color/navy_300"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/et_modify_person_number_layout">
@@ -151,7 +151,7 @@
                 android:layout_marginTop="20dp"
                 android:layout_marginEnd="20dp"
                 android:hint="@string/modify_address"
-                app:boxStrokeColor="@color/navy_200"
+                app:boxStrokeColor="@color/navy_300"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/et_modify_person_number2_layout">
@@ -174,7 +174,7 @@
                 android:layout_marginTop="20dp"
                 android:layout_marginEnd="20dp"
                 android:hint="@string/modify_memo"
-                app:boxStrokeColor="@color/navy_200"
+                app:boxStrokeColor="@color/navy_300"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/et_modify_person_address_layout">
