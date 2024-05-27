@@ -7,8 +7,9 @@
     <color name="red_200">#E85B5B</color>
 
 
-    <color name="navy_100">#4169E1</color>
-    <color name="navy_200">#191970</color>
+    <color name="navy_100">#BABAD4</color>
+    <color name="navy_200">#46468c</color>
+    <color name="navy_300">#191970</color>
     <color name="gray_100">#DCDCDC</color>
     <color name="gray_200">#C0C0C0</color>
     <color name="gray_300">#8897AE</color>
