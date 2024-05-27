@@ -9,15 +9,27 @@ public class MemberInfo {
 
     }
 
+    public MemberInfo(String infoCheck) {
+        this.infoCheck = infoCheck;
+
+    }
+
     public MemberInfo(int priNum, String infoName) {
         this.priNum = priNum;
         this.infoName = infoName;
     }
 
-    public MemberInfo(int priNum, String infoName,String infoNumber) {
+    public MemberInfo(int priNum, String infoName,String infoNumber ) {
         this.priNum = priNum;
         this.infoName = infoName;
         this.infoNumber = infoNumber;
+    }
+
+    public MemberInfo(int priNum, String infoName,String infoNumber ,String infoCheck) {
+        this.priNum = priNum;
+        this.infoName = infoName;
+        this.infoNumber = infoNumber;
+        this.infoCheck = infoCheck;
     }
 
     public MemberInfo(String infoGroupName, String infoName, String infoNumber, String infoNumber2, String infoAddress, String infoMemo) {
