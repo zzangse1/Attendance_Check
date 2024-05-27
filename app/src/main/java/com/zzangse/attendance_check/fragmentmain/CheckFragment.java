@@ -39,12 +39,14 @@ import com.zzangse.attendance_check.data.MemberInfo;
 import com.zzangse.attendance_check.databinding.FragmentCheckBinding;
 import com.zzangse.attendance_check.request.InsertCheckRequest;
 import com.zzangse.attendance_check.request.LoadGroupRequest;
+import com.zzangse.attendance_check.request.LoadMemberCheckRequest;
 import com.zzangse.attendance_check.request.LoadMemberRequest;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -57,15 +59,18 @@ public class CheckFragment extends Fragment {
     private Calendar calendar;
     private Date date = new Date();
     private String userID;
-    private SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yy년 M월 dd일");
+    private SimpleDateFormat simpleDateFormat;
     private ArrayList<GroupName> groupNameList = new ArrayList<>();
     private ArrayList<GroupName> filterList = new ArrayList<>();
     private ArrayList<MemberInfo> memberInfoList = new ArrayList<>();
+    private ArrayList<MemberInfo> memberInfoCheckList = new ArrayList<>();
     private CheckMemberNameAdapter memberAdapter;
     private GroupName groupName;
     private MemberInfo memberInfo;
+    private int[] priNumArr;
     private String choiceGroupName;
     private String today, choiceDay;
+    java.sql.Date sqlDate;
     private boolean viewModel = false;
 
     @Override
@@ -93,14 +98,37 @@ public class CheckFragment extends Fragment {
         TextView tv_infoName = sheetDialog.findViewById(R.id.tv_bottom_name);
         TextView tv_infoNumber = sheetDialog.findViewById(R.id.tv_bottom_number);
         Button btn_1 = sheetDialog.findViewById(R.id.btn_bottom_check_present);
+        Button btn_2 = sheetDialog.findViewById(R.id.btn_bottom_check_tardy);
+        Button btn_3 = sheetDialog.findViewById(R.id.btn_bottom_check_absent);
 
-        btn_1.setOnClickListener(v->{
-            String aaa = "출석";
-            insertCheckDB(priNum, aaa, today);
-            Log.d("저장되었습니다.", "priNum" + priNum + "출석: " + aaa + "날짜" + today);
+        btn_1.setOnClickListener(v -> {
+            String check = btn_1.getText().toString();
+            Log.d("날짜", sqlDate + "");
+            insertCheckDB(priNum, check, sqlDate);
+            Log.d("저장되었습니다.", "priNum |" + priNum + "출석 |" + check + "날짜" + sqlDate);
+            Toast.makeText(getContext(), "저장되었습니다.", Toast.LENGTH_SHORT).show();
+            //loadMemberCheck(51,sqlDate);
+            sheetDialog.dismiss();
+        });
+        btn_2.setOnClickListener(v -> {
+            String check = btn_2.getText().toString();
+            Log.d("날짜", sqlDate + "");
+            insertCheckDB(priNum, check, sqlDate);
+            Log.d("저장되었습니다.", "priNum |" + priNum + "출석 |" + check + "날짜" + sqlDate);
             Toast.makeText(getContext(), "저장되었습니다.", Toast.LENGTH_SHORT).show();
             sheetDialog.dismiss();
         });
+
+        btn_3.setOnClickListener(v -> {
+            String check = btn_3.getText().toString();
+            Log.d("날짜", sqlDate + "");
+            insertCheckDB(priNum, check, sqlDate);
+          //  loadMemberCheckDB();
+            Log.d("저장되었습니다.", "priNum |" + priNum + "출석 |" + check + "날짜" + sqlDate);
+            Toast.makeText(getContext(), "저장되었습니다.", Toast.LENGTH_SHORT).show();
+            sheetDialog.dismiss();
+        });
+
         tv_infoName.setText(infoName);
         tv_infoNumber.setText(infoNumber);
 
@@ -111,13 +139,15 @@ public class CheckFragment extends Fragment {
         sheetDialog.setOnCancelListener(new DialogInterface.OnCancelListener() {
             @Override
             public void onCancel(DialogInterface dialog) {
-              //  dialog.dismiss();
+                //  dialog.dismiss();
+                Log.d("다이얼로그", "닫ㅎ미");
             }
         });
         sheetDialog.setCanceledOnTouchOutside(true);
         sheetDialog.create();
         sheetDialog.show();
     }
+
 
     private void moveToCall(String number) {
         Intent intent = new Intent(Intent.ACTION_DIAL);
@@ -216,6 +246,8 @@ public class CheckFragment extends Fragment {
             public void onClickInfo(MemberInfo memberInfo) {
                 Log.d("클릭 멤버 이름:", memberInfo.getInfoName());
                 Log.d("클릭 멤버 기본키: ", memberInfo.getPriNum() + "");
+                Log.d("클릭 멤버 체크: ", memberInfo.getInfoCheck() + "");
+                Log.d("클릭 멤버 날짜: ", memberInfo.getInfoDate() + "");
                 Toast.makeText(getActivity(), memberInfo.getInfoName(), Toast.LENGTH_SHORT).show();
                 showSheet(memberInfo.getPriNum(), memberInfo.getInfoName(), memberInfo.getInfoNumber());
             }
@@ -223,10 +255,20 @@ public class CheckFragment extends Fragment {
     }
 
     private void setCalendar() {
-        simpleDateFormat = new SimpleDateFormat("yy년 M월 dd일");
-        today = simpleDateFormat.format(date);
+        simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd");
+        today = simpleDateFormat.format(new Date());
         binding.tvDate.setText(today);
         Log.d("오늘 날짜", today);
+
+        try {
+            Date parsedDate = simpleDateFormat.parse(today);
+            if (parsedDate != null) {
+                sqlDate = new java.sql.Date(parsedDate.getTime());
+                Log.d("setCalendar", "sqlDate: " + sqlDate);
+            }
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
     }
 
 
@@ -235,27 +277,36 @@ public class CheckFragment extends Fragment {
         // today
         Long today = MaterialDatePicker.todayInUtcMilliseconds();
         binding.tvDate.setOnClickListener(v -> {
+            Long initialSelection = (sqlDate != null) ? sqlDate.getTime() : today;
+
             MaterialDatePicker datePicker = MaterialDatePicker.Builder.datePicker()
                     .setTitleText("")
-                    .setSelection(today).build();
+                    .setSelection(initialSelection)
+                    .build();
 
             datePicker.show(getActivity().getSupportFragmentManager(), "DATE_PICKER");
 
             datePicker.addOnPositiveButtonClickListener(new MaterialPickerOnPositiveButtonClickListener<Long>() {
                 @Override
                 public void onPositiveButtonClick(Long selection) {
-                    simpleDateFormat = new SimpleDateFormat("yy년 M월 d일");
-                    date.setTime(selection);
-                    choiceDay = simpleDateFormat.format(date);
+                    simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd");
+                    Date selectedDate = new Date(selection);
+                    choiceDay = simpleDateFormat.format(selectedDate);
                     binding.tvDate.setText(choiceDay);
                     Log.d("선택 날짜", choiceDay);
+                    try {
+                        sqlDate = new java.sql.Date(selectedDate.getTime());
+                        Log.d("setCalendar", "sqlDate: " + sqlDate);
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
                 }
             });
         });
 
     }
 
-    private void insertCheckDB(int priNum, String infoCheck, String infoDate) {
+    private void insertCheckDB(int priNum, String infoCheck, java.sql.Date infoDate) {
         Response.Listener<String> listener = new Response.Listener<String>() {
             @Override
             public void onResponse(String s) {
@@ -275,15 +326,41 @@ public class CheckFragment extends Fragment {
                 }
             }
         };
-       // InsertCheckRequest request = new InsertCheckRequest(priNum, infoCheck, infoDate, listener);
-        InsertCheckRequest request = new InsertCheckRequest(priNum, infoCheck, listener);
+        InsertCheckRequest request = new InsertCheckRequest(priNum, infoCheck, infoDate, listener);
+        //nsertCheckRequest request = new InsertCheckRequest(priNum, infoCheck,listener);
         if (getActivity() != null) {
             Log.d("저장버튼", "priNum: " + priNum);
             Log.d("저장버튼", "infoCheck: " + infoCheck);
-            Log.d("저장버튼", "infoDate: " + infoDate);
+            Log.d("저장버튼", "infoDate: " + infoDate + "");
             RequestQueue queue = Volley.newRequestQueue(getActivity());
             queue.add(request);
         }
+    }
+
+    private void loadMemberCheckDB(int priNum,java.util.Date infoDate) {
+            LoadMemberCheckRequest loadMemberCheckRequest = new LoadMemberCheckRequest(getContext());
+            loadMemberCheckRequest.sendMemberOutputRequest(priNum, infoDate, new LoadMemberCheckRequest.VolleyCallback() {
+                @Override
+                public void onSuccess(JSONArray result) {
+                    try {
+                        for (int i = 0; i < result.length(); i++) {
+                            JSONObject jsonObject = result.getJSONObject(i);
+                            String infoCheck = jsonObject.getString("infoCheck");
+                            Log.d("infoCheck", i + "번째: " + infoCheck);
+                            memberInfo = new MemberInfo(infoCheck);
+                            memberInfoCheckList.add(memberInfo);
+                        }
+                        memberAdapter.notifyDataSetChanged();
+                    } catch (JSONException e) {
+                        throw new RuntimeException(e);
+                    }
+                }
+
+                @Override
+                public void onError(String errorMessage) {
+
+                }
+            });
     }
 
     private void loadMemberNameDB() {
@@ -291,10 +368,10 @@ public class CheckFragment extends Fragment {
         loadMemberRequest.sendMemberOutputRequest(userID, choiceGroupName, new LoadMemberRequest.VolleyCallback() {
             @Override
             public void onSuccess(JSONArray result) {
+                priNumArr = new int[result.length()];
                 try {
                     memberInfoList.clear();
                     for (int i = 0; i < result.length(); i++) {
-                        //  memberInfo = new MemberInfo();
                         JSONObject jsonObject = result.getJSONObject(i);
                         // priNum도 가져와야함
                         int priNum = jsonObject.getInt("priNum");
@@ -303,20 +380,12 @@ public class CheckFragment extends Fragment {
                         Log.d("memberName", i + "번째: " + dbInfoName);
                         Log.d("dbInfoNumber", i + "번째: " + dbInfoNumber);
                         Log.d("priNum", i + "번째: " + priNum);
-                        // memberInfo.setInfoName(dbMemberName);
+                        priNumArr[i] = priNum;
                         memberInfo = new MemberInfo(priNum, dbInfoName, dbInfoNumber);
                         memberInfoList.add(memberInfo);
                     }
                     memberAdapter.notifyDataSetChanged();
                     isNullMemberInfoList(memberInfoList);
-//                    if (memberInfoList.isEmpty()) {
-//                        Log.d("memberInfoList Null 체크", "memberInfoList isNull");
-//                        binding.tvMemberNull.setText("멤버가 없습니다.");
-//                        binding.tvMemberNull.setVisibility(View.VISIBLE);
-//                    } else {
-//                        binding.tvMemberNull.setVisibility(View.GONE);
-//                        Log.d("memberInfoList Null 체크", "memberInfoList NotNull");
-//                    }
                 } catch (Exception e) {
                     throw new RuntimeException(e);
                 }
