@@ -43,7 +43,7 @@ public class MemberAddFragment extends Fragment{
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         binding = FragmentMemberAddBinding.inflate(inflater);
         COLOR_RED = ContextCompat.getColor(requireContext(), R.color.red);
-        COLOR_NAVY = ContextCompat.getColor(requireContext(), R.color.navy_200);
+        COLOR_NAVY = ContextCompat.getColor(requireContext(), R.color.navy_300);
         return binding.getRoot();
     }
 
