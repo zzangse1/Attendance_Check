@@ -352,7 +352,7 @@ public class SignupActivity extends AppCompatActivity {
 
         // 선택된 버튼의 상태 변경
         int selectedBackgroundColor;
-        int selectedTextColor = getColor(R.color.navy_200);
+        int selectedTextColor = getColor(R.color.navy_300);
         if (selectedButton == binding.btnMale) {
             selectedBackgroundColor = R.drawable.btn_click_sex_start;
         } else if (selectedButton == binding.btnFemale) {

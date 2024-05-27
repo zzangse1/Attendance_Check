@@ -34,7 +34,7 @@
     </style>
 
     <style name="AppEditText.Navy">
-        <item name="android:textColor">@color/navy_200</item>
+        <item name="android:textColor">@color/navy_300</item>
     </style>
 
     <style name="AppEditText.Navy.S17">
