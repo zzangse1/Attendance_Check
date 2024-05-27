@@ -48,7 +48,9 @@ public class CheckMemberNameAdapter extends RecyclerView.Adapter<CheckMemberName
         holder.tv_memberName.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
+                if (checkMemberNameAdapterClick != null) {
+                    checkMemberNameAdapterClick.onClickInfo(memberInfo);
+                }
             }
         });
     }

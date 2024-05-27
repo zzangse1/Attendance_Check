@@ -1,4 +1,4 @@
-package com.zzangse.attendance_check.fragment;
+package com.zzangse.attendance_check.fragmentsetting;
 
 import android.app.AlertDialog;
 import android.content.Intent;
@@ -76,7 +76,7 @@ public class MemberInfoFragment extends Fragment {
 
     private void showDeleteDialog(String number) {
         String dialogTitle = "전화 걸기";
-        android.app.AlertDialog.Builder builder = new android.app.AlertDialog.Builder(getActivity(), R.style.RoundedDialog);
+        AlertDialog.Builder builder = new android.app.AlertDialog.Builder(getActivity(), R.style.RoundedDialog);
         LayoutInflater inflater = requireActivity().getLayoutInflater();
         View dialogView = inflater.inflate(R.layout.dialog_delete, null);
         TextView tvTitle = dialogView.findViewById(R.id.tv_title);

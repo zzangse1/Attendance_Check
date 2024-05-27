@@ -11,10 +11,10 @@ import androidx.fragment.app.FragmentTransaction;
 
 import com.zzangse.attendance_check.R;
 import com.zzangse.attendance_check.databinding.ActivitySettingBinding;
-import com.zzangse.attendance_check.fragment.MemberAddFragment;
-import com.zzangse.attendance_check.fragment.MemberInfoFragment;
-import com.zzangse.attendance_check.fragment.MemberModifyFragment;
-import com.zzangse.attendance_check.fragment.MemberViewFragment;
+import com.zzangse.attendance_check.fragmentsetting.MemberAddFragment;
+import com.zzangse.attendance_check.fragmentsetting.MemberInfoFragment;
+import com.zzangse.attendance_check.fragmentsetting.MemberModifyFragment;
+import com.zzangse.attendance_check.fragmentsetting.MemberViewFragment;
 
 public class SettingActivity extends AppCompatActivity {
     private ActivitySettingBinding binding;

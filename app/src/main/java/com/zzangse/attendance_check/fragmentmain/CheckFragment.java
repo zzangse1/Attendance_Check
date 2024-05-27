@@ -1,6 +1,9 @@
-package com.zzangse.attendance_check.fragment;
+package com.zzangse.attendance_check.fragmentmain;
 
 import android.app.AlertDialog;
+import android.content.DialogInterface;
+import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -8,6 +11,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -19,6 +23,10 @@ import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.toolbox.Volley;
+import com.google.android.material.bottomsheet.BottomSheetDialog;
 import com.google.android.material.datepicker.MaterialDatePicker;
 import com.google.android.material.datepicker.MaterialPickerOnPositiveButtonClickListener;
 import com.google.android.material.textfield.TextInputEditText;
@@ -29,6 +37,7 @@ import com.zzangse.attendance_check.data.GroupName;
 import com.zzangse.attendance_check.data.GroupViewModel;
 import com.zzangse.attendance_check.data.MemberInfo;
 import com.zzangse.attendance_check.databinding.FragmentCheckBinding;
+import com.zzangse.attendance_check.request.InsertCheckRequest;
 import com.zzangse.attendance_check.request.LoadGroupRequest;
 import com.zzangse.attendance_check.request.LoadMemberRequest;
 
@@ -56,6 +65,7 @@ public class CheckFragment extends Fragment {
     private GroupName groupName;
     private MemberInfo memberInfo;
     private String choiceGroupName;
+    private String today, choiceDay;
     private boolean viewModel = false;
 
     @Override
@@ -77,6 +87,73 @@ public class CheckFragment extends Fragment {
         onClickGroupName();
     }
 
+    private void showSheet(int priNum, String infoName, String infoNumber) {
+        BottomSheetDialog sheetDialog = new BottomSheetDialog(getContext());
+        sheetDialog.setContentView(R.layout.dialog_bottom_sheet);
+        TextView tv_infoName = sheetDialog.findViewById(R.id.tv_bottom_name);
+        TextView tv_infoNumber = sheetDialog.findViewById(R.id.tv_bottom_number);
+        Button btn_1 = sheetDialog.findViewById(R.id.btn_bottom_check_present);
+
+        btn_1.setOnClickListener(v->{
+            String aaa = "출석";
+            insertCheckDB(priNum, aaa, today);
+            Log.d("저장되었습니다.", "priNum" + priNum + "출석: " + aaa + "날짜" + today);
+            Toast.makeText(getContext(), "저장되었습니다.", Toast.LENGTH_SHORT).show();
+            sheetDialog.dismiss();
+        });
+        tv_infoName.setText(infoName);
+        tv_infoNumber.setText(infoNumber);
+
+        String number = tv_infoNumber.getText().toString();
+        tv_infoNumber.setOnClickListener(v -> {
+            showDeleteDialog(number);
+        });
+        sheetDialog.setOnCancelListener(new DialogInterface.OnCancelListener() {
+            @Override
+            public void onCancel(DialogInterface dialog) {
+              //  dialog.dismiss();
+            }
+        });
+        sheetDialog.setCanceledOnTouchOutside(true);
+        sheetDialog.create();
+        sheetDialog.show();
+    }
+
+    private void moveToCall(String number) {
+        Intent intent = new Intent(Intent.ACTION_DIAL);
+        intent.setData(Uri.parse("tel:" + number));
+        startActivity(intent);
+    }
+
+    private void showDeleteDialog(String number) {
+        String dialogTitle = "전화 걸기";
+        AlertDialog.Builder builder = new android.app.AlertDialog.Builder(getActivity(), R.style.RoundedDialog);
+
+        LayoutInflater inflater = requireActivity().getLayoutInflater();
+        View dialogView = inflater.inflate(R.layout.dialog_delete, null);
+        TextView tvTitle = dialogView.findViewById(R.id.tv_title);
+        TextView tvTarget = dialogView.findViewById(R.id.tv_delete_target);
+        TextView tvLabel = dialogView.findViewById(R.id.tv_delete_label);
+        TextView btnOk = dialogView.findViewById(R.id.btn_ok);
+        TextView btnCancel = dialogView.findViewById(R.id.btn_cancel);
+
+        tvTarget.setText("전화창으로 이동합니다.");
+        tvLabel.setVisibility(View.GONE);
+        btnOk.setText("이동");
+        tvTitle.setText(dialogTitle);
+
+        AlertDialog dialog = builder.setView(dialogView)
+                .setCancelable(false)
+                .create();
+        btnCancel.setOnClickListener(v -> {
+            dialog.dismiss();
+        });
+        btnOk.setOnClickListener(v -> {
+            moveToCall(number);
+            dialog.dismiss();
+        });
+        dialog.show();
+    }
 
     private void getViewModel() {
         groupViewModel = new ViewModelProvider(requireActivity()).get(GroupViewModel.class);
@@ -129,6 +206,7 @@ public class CheckFragment extends Fragment {
     }
 
     private void initRecycler() {
+        Log.d("리싸이클러 ", "init");
         RecyclerView recyclerView = binding.rvCheck;
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         memberAdapter = new CheckMemberNameAdapter(getContext(), memberInfoList);
@@ -136,16 +214,21 @@ public class CheckFragment extends Fragment {
         memberAdapter.setOnClick(new CheckMemberNameAdapter.CheckMemberNameAdapterClick() {
             @Override
             public void onClickInfo(MemberInfo memberInfo) {
-                Log.d("memberInfo", memberInfo.getInfoName());
+                Log.d("클릭 멤버 이름:", memberInfo.getInfoName());
+                Log.d("클릭 멤버 기본키: ", memberInfo.getPriNum() + "");
+                Toast.makeText(getActivity(), memberInfo.getInfoName(), Toast.LENGTH_SHORT).show();
+                showSheet(memberInfo.getPriNum(), memberInfo.getInfoName(), memberInfo.getInfoNumber());
             }
         });
     }
 
     private void setCalendar() {
         simpleDateFormat = new SimpleDateFormat("yy년 M월 dd일");
-        String today = simpleDateFormat.format(date);
+        today = simpleDateFormat.format(date);
         binding.tvDate.setText(today);
+        Log.d("오늘 날짜", today);
     }
+
 
     private void onClickDate() {
         calendar = Calendar.getInstance(TimeZone.getTimeZone("UTC"));
@@ -163,13 +246,44 @@ public class CheckFragment extends Fragment {
                 public void onPositiveButtonClick(Long selection) {
                     simpleDateFormat = new SimpleDateFormat("yy년 M월 d일");
                     date.setTime(selection);
-                    String dateString = simpleDateFormat.format(date);
-                    binding.tvDate.setText(dateString);
-
+                    choiceDay = simpleDateFormat.format(date);
+                    binding.tvDate.setText(choiceDay);
+                    Log.d("선택 날짜", choiceDay);
                 }
             });
         });
 
+    }
+
+    private void insertCheckDB(int priNum, String infoCheck, String infoDate) {
+        Response.Listener<String> listener = new Response.Listener<String>() {
+            @Override
+            public void onResponse(String s) {
+                try {
+                    JSONObject jsonObject = new JSONObject(s);
+                    boolean isSuccess = jsonObject.getBoolean("success");
+                    if (isSuccess) {
+                        Toast.makeText(getActivity(), "DB ok", Toast.LENGTH_SHORT).show();
+                        Log.d("DB접속 ", "저장완료");
+                    } else {
+                        Toast.makeText(getActivity(), "DB false", Toast.LENGTH_SHORT).show();
+                        Log.d("DB접속 ", "저장실패");
+                    }
+                } catch (JSONException e) {
+                    Log.e("DB에러", "JSON예외 발생: " + e);
+                    throw new RuntimeException(e);
+                }
+            }
+        };
+       // InsertCheckRequest request = new InsertCheckRequest(priNum, infoCheck, infoDate, listener);
+        InsertCheckRequest request = new InsertCheckRequest(priNum, infoCheck, listener);
+        if (getActivity() != null) {
+            Log.d("저장버튼", "priNum: " + priNum);
+            Log.d("저장버튼", "infoCheck: " + infoCheck);
+            Log.d("저장버튼", "infoDate: " + infoDate);
+            RequestQueue queue = Volley.newRequestQueue(getActivity());
+            queue.add(request);
+        }
     }
 
     private void loadMemberNameDB() {
@@ -182,10 +296,15 @@ public class CheckFragment extends Fragment {
                     for (int i = 0; i < result.length(); i++) {
                         //  memberInfo = new MemberInfo();
                         JSONObject jsonObject = result.getJSONObject(i);
-                        String dbMemberName = jsonObject.getString("infoName");
-                        Log.d("memberName", i + "번째: " + dbMemberName);
+                        // priNum도 가져와야함
+                        int priNum = jsonObject.getInt("priNum");
+                        String dbInfoName = jsonObject.getString("infoName");
+                        String dbInfoNumber = jsonObject.getString("infoPhoneNumber");
+                        Log.d("memberName", i + "번째: " + dbInfoName);
+                        Log.d("dbInfoNumber", i + "번째: " + dbInfoNumber);
+                        Log.d("priNum", i + "번째: " + priNum);
                         // memberInfo.setInfoName(dbMemberName);
-                        memberInfo = new MemberInfo(dbMemberName);
+                        memberInfo = new MemberInfo(priNum, dbInfoName, dbInfoNumber);
                         memberInfoList.add(memberInfo);
                     }
                     memberAdapter.notifyDataSetChanged();
