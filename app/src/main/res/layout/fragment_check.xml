@@ -100,11 +100,10 @@
         app:layout_constraintTop_toTopOf="@id/view" />
 
     <TextView
-        android:id="@+id/text"
-        style="@style/AppEditText.S17"
+        android:id="@+id/tv_green"
+        style="@style/AppEditText.White.S20"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="test"
         app:layout_constraintBottom_toBottomOf="@id/circle_green"
         app:layout_constraintEnd_toEndOf="@id/circle_green"
         app:layout_constraintStart_toStartOf="@id/circle_green"
@@ -119,6 +118,16 @@
         app:layout_constraintStart_toEndOf="@id/circle_green"
         app:layout_constraintTop_toTopOf="@id/circle_green" />
 
+    <TextView
+        android:id="@+id/tv_yellow"
+        style="@style/AppEditText.White.S20"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintBottom_toBottomOf="@id/circle_yellow"
+        app:layout_constraintEnd_toEndOf="@id/circle_yellow"
+        app:layout_constraintStart_toStartOf="@id/circle_yellow"
+        app:layout_constraintTop_toTopOf="@id/circle_yellow" />
+
     <View
         android:id="@+id/circle_red"
         android:layout_width="75dp"
@@ -127,6 +136,17 @@
         app:layout_constraintEnd_toEndOf="@id/view"
         app:layout_constraintStart_toEndOf="@id/circle_yellow"
         app:layout_constraintTop_toTopOf="@id/circle_yellow" />
+
+    <TextView
+        android:id="@+id/tv_red"
+        style="@style/AppEditText.White.S20"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintBottom_toBottomOf="@id/circle_red"
+        app:layout_constraintEnd_toEndOf="@id/circle_red"
+        app:layout_constraintStart_toStartOf="@id/circle_red"
+        app:layout_constraintTop_toTopOf="@id/circle_red" />
+
 
     <TextView
         android:id="@+id/tv_member_null"
