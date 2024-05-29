@@ -1,0 +1,28 @@
+package com.zzangse.attendance_check.data;
+
+import androidx.lifecycle.LiveData;
+import androidx.lifecycle.MutableLiveData;
+
+public class DateViewModel extends androidx.lifecycle.ViewModel {
+    private final MutableLiveData<Long> selectedDate = new MutableLiveData<>();
+
+    public void setSelectedDate(Long date) {
+        selectedDate.setValue(date);
+    }
+
+    public LiveData<Long> getSelectedDate() {
+        return selectedDate;
+    }
+
+    public void setSelectedDate(java.util.Date date) {
+        selectedDate.setValue(date.getTime());
+
+    }
+
+    @Override
+    public String toString() {
+        return "DateViewModel{" +
+                "selectedDate=" + selectedDate +
+                '}';
+    }
+}
