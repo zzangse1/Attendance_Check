@@ -12,6 +12,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.zzangse.attendance_check.data.DateViewModel;
 import com.zzangse.attendance_check.data.GroupViewModel;
 import com.zzangse.attendance_check.databinding.FragmentChartBinding;
 
@@ -19,6 +20,7 @@ import com.zzangse.attendance_check.databinding.FragmentChartBinding;
 public class ChartFragment extends Fragment {
     private FragmentChartBinding binding;
     private GroupViewModel groupViewModel;
+    private DateViewModel dateViewModel;
 
 
     @Override
@@ -27,10 +29,19 @@ public class ChartFragment extends Fragment {
         // Inflate the layout for this fragment
         binding = FragmentChartBinding.inflate(inflater);
         groupViewModel = new ViewModelProvider(requireActivity()).get(GroupViewModel.class);
+        dateViewModel = new ViewModelProvider(requireActivity()).get(DateViewModel.class);
+
         groupViewModel.getGroupName().observe(getViewLifecycleOwner(), new Observer<String>() {
             @Override
             public void onChanged(String s) {
                 binding.tvTest.setText(s);
+            }
+        });
+
+        dateViewModel.getSelectedDate().observe(getViewLifecycleOwner(), new Observer<Long>() {
+            @Override
+            public void onChanged(Long aLong) {
+                binding.tvTest2.setText(aLong + "");
             }
         });
 
