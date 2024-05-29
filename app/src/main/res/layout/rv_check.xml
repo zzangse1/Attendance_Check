@@ -22,6 +22,7 @@
             android:background="@drawable/plane_outline_background">
 
             <LinearLayout
+                android:id="@+id/check_layout"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:orientation="horizontal">
