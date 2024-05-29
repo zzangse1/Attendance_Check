@@ -19,10 +19,12 @@ public class MemberInfo {
         this.infoName = infoName;
     }
 
+    // 출결 체크 전 생성자
     public MemberInfo(int priNum, String infoName,String infoNumber ) {
         this.priNum = priNum;
         this.infoName = infoName;
         this.infoNumber = infoNumber;
+        this.infoCheck = ""; // 출결 체크그 전 기본
     }
 
     public MemberInfo(int priNum, String infoName,String infoNumber ,String infoCheck) {
