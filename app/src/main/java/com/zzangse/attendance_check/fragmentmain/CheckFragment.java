@@ -1,7 +1,6 @@
 package com.zzangse.attendance_check.fragmentmain;
 
 import android.app.AlertDialog;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
@@ -33,12 +32,14 @@ import com.google.android.material.textfield.TextInputEditText;
 import com.zzangse.attendance_check.R;
 import com.zzangse.attendance_check.adapter.CheckGroupNameAdapter;
 import com.zzangse.attendance_check.adapter.CheckMemberNameAdapter;
+import com.zzangse.attendance_check.data.DateViewModel;
 import com.zzangse.attendance_check.data.GroupName;
 import com.zzangse.attendance_check.data.GroupViewModel;
 import com.zzangse.attendance_check.data.MemberInfo;
 import com.zzangse.attendance_check.databinding.FragmentCheckBinding;
 import com.zzangse.attendance_check.request.InsertCheckRequest;
 import com.zzangse.attendance_check.request.LoadGroupRequest;
+import com.zzangse.attendance_check.request.LoadMemberCheckPastRequest;
 import com.zzangse.attendance_check.request.LoadMemberCheckRequest;
 import com.zzangse.attendance_check.request.LoadMemberRequest;
 
@@ -55,6 +56,7 @@ import java.util.TimeZone;
 
 public class CheckFragment extends Fragment {
     private GroupViewModel groupViewModel;
+    private DateViewModel dateViewModel;
     private FragmentCheckBinding binding;
     private Calendar calendar;
     private Date date = new Date();
@@ -63,22 +65,22 @@ public class CheckFragment extends Fragment {
     private ArrayList<GroupName> groupNameList = new ArrayList<>();
     private ArrayList<GroupName> filterList = new ArrayList<>();
     private ArrayList<MemberInfo> memberInfoList = new ArrayList<>();
-    private ArrayList<MemberInfo> memberInfoCheckList = new ArrayList<>();
     private CheckMemberNameAdapter memberAdapter;
     private GroupName groupName;
     private MemberInfo memberInfo;
-    private int[] priNumArr;
     private String choiceGroupName;
     private String today, choiceDay;
     java.sql.Date sqlDate;
-    private boolean viewModel = false;
+    private boolean isInitViewModel = false;
+    private long selectedDateInMillis = -1; // 사용자가 선택한 날짜를 저장할 변수
+
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @NonNull ViewGroup container,
                              @NonNull Bundle savedInstanceState) {
         binding = FragmentCheckBinding.inflate(inflater);
         getArgs();
-        getViewModel();
+        initViewModel();
         return binding.getRoot();
     }
 
@@ -89,7 +91,71 @@ public class CheckFragment extends Fragment {
         onClickDate();
         initScreen();
         loadGroupNameDB();
+        onClickDateBtn();
         onClickGroupName();
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        if (isInitViewModel) {
+            loadGroupNameDB();
+            loadMemberNameDB();
+        }
+        if (selectedDateInMillis != -1) {
+            calendar.setTimeInMillis(selectedDateInMillis);
+            sqlDate = new java.sql.Date(selectedDateInMillis);
+            choiceDay = simpleDateFormat.format(sqlDate);
+            binding.tvDate.setText(choiceDay);
+            loadPastMemberCheckDB();
+        }
+    }
+
+    private void updateAttendanceCount() {
+        int presentCount = 0, tardyCount = 0, absentCount = 0;
+        for (MemberInfo member : memberInfoList) {
+            if (member.getInfoCheck().equals("출석")) {
+                presentCount++;
+            } else if (member.getInfoCheck().equals("지각")) {
+                tardyCount++;
+            } else if (member.getInfoCheck().equals("결석")) {
+                absentCount++;
+            }
+        }
+        binding.tvGreen.setText(String.valueOf(presentCount));
+        binding.tvYellow.setText(String.valueOf(tardyCount));
+        binding.tvRed.setText(String.valueOf(absentCount));
+    }
+
+    private void onClickDateBtn() {
+        binding.btnLeft.setOnClickListener(v -> {
+            updateDateBy(-1);
+        });
+
+        binding.btnRight.setOnClickListener(v -> {
+            updateDateBy(1);
+
+        });
+    }
+
+
+    private void updateDateBy(int days) {
+        if (selectedDateInMillis == -1) {
+            calendar.setTimeInMillis(System.currentTimeMillis());
+        } else {
+            calendar.setTimeInMillis(selectedDateInMillis);
+        }
+        calendar.add(Calendar.DAY_OF_YEAR, days);
+        selectedDateInMillis = calendar.getTimeInMillis();
+
+        dateViewModel.setSelectedDate(selectedDateInMillis);
+
+        sqlDate = new java.sql.Date(selectedDateInMillis);
+        choiceDay = simpleDateFormat.format(sqlDate);
+        binding.tvDate.setText(choiceDay);
+
+        loadPastMemberCheckDB();
+        Log.d("오늘날짜", today);
     }
 
     private void showSheet(int priNum, String infoName, String infoNumber) {
@@ -97,52 +163,35 @@ public class CheckFragment extends Fragment {
         sheetDialog.setContentView(R.layout.dialog_bottom_sheet);
         TextView tv_infoName = sheetDialog.findViewById(R.id.tv_bottom_name);
         TextView tv_infoNumber = sheetDialog.findViewById(R.id.tv_bottom_number);
-        Button btn_1 = sheetDialog.findViewById(R.id.btn_bottom_check_present);
-        Button btn_2 = sheetDialog.findViewById(R.id.btn_bottom_check_tardy);
-        Button btn_3 = sheetDialog.findViewById(R.id.btn_bottom_check_absent);
+        Button btnPresent = sheetDialog.findViewById(R.id.btn_bottom_check_present);
+        Button btnTardy = sheetDialog.findViewById(R.id.btn_bottom_check_tardy);
+        Button btnAbsent = sheetDialog.findViewById(R.id.btn_bottom_check_absent);
 
-        btn_1.setOnClickListener(v -> {
-            String check = btn_1.getText().toString();
-            Log.d("날짜", sqlDate + "");
-            insertCheckDB(priNum, check, sqlDate);
-            Log.d("저장되었습니다.", "priNum |" + priNum + "출석 |" + check + "날짜" + sqlDate);
-            Toast.makeText(getContext(), "저장되었습니다.", Toast.LENGTH_SHORT).show();
-            //loadMemberCheck(51,sqlDate);
-            sheetDialog.dismiss();
-        });
-        btn_2.setOnClickListener(v -> {
-            String check = btn_2.getText().toString();
-            Log.d("날짜", sqlDate + "");
-            insertCheckDB(priNum, check, sqlDate);
-            Log.d("저장되었습니다.", "priNum |" + priNum + "출석 |" + check + "날짜" + sqlDate);
-            Toast.makeText(getContext(), "저장되었습니다.", Toast.LENGTH_SHORT).show();
-            sheetDialog.dismiss();
-        });
+        View.OnClickListener onClickListener = v -> {
+            String check = ((Button) v).getText().toString();
+            insertCheckDB(priNum, check, sqlDate, new DBCallback() {
+                @Override
+                public void onSuccess() {
+                    loadMemberCheckDB(priNum, sqlDate);
+                    sheetDialog.dismiss();
+                }
 
-        btn_3.setOnClickListener(v -> {
-            String check = btn_3.getText().toString();
-            Log.d("날짜", sqlDate + "");
-            insertCheckDB(priNum, check, sqlDate);
-          //  loadMemberCheckDB();
-            Log.d("저장되었습니다.", "priNum |" + priNum + "출석 |" + check + "날짜" + sqlDate);
-            Toast.makeText(getContext(), "저장되었습니다.", Toast.LENGTH_SHORT).show();
-            sheetDialog.dismiss();
-        });
+                @Override
+                public void onError(String errorMessage) {
+                    // 에러 처리
+                    Toast.makeText(getContext(), "Failed to update status", Toast.LENGTH_SHORT).show();
+                }
+            });
+        };
+        btnPresent.setOnClickListener(onClickListener);
+        btnTardy.setOnClickListener(onClickListener);
+        btnAbsent.setOnClickListener(onClickListener);
 
         tv_infoName.setText(infoName);
         tv_infoNumber.setText(infoNumber);
 
-        String number = tv_infoNumber.getText().toString();
-        tv_infoNumber.setOnClickListener(v -> {
-            showDeleteDialog(number);
-        });
-        sheetDialog.setOnCancelListener(new DialogInterface.OnCancelListener() {
-            @Override
-            public void onCancel(DialogInterface dialog) {
-                //  dialog.dismiss();
-                Log.d("다이얼로그", "닫ㅎ미");
-            }
-        });
+        tv_infoNumber.setOnClickListener(v -> showDeleteDialog(infoNumber));
+
         sheetDialog.setCanceledOnTouchOutside(true);
         sheetDialog.create();
         sheetDialog.show();
@@ -185,19 +234,34 @@ public class CheckFragment extends Fragment {
         dialog.show();
     }
 
-    private void getViewModel() {
+
+    private void initViewModel() {
         groupViewModel = new ViewModelProvider(requireActivity()).get(GroupViewModel.class);
+        dateViewModel = new ViewModelProvider(requireActivity()).get(DateViewModel.class);
         groupViewModel.getGroupName().observe(getViewLifecycleOwner(), new Observer<String>() {
             @Override
             public void onChanged(String s) {
                 if (!s.isEmpty()) {
-                    Log.d("viewModel 작동", "그룹이룹: " + s);
                     binding.tvGroupName.setText(s);
+                    isInitViewModel = true;
                     loadMemberNameDB();
-                    isNullMemberInfoList(memberInfoList);
+//                    loadPastMemberCheckDB();
                     initRecycler();
-                } else {
-                    Log.d("viewModel 비작동", "그룹이룹: " + s);
+                }
+            }
+        });
+        dateViewModel.getSelectedDate().observe(getViewLifecycleOwner(), new Observer<Long>() {
+            @Override
+            public void onChanged(Long dateInMillis) {
+                if (dateInMillis != null) {
+                    isInitViewModel = true;
+                    selectedDateInMillis = dateInMillis;
+                    Date selectedDate = new Date(dateInMillis);
+                    simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd");
+                    choiceDay = simpleDateFormat.format(selectedDate);
+                    binding.tvDate.setText(choiceDay);
+                    sqlDate = new java.sql.Date(selectedDate.getTime());
+                    //loadPastMemberCheckDB();
                 }
             }
         });
@@ -221,22 +285,18 @@ public class CheckFragment extends Fragment {
         Bundle args = getArguments();
         if (args != null) {
             userID = args.getString("userID");
-            Log.d("테스트아이디", userID);
-        } else {
-            Log.d("테스트아이디", "못가져옴");
         }
     }
 
 
     private void initScreen() {
-        if (!viewModel) {
+        if (!isInitViewModel) {
             binding.tvMemberNull.setText("그룹을 선택해주세요");
             binding.tvMemberNull.setVisibility(View.VISIBLE);
         }
     }
 
     private void initRecycler() {
-        Log.d("리싸이클러 ", "init");
         RecyclerView recyclerView = binding.rvCheck;
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         memberAdapter = new CheckMemberNameAdapter(getContext(), memberInfoList);
@@ -244,10 +304,6 @@ public class CheckFragment extends Fragment {
         memberAdapter.setOnClick(new CheckMemberNameAdapter.CheckMemberNameAdapterClick() {
             @Override
             public void onClickInfo(MemberInfo memberInfo) {
-                Log.d("클릭 멤버 이름:", memberInfo.getInfoName());
-                Log.d("클릭 멤버 기본키: ", memberInfo.getPriNum() + "");
-                Log.d("클릭 멤버 체크: ", memberInfo.getInfoCheck() + "");
-                Log.d("클릭 멤버 날짜: ", memberInfo.getInfoDate() + "");
                 Toast.makeText(getActivity(), memberInfo.getInfoName(), Toast.LENGTH_SHORT).show();
                 showSheet(memberInfo.getPriNum(), memberInfo.getInfoName(), memberInfo.getInfoNumber());
             }
@@ -258,13 +314,11 @@ public class CheckFragment extends Fragment {
         simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd");
         today = simpleDateFormat.format(new Date());
         binding.tvDate.setText(today);
-        Log.d("오늘 날짜", today);
-
         try {
             Date parsedDate = simpleDateFormat.parse(today);
             if (parsedDate != null) {
                 sqlDate = new java.sql.Date(parsedDate.getTime());
-                Log.d("setCalendar", "sqlDate: " + sqlDate);
+                selectedDateInMillis = parsedDate.getTime();
             }
         } catch (ParseException e) {
             e.printStackTrace();
@@ -274,10 +328,9 @@ public class CheckFragment extends Fragment {
 
     private void onClickDate() {
         calendar = Calendar.getInstance(TimeZone.getTimeZone("UTC"));
-        // today
-        Long today = MaterialDatePicker.todayInUtcMilliseconds();
+        Long todayInMillis = MaterialDatePicker.todayInUtcMilliseconds();
         binding.tvDate.setOnClickListener(v -> {
-            Long initialSelection = (sqlDate != null) ? sqlDate.getTime() : today;
+            Long initialSelection = (selectedDateInMillis != -1) ? selectedDateInMillis : todayInMillis;
 
             MaterialDatePicker datePicker = MaterialDatePicker.Builder.datePicker()
                     .setTitleText("")
@@ -289,24 +342,21 @@ public class CheckFragment extends Fragment {
             datePicker.addOnPositiveButtonClickListener(new MaterialPickerOnPositiveButtonClickListener<Long>() {
                 @Override
                 public void onPositiveButtonClick(Long selection) {
+                    dateViewModel.setSelectedDate(selection);
+                    selectedDateInMillis = selection;
                     simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd");
                     Date selectedDate = new Date(selection);
                     choiceDay = simpleDateFormat.format(selectedDate);
                     binding.tvDate.setText(choiceDay);
-                    Log.d("선택 날짜", choiceDay);
-                    try {
-                        sqlDate = new java.sql.Date(selectedDate.getTime());
-                        Log.d("setCalendar", "sqlDate: " + sqlDate);
-                    } catch (Exception e) {
-                        e.printStackTrace();
-                    }
+                    sqlDate = new java.sql.Date(selectedDate.getTime());
+                    loadPastMemberCheckDB();
                 }
             });
         });
 
     }
 
-    private void insertCheckDB(int priNum, String infoCheck, java.sql.Date infoDate) {
+    private void insertCheckDB(int priNum, String infoCheck, java.sql.Date infoDate, DBCallback dbCallback) {
         Response.Listener<String> listener = new Response.Listener<String>() {
             @Override
             public void onResponse(String s) {
@@ -315,77 +365,119 @@ public class CheckFragment extends Fragment {
                     boolean isSuccess = jsonObject.getBoolean("success");
                     if (isSuccess) {
                         Toast.makeText(getActivity(), "DB ok", Toast.LENGTH_SHORT).show();
-                        Log.d("DB접속 ", "저장완료");
+                        dbCallback.onSuccess();
                     } else {
                         Toast.makeText(getActivity(), "DB false", Toast.LENGTH_SHORT).show();
-                        Log.d("DB접속 ", "저장실패");
+                        dbCallback.onError("failed to insert");
                     }
+
                 } catch (JSONException e) {
-                    Log.e("DB에러", "JSON예외 발생: " + e);
+                    dbCallback.onError("JSON parsing error");
                     throw new RuntimeException(e);
                 }
             }
         };
         InsertCheckRequest request = new InsertCheckRequest(priNum, infoCheck, infoDate, listener);
-        //nsertCheckRequest request = new InsertCheckRequest(priNum, infoCheck,listener);
         if (getActivity() != null) {
-            Log.d("저장버튼", "priNum: " + priNum);
-            Log.d("저장버튼", "infoCheck: " + infoCheck);
-            Log.d("저장버튼", "infoDate: " + infoDate + "");
             RequestQueue queue = Volley.newRequestQueue(getActivity());
             queue.add(request);
         }
+
     }
 
-    private void loadMemberCheckDB(int priNum,java.util.Date infoDate) {
-            LoadMemberCheckRequest loadMemberCheckRequest = new LoadMemberCheckRequest(getContext());
-            loadMemberCheckRequest.sendMemberOutputRequest(priNum, infoDate, new LoadMemberCheckRequest.VolleyCallback() {
-                @Override
-                public void onSuccess(JSONArray result) {
-                    try {
-                        for (int i = 0; i < result.length(); i++) {
-                            JSONObject jsonObject = result.getJSONObject(i);
-                            String infoCheck = jsonObject.getString("infoCheck");
-                            Log.d("infoCheck", i + "번째: " + infoCheck);
-                            memberInfo = new MemberInfo(infoCheck);
-                            memberInfoCheckList.add(memberInfo);
+    interface DBCallback {
+        void onSuccess();
+
+        void onError(String errorMessage);
+    }
+
+    private void loadMemberCheckDB(int priNum, java.util.Date infoDate) {
+        LoadMemberCheckRequest loadMemberCheckRequest = new LoadMemberCheckRequest(getContext());
+        loadMemberCheckRequest.sendMemberOutputRequest(priNum, infoDate, new LoadMemberCheckRequest.VolleyCallback() {
+            @Override
+            public void onSuccess(JSONArray result) {
+                try {
+                    for (int i = 0; i < result.length(); i++) {
+                        JSONObject jsonObject = result.getJSONObject(i);
+                        String infoCheck = jsonObject.getString("infoCheck");
+                        for (MemberInfo memberInfo1 : memberInfoList) {
+                            if (memberInfo1.getPriNum() == priNum) {
+                                memberInfo1.setInfoCheck(infoCheck);
+                                break;
+                            }
                         }
-                        memberAdapter.notifyDataSetChanged();
-                    } catch (JSONException e) {
-                        throw new RuntimeException(e);
                     }
+                    updateAttendanceCount();
+                    memberAdapter.notifyDataSetChanged();
+                } catch (JSONException e) {
+                    throw new RuntimeException(e);
                 }
+            }
 
-                @Override
-                public void onError(String errorMessage) {
+            @Override
+            public void onError(String errorMessage) {
+                Log.e("loadMemberCheckDB", "Error: " + errorMessage);
+            }
+        });
+    }
 
+    private void loadPastMemberCheckDB() {
+        if (choiceGroupName == null || sqlDate == null) return;
+        LoadMemberCheckPastRequest loadMemberCheckPastRequest = new LoadMemberCheckPastRequest(getContext());
+        loadMemberCheckPastRequest.sendMemberOutputRequest(choiceGroupName, sqlDate, new LoadMemberCheckPastRequest.VolleyCallback() {
+            @Override
+            public void onSuccess(JSONArray result) {
+                try {
+                    for (MemberInfo member : memberInfoList) {
+                        member.setInfoCheck("");
+                    }
+                    for (int i = 0; i < result.length(); i++) {
+                        JSONObject jsonObject = result.getJSONObject(i);
+                        String dbInfoCheck = jsonObject.getString("infoCheck");
+                        int dbPriNum = jsonObject.getInt("priNum");
+
+                        for (MemberInfo member : memberInfoList) {
+                            if (member.getPriNum() == dbPriNum) {
+                                member.setInfoCheck(dbInfoCheck);
+                                break;
+                            }
+                        }
+                    }
+                    updateAttendanceCount();
+                    memberAdapter.notifyDataSetChanged();
+                } catch (JSONException e) {
+                    e.printStackTrace();
                 }
-            });
+            }
+
+            @Override
+            public void onError(String errorMessage) {
+
+            }
+        });
     }
 
     private void loadMemberNameDB() {
+        if (userID == null || choiceGroupName == null) return;
+
         LoadMemberRequest loadMemberRequest = new LoadMemberRequest(getContext());
         loadMemberRequest.sendMemberOutputRequest(userID, choiceGroupName, new LoadMemberRequest.VolleyCallback() {
             @Override
             public void onSuccess(JSONArray result) {
-                priNumArr = new int[result.length()];
                 try {
                     memberInfoList.clear();
                     for (int i = 0; i < result.length(); i++) {
                         JSONObject jsonObject = result.getJSONObject(i);
-                        // priNum도 가져와야함
                         int priNum = jsonObject.getInt("priNum");
                         String dbInfoName = jsonObject.getString("infoName");
                         String dbInfoNumber = jsonObject.getString("infoPhoneNumber");
-                        Log.d("memberName", i + "번째: " + dbInfoName);
-                        Log.d("dbInfoNumber", i + "번째: " + dbInfoNumber);
-                        Log.d("priNum", i + "번째: " + priNum);
-                        priNumArr[i] = priNum;
                         memberInfo = new MemberInfo(priNum, dbInfoName, dbInfoNumber);
                         memberInfoList.add(memberInfo);
+                        // loadMemberCheckDB(priNum, sqlDate);
                     }
-                    memberAdapter.notifyDataSetChanged();
+                    loadPastMemberCheckDB();
                     isNullMemberInfoList(memberInfoList);
+                    memberAdapter.notifyDataSetChanged();
                 } catch (Exception e) {
                     throw new RuntimeException(e);
                 }
@@ -412,7 +504,6 @@ public class CheckFragment extends Fragment {
                         groupName.setGroupName(dbGroupName);
                         groupNameList.add(groupName);
                     }
-                    // adapter.notifyDataSetChanged();
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
@@ -426,17 +517,11 @@ public class CheckFragment extends Fragment {
     }
 
     private void onClickGroupName() {
-        binding.tvGroupName.setOnClickListener(v -> {
-            showGroupNameDialog();
-        });
+        binding.tvGroupName.setOnClickListener(v -> showGroupNameDialog());
     }
 
     private void showGroupNameDialog() {
-        loadGroupNameDB();
-        boolean isGroup = false;
-        for (GroupName str : groupNameList) {
-            Log.d("확인", str.getGroupName());
-        }
+        //loadGroupNameDB();
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity(), R.style.RoundedDialog);
         LayoutInflater inflater = requireActivity().getLayoutInflater();
         View dialogView = inflater.inflate(R.layout.dialog_search, null);
@@ -445,62 +530,55 @@ public class CheckFragment extends Fragment {
         TextInputEditText textInputEditText = dialogView.findViewById(R.id.et_group_name);
         TextView tvError = dialogView.findViewById(R.id.tv_error);
         TextView tvError2 = dialogView.findViewById(R.id.tv_error2);
-
         RecyclerView innerRecyclerView = dialogView.findViewById(R.id.rv_group_name_list);
+
         innerRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         CheckGroupNameAdapter innerAdapter = new CheckGroupNameAdapter(getContext(), groupNameList);
         innerRecyclerView.setAdapter(innerAdapter);
 
-
         textInputEditText.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-
             }
 
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
-
             }
 
             @Override
             public void afterTextChanged(Editable s) {
-                // 리싸이클러뷰 필터링
                 String searchText = textInputEditText.getText().toString();
                 filterList.clear();
-                for (int i = 0; i < groupNameList.size(); i++) {
-                    if (groupNameList.get(i).getGroupName().toLowerCase().contains(searchText.toLowerCase())) {
-                        filterList.add(groupNameList.get(i));
+                for (GroupName groupName : groupNameList) {
+                    if (groupName.getGroupName().toLowerCase().contains(searchText)) {
+                        filterList.add(groupName);
                     }
+
                     innerAdapter.listFilter(filterList);
                     // 리싸이클러뷰가 비어있으면 경고 문구
                     if (innerAdapter.listNull(filterList)) {
                         tvError.setText("\" " + searchText + " \" 그룹이 없습니다.");
                         tvError.setVisibility(View.VISIBLE);
                         tvError2.setVisibility(View.VISIBLE);
-                        //isGroup = false;
                     } else {
                         tvError.setVisibility(View.GONE);
                         tvError2.setVisibility(View.GONE);
-                        //     isGroup = true;
                     }
                 }
             }
         });
 
-        innerAdapter.setOnClick(new CheckGroupNameAdapter.GroupNameAdapterClick() {
+        innerAdapter.setOnClick(groupName -> {
             // 리싸이클러뷰 아이템 클릭 이벤트
-            @Override
-            public void onClickInfo(GroupName groupName) {
-                choiceGroupName = groupName.getGroupName();
-                textInputEditText.setText(choiceGroupName); // editText에 그룹이름 삽입
-                textInputEditText.setSelection(choiceGroupName.length());    // 커서 위치 맨 뒤로
-            }
+            choiceGroupName = groupName.getGroupName();
+            textInputEditText.setText(choiceGroupName); // editText에 그룹이름 삽입
+            textInputEditText.setSelection(choiceGroupName.length());    // 커서 위치 맨 뒤로
         });
 
         AlertDialog dialog = builder.setView(dialogView)
                 .setCancelable(false)
                 .create();
+
         // 취소 버튼 이벤트
         btnCancel.setOnClickListener(v -> {
             dialog.dismiss();
@@ -508,23 +586,13 @@ public class CheckFragment extends Fragment {
 
         // 선택 버튼 이벤트
         btnOk.setOnClickListener(v -> {
-            boolean isGroupName = textInputEditText.getText().toString().isEmpty();
-            if (isGroupName || filterList.isEmpty()) {
+            if (textInputEditText.getText().toString().isEmpty() || filterList.isEmpty()) {
                 Toast.makeText(getContext(), "그룹 이름을 확인해주세요..", Toast.LENGTH_SHORT).show();
-            } else if (textInputEditText.getText().toString().equals(filterList.toString())) {
-                Toast.makeText(getContext(), "same.", Toast.LENGTH_SHORT).show();
             } else {
-                viewModel = true;
-                choiceGroupName = textInputEditText.getText().toString();
-                binding.tvGroupName.setText(choiceGroupName); //checkFragment의 textView에 선택한 그룹이름 넣어줌
                 groupViewModel.setGroupName(choiceGroupName);
-                loadMemberNameDB();
-                initRecycler();
                 dialog.dismiss();
             }
         });
         dialog.show();
-
     }
-
 }
