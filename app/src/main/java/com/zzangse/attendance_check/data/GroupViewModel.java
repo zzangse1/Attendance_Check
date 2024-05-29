@@ -12,7 +12,6 @@ public class GroupViewModel extends androidx.lifecycle.ViewModel {
 
     public void setGroupName(String name) {
         groupName.setValue(name);
-
     }
 
     @Override
