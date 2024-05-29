@@ -14,4 +14,11 @@
     <color name="gray_200">#C0C0C0</color>
     <color name="gray_300">#8897AE</color>
     <color name="gray_400">#5F6868</color>
+
+    <!-- 출결 체크 색상 -->
+    <color name="check_green">#66BB6A</color>
+    <color name="check_orange">#FFB74D</color>
+    <color name="check_red">#FF8A80</color>
+
+
 </resources>
