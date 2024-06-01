@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     tools:context=".fragmentmain.ChartFragment">
 
     <com.google.android.material.appbar.MaterialToolbar
@@ -13,28 +13,44 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
+        app:title="@string/fragment_chart_title"
         app:titleCentered="true"
-        app:titleTextAppearance="@style/AppEditText.Bold.S24"
-        app:title="@string/fragment_chart_title" />
+        app:titleTextAppearance="@style/AppEditText.Bold.S24" />
 
     <TextView
-        android:id="@+id/tv_test"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        app:layout_constraintStart_toStartOf="parent"
+        android:id="@+id/tv_group_name"
+        style="@style/AppEditText.S17"
+        android:layout_width="0dp"
+        android:layout_height="50dp"
+        android:layout_marginStart="20dp"
+        android:layout_marginTop="10dp"
+        android:layout_marginEnd="20dp"
+        android:background="@drawable/plane_outline_background"
+        android:gravity="center"
+        android:text="@string/plain_group_name"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/toolbar_chart"
-        style="@style/AppEditText.Bold.S40"
-        android:layout_marginTop="20dp"/>
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/toolbar_chart" />
 
-    <TextView
-        android:id="@+id/tv_test2"
+    <ImageView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        app:layout_constraintStart_toStartOf="parent"
+        android:layout_marginEnd="10dp"
+        android:contentDescription="@string/fragment_check_iv_script"
+        android:src="@drawable/ic_drop_down"
+        app:layout_constraintBottom_toBottomOf="@id/tv_group_name"
+        app:layout_constraintEnd_toEndOf="@id/tv_group_name"
+        app:layout_constraintTop_toTopOf="@id/tv_group_name" />
+
+    <com.github.mikephil.charting.charts.PieChart
+        android:id="@+id/pie_chart"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_marginBottom="20dp"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/tv_test"
-        style="@style/AppEditText.Bold.S40"
-        android:layout_marginTop="20dp"/>
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/tv_group_name" />
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>
