@@ -4,10 +4,10 @@ import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -65,22 +65,24 @@ public class CheckMemberNameAdapter extends RecyclerView.Adapter<CheckMemberName
     public class ViewHolder extends RecyclerView.ViewHolder {
         TextView tv_memberName;
         TextView tv_memberCheck;
-        LinearLayout layout;
+        ConstraintLayout layout;
+
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
             this.layout = itemView.findViewById(R.id.check_layout);
             this.tv_memberName = itemView.findViewById(R.id.tv_rv_check_name);
             this.tv_memberCheck = itemView.findViewById(R.id.tv_rv_check_result);
         }
+
         public void bind(MemberInfo memberInfo) {
             tv_memberName.setText(memberInfo.getInfoName());
-            if (memberInfo.getInfoCheck().equals("출석")){
-                tv_memberCheck.setTextColor(ContextCompat.getColor(context,R.color.check_green));
+            if (memberInfo.getInfoCheck().equals("출석")) {
+                tv_memberCheck.setTextColor(ContextCompat.getColor(context, R.color.check_green));
                 tv_memberCheck.setText(memberInfo.getInfoCheck());
             } else if (memberInfo.getInfoCheck().equals("지각")) {
-                tv_memberCheck.setTextColor(ContextCompat.getColor(context,R.color.check_orange));
+                tv_memberCheck.setTextColor(ContextCompat.getColor(context, R.color.check_orange));
                 tv_memberCheck.setText(memberInfo.getInfoCheck());
-            }else if (memberInfo.getInfoCheck().equals("결석")) {
+            } else if (memberInfo.getInfoCheck().equals("결석")) {
                 tv_memberCheck.setTextColor(ContextCompat.getColor(context, R.color.check_red));
                 tv_memberCheck.setText(memberInfo.getInfoCheck());
             } else {
