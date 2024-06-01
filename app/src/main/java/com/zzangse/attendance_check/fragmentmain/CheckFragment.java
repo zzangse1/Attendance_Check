@@ -70,7 +70,7 @@ public class CheckFragment extends Fragment {
     private MemberInfo memberInfo;
     private String choiceGroupName;
     private String today, choiceDay;
-    java.sql.Date sqlDate;
+    private java.sql.Date sqlDate;
     private boolean isInitViewModel = false;
     private long selectedDateInMillis = -1; // 사용자가 선택한 날짜를 저장할 변수
 
@@ -368,7 +368,7 @@ public class CheckFragment extends Fragment {
                     JSONObject jsonObject = new JSONObject(s);
                     boolean isSuccess = jsonObject.getBoolean("success");
                     if (isSuccess) {
-                       // Toast.makeText(getActivity(), "DB ok", Toast.LENGTH_SHORT).show();
+                        // Toast.makeText(getActivity(), "DB ok", Toast.LENGTH_SHORT).show();
                         dbCallback.onSuccess();
                     } else {
                         //Toast.makeText(getActivity(), "DB false", Toast.LENGTH_SHORT).show();
@@ -410,7 +410,7 @@ public class CheckFragment extends Fragment {
                             if (member.getPriNum() == priNum) {
                                 member.setInfoCheck(infoCheck);
                                 priNumFound = true;
-                                Log.d("member"+i, member.getInfoCheck());
+                                Log.d("member" + i, member.getInfoCheck());
                                 break;
                             }
                         }
@@ -430,6 +430,7 @@ public class CheckFragment extends Fragment {
                     throw new RuntimeException(e);
                 }
             }
+
             @Override
             public void onError(String errorMessage) {
                 Log.e("loadMemberCheckDB", "Error: " + errorMessage);
@@ -537,7 +538,6 @@ public class CheckFragment extends Fragment {
     }
 
     private void showGroupNameDialog() {
-        //loadGroupNameDB();
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity(), R.style.RoundedDialog);
         LayoutInflater inflater = requireActivity().getLayoutInflater();
         View dialogView = inflater.inflate(R.layout.dialog_search, null);
