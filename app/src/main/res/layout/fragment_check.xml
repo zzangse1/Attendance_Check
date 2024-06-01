@@ -30,7 +30,7 @@
         android:layout_marginEnd="20dp"
         android:background="@drawable/plane_outline_background"
         android:gravity="center"
-        android:text="@string/modify_group_name"
+        android:text="@string/plain_group_name"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/toolbar_check" />
