@@ -18,16 +18,6 @@
         app:titleCentered="true"
         app:titleTextAppearance="@style/AppEditText.Bold.S24" />
 
-    <TextView
-        android:id="@+id/tv_pri"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        style="@style/AppEditText.S17"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toStartOf="@id/btn_save"
-        app:layout_constraintTop_toTopOf="@id/btn_save"
-        android:text="123"
-        />
 
     <androidx.appcompat.widget.AppCompatButton
         android:id="@+id/btn_save"
@@ -173,8 +163,10 @@
                 android:layout_marginStart="20dp"
                 android:layout_marginTop="20dp"
                 android:layout_marginEnd="20dp"
+                android:layout_marginBottom="10dp"
                 android:hint="@string/modify_memo"
                 app:boxStrokeColor="@color/navy_300"
+                app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/et_modify_person_address_layout">
@@ -183,8 +175,8 @@
                     android:id="@+id/et_modify_person_memo"
                     style="@style/AppEditText.S17"
                     android:layout_width="match_parent"
-                    android:gravity="left|top"
                     android:layout_height="match_parent"
+                    android:gravity="left|top"
                     android:inputType="textMultiLine"
                     android:maxLength="300"
                     android:singleLine="false" />
