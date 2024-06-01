@@ -166,12 +166,14 @@ public class CheckFragment extends Fragment {
         Button btnPresent = sheetDialog.findViewById(R.id.btn_bottom_check_present);
         Button btnTardy = sheetDialog.findViewById(R.id.btn_bottom_check_tardy);
         Button btnAbsent = sheetDialog.findViewById(R.id.btn_bottom_check_absent);
+        Button btnCancel = sheetDialog.findViewById(R.id.btn_bottom_check_cancel);
 
         View.OnClickListener onClickListener = v -> {
             String check = ((Button) v).getText().toString();
             insertCheckDB(priNum, check, sqlDate, new DBCallback() {
                 @Override
                 public void onSuccess() {
+                    Log.d("check", check + "실행");
                     loadMemberCheckDB(priNum, sqlDate);
                     sheetDialog.dismiss();
                 }
@@ -179,13 +181,14 @@ public class CheckFragment extends Fragment {
                 @Override
                 public void onError(String errorMessage) {
                     // 에러 처리
-                    Toast.makeText(getContext(), "Failed to update status", Toast.LENGTH_SHORT).show();
+                    Log.d("onError", "Failed to update status");
                 }
             });
         };
         btnPresent.setOnClickListener(onClickListener);
         btnTardy.setOnClickListener(onClickListener);
         btnAbsent.setOnClickListener(onClickListener);
+        btnCancel.setOnClickListener(onClickListener);
 
         tv_infoName.setText(infoName);
         tv_infoNumber.setText(infoNumber);
@@ -304,7 +307,7 @@ public class CheckFragment extends Fragment {
         memberAdapter.setOnClick(new CheckMemberNameAdapter.CheckMemberNameAdapterClick() {
             @Override
             public void onClickInfo(MemberInfo memberInfo) {
-                Toast.makeText(getActivity(), memberInfo.getInfoName(), Toast.LENGTH_SHORT).show();
+                //Toast.makeText(getActivity(), memberInfo.getInfoName(), Toast.LENGTH_SHORT).show();
                 showSheet(memberInfo.getPriNum(), memberInfo.getInfoName(), memberInfo.getInfoNumber());
             }
         });
@@ -356,6 +359,7 @@ public class CheckFragment extends Fragment {
 
     }
 
+
     private void insertCheckDB(int priNum, String infoCheck, java.sql.Date infoDate, DBCallback dbCallback) {
         Response.Listener<String> listener = new Response.Listener<String>() {
             @Override
@@ -364,10 +368,10 @@ public class CheckFragment extends Fragment {
                     JSONObject jsonObject = new JSONObject(s);
                     boolean isSuccess = jsonObject.getBoolean("success");
                     if (isSuccess) {
-                        Toast.makeText(getActivity(), "DB ok", Toast.LENGTH_SHORT).show();
+                       // Toast.makeText(getActivity(), "DB ok", Toast.LENGTH_SHORT).show();
                         dbCallback.onSuccess();
                     } else {
-                        Toast.makeText(getActivity(), "DB false", Toast.LENGTH_SHORT).show();
+                        //Toast.makeText(getActivity(), "DB false", Toast.LENGTH_SHORT).show();
                         dbCallback.onError("failed to insert");
                     }
 
@@ -397,12 +401,25 @@ public class CheckFragment extends Fragment {
             @Override
             public void onSuccess(JSONArray result) {
                 try {
+                    boolean priNumFound = false;
+
                     for (int i = 0; i < result.length(); i++) {
                         JSONObject jsonObject = result.getJSONObject(i);
                         String infoCheck = jsonObject.getString("infoCheck");
-                        for (MemberInfo memberInfo1 : memberInfoList) {
-                            if (memberInfo1.getPriNum() == priNum) {
-                                memberInfo1.setInfoCheck(infoCheck);
+                        for (MemberInfo member : memberInfoList) {
+                            if (member.getPriNum() == priNum) {
+                                member.setInfoCheck(infoCheck);
+                                priNumFound = true;
+                                Log.d("member"+i, member.getInfoCheck());
+                                break;
+                            }
+                        }
+                    }
+                    if (!priNumFound) {
+                        for (MemberInfo member : memberInfoList) {
+                            if (member.getPriNum() == priNum) {
+                                member.setInfoCheck("");
+                                Log.d("member", "No match found, set to empty");
                                 break;
                             }
                         }
@@ -413,7 +430,6 @@ public class CheckFragment extends Fragment {
                     throw new RuntimeException(e);
                 }
             }
-
             @Override
             public void onError(String errorMessage) {
                 Log.e("loadMemberCheckDB", "Error: " + errorMessage);
@@ -429,7 +445,7 @@ public class CheckFragment extends Fragment {
             public void onSuccess(JSONArray result) {
                 try {
                     for (MemberInfo member : memberInfoList) {
-                        member.setInfoCheck("");
+                        member.setInfoCheck(" ");
                     }
                     for (int i = 0; i < result.length(); i++) {
                         JSONObject jsonObject = result.getJSONObject(i);
