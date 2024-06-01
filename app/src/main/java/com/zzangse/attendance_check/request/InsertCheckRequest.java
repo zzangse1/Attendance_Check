@@ -25,8 +25,6 @@ public class InsertCheckRequest extends StringRequest {
         Log.d("InsertCheckRequest", "priNum: " + priNum);
         Log.d("InsertCheckRequest", "infoCheck: " + infoCheck);
         Log.d("InsertCheckRequest", "infoDate: " + simpleDateFormat.format(infoDate));
-
-
     }
 
     @Override
