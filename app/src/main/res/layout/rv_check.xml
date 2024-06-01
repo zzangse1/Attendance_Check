@@ -17,37 +17,34 @@
         app:layout_constraintTop_toTopOf="parent">
 
         <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/check_layout"
             android:layout_width="match_parent"
             android:layout_height="60dp"
             android:background="@drawable/plane_outline_background">
 
-            <LinearLayout
-                android:id="@+id/check_layout"
-                android:layout_width="match_parent"
+            <TextView
+                android:id="@+id/tv_rv_check_name"
+                style="@style/AppEditText.Bold.S24"
+                android:layout_width="0dp"
                 android:layout_height="match_parent"
-                android:orientation="horizontal">
+                android:gravity="center"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toStartOf="@id/tv_rv_check_result"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                tools:text="@string/plain_name" />
 
-                <TextView
-                    android:id="@+id/tv_rv_check_name"
-                    style="@style/AppEditText.Bold.S24"
-                    android:layout_width="wrap_content"
-                    android:layout_height="match_parent"
-                    android:layout_gravity="left"
-                    android:layout_weight="1"
-                    android:gravity="center"
-                    tools:text="@string/plain_name" />
-
-                <TextView
-                    android:id="@+id/tv_rv_check_result"
-                    style="@style/AppEditText.Bold.S24"
-                    android:layout_width="wrap_content"
-                    android:layout_height="match_parent"
-                    android:layout_gravity="right"
-                    android:layout_weight="1"
-                    android:gravity="center"
-                    tools:text="@string/menu_check" />
-
-            </LinearLayout>
+            <TextView
+                android:id="@+id/tv_rv_check_result"
+                style="@style/AppEditText.Bold.S24"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:gravity="center"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="@id/tv_rv_check_name"
+                app:layout_constraintTop_toTopOf="parent"
+                tools:text="@string/menu_check" />
         </androidx.constraintlayout.widget.ConstraintLayout>
     </androidx.cardview.widget.CardView>
 </androidx.constraintlayout.widget.ConstraintLayout>
