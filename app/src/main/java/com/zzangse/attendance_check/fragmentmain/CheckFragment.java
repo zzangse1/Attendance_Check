@@ -49,9 +49,12 @@ import org.json.JSONObject;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.Locale;
 import java.util.TimeZone;
 
 public class CheckFragment extends Fragment {
@@ -59,7 +62,6 @@ public class CheckFragment extends Fragment {
     private DateViewModel dateViewModel;
     private FragmentCheckBinding binding;
     private Calendar calendar;
-    private Date date = new Date();
     private String userID;
     private SimpleDateFormat simpleDateFormat;
     private ArrayList<GroupName> groupNameList = new ArrayList<>();
@@ -69,8 +71,7 @@ public class CheckFragment extends Fragment {
     private GroupName groupName;
     private MemberInfo memberInfo;
     private String choiceGroupName;
-    private String today, choiceDay;
-    private java.sql.Date sqlDate;
+    private String date;
     private boolean isInitViewModel = false;
     private long selectedDateInMillis = -1; // 사용자가 선택한 날짜를 저장할 변수
 
@@ -87,7 +88,7 @@ public class CheckFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        setCalendar();
+        getToday();
         onClickDate();
         initScreen();
         loadGroupNameDB();
@@ -104,9 +105,7 @@ public class CheckFragment extends Fragment {
         }
         if (selectedDateInMillis != -1) {
             calendar.setTimeInMillis(selectedDateInMillis);
-            sqlDate = new java.sql.Date(selectedDateInMillis);
-            choiceDay = simpleDateFormat.format(sqlDate);
-            binding.tvDate.setText(choiceDay);
+            binding.tvDate.setText(date);
             loadPastMemberCheckDB();
         }
     }
@@ -149,13 +148,10 @@ public class CheckFragment extends Fragment {
         selectedDateInMillis = calendar.getTimeInMillis();
 
         dateViewModel.setSelectedDate(selectedDateInMillis);
-
-        sqlDate = new java.sql.Date(selectedDateInMillis);
-        choiceDay = simpleDateFormat.format(sqlDate);
-        binding.tvDate.setText(choiceDay);
+        binding.tvDate.setText(date);
 
         loadPastMemberCheckDB();
-        Log.d("오늘날짜", today);
+        Log.d("오늘날짜", date);
     }
 
     private void showSheet(int priNum, String infoName, String infoNumber) {
@@ -170,11 +166,12 @@ public class CheckFragment extends Fragment {
 
         View.OnClickListener onClickListener = v -> {
             String check = ((Button) v).getText().toString();
-            insertCheckDB(priNum, check, sqlDate, new DBCallback() {
+            insertCheckDB(priNum, check, date, new DBCallback() {
                 @Override
                 public void onSuccess() {
+                    Log.d("오늘날짜", date);
                     Log.d("check", check + "실행");
-                    loadMemberCheckDB(priNum, sqlDate);
+                    loadMemberCheckDB(priNum, date);
                     sheetDialog.dismiss();
                 }
 
@@ -245,10 +242,11 @@ public class CheckFragment extends Fragment {
             @Override
             public void onChanged(String s) {
                 if (!s.isEmpty()) {
+                    Log.d("intiViewModel", s);
                     binding.tvGroupName.setText(s);
+                    choiceGroupName = s; // loadMemberName에 들어갈 변수 할당
                     isInitViewModel = true;
                     loadMemberNameDB();
-//                    loadPastMemberCheckDB();
                     initRecycler();
                 }
             }
@@ -261,9 +259,9 @@ public class CheckFragment extends Fragment {
                     selectedDateInMillis = dateInMillis;
                     Date selectedDate = new Date(dateInMillis);
                     simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd");
-                    choiceDay = simpleDateFormat.format(selectedDate);
-                    binding.tvDate.setText(choiceDay);
-                    sqlDate = new java.sql.Date(selectedDate.getTime());
+                    date = simpleDateFormat.format(selectedDate);
+                    binding.tvDate.setText(date);
+                    //  sqlDate = new java.sql.Date(selectedDate.getTime());
                     //loadPastMemberCheckDB();
                 }
             }
@@ -313,14 +311,30 @@ public class CheckFragment extends Fragment {
         });
     }
 
+    public void getToday() {
+        LocalDate localDate = null;
+        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
+            localDate = LocalDate.now();
+            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+            date = localDate.format(formatter);
+            Log.d("java8 up", "Today: " + date);
+            binding.tvDate.setText(date); // TextView에 날짜 설정
+        } else {
+            Calendar calendar = Calendar.getInstance();
+            SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault());
+            date = dateFormat.format(calendar.getTime());
+            Log.d("java8 down", "Today: " + date);
+            binding.tvDate.setText(date); // TextView에 날짜 설정
+        }
+
+    }
+
     private void setCalendar() {
         simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd");
-        today = simpleDateFormat.format(new Date());
-        binding.tvDate.setText(today);
+        date = simpleDateFormat.format(new Date());
         try {
-            Date parsedDate = simpleDateFormat.parse(today);
+            Date parsedDate = simpleDateFormat.parse(date);
             if (parsedDate != null) {
-                sqlDate = new java.sql.Date(parsedDate.getTime());
                 selectedDateInMillis = parsedDate.getTime();
             }
         } catch (ParseException e) {
@@ -349,9 +363,8 @@ public class CheckFragment extends Fragment {
                     selectedDateInMillis = selection;
                     simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd");
                     Date selectedDate = new Date(selection);
-                    choiceDay = simpleDateFormat.format(selectedDate);
-                    binding.tvDate.setText(choiceDay);
-                    sqlDate = new java.sql.Date(selectedDate.getTime());
+                    date = simpleDateFormat.format(selectedDate);
+                    binding.tvDate.setText(date);
                     loadPastMemberCheckDB();
                 }
             });
@@ -360,7 +373,7 @@ public class CheckFragment extends Fragment {
     }
 
 
-    private void insertCheckDB(int priNum, String infoCheck, java.sql.Date infoDate, DBCallback dbCallback) {
+    private void insertCheckDB(int priNum, String infoCheck, String infoDate /*java.sql.Date infoDate*/, DBCallback dbCallback) {
         Response.Listener<String> listener = new Response.Listener<String>() {
             @Override
             public void onResponse(String s) {
@@ -381,6 +394,7 @@ public class CheckFragment extends Fragment {
                 }
             }
         };
+        // InsertCheckRequest request = new InsertCheckRequest(priNum, infoCheck, infoDate, listener);
         InsertCheckRequest request = new InsertCheckRequest(priNum, infoCheck, infoDate, listener);
         if (getActivity() != null) {
             RequestQueue queue = Volley.newRequestQueue(getActivity());
@@ -395,7 +409,7 @@ public class CheckFragment extends Fragment {
         void onError(String errorMessage);
     }
 
-    private void loadMemberCheckDB(int priNum, java.util.Date infoDate) {
+    private void loadMemberCheckDB(int priNum, String infoDate/*java.util.Date infoDate*/) {
         LoadMemberCheckRequest loadMemberCheckRequest = new LoadMemberCheckRequest(getContext());
         loadMemberCheckRequest.sendMemberOutputRequest(priNum, infoDate, new LoadMemberCheckRequest.VolleyCallback() {
             @Override
@@ -439,9 +453,9 @@ public class CheckFragment extends Fragment {
     }
 
     private void loadPastMemberCheckDB() {
-        if (choiceGroupName == null || sqlDate == null) return;
+        if (choiceGroupName == null /*|| sqlDate == null*/) return;
         LoadMemberCheckPastRequest loadMemberCheckPastRequest = new LoadMemberCheckPastRequest(getContext());
-        loadMemberCheckPastRequest.sendMemberOutputRequest(choiceGroupName, sqlDate, new LoadMemberCheckPastRequest.VolleyCallback() {
+        loadMemberCheckPastRequest.sendMemberOutputRequest(choiceGroupName, date, new LoadMemberCheckPastRequest.VolleyCallback() {
             @Override
             public void onSuccess(JSONArray result) {
                 try {
