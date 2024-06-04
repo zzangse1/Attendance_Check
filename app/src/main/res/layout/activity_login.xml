@@ -119,7 +119,7 @@
         android:id="@+id/view_line1"
         android:layout_width="1dp"
         android:layout_height="0dp"
-        android:background="@color/gray_100"
+        android:background="@color/grey_100"
         app:layout_constraintBottom_toBottomOf="@id/tv_singup"
         app:layout_constraintEnd_toStartOf="@id/tv_find"
         app:layout_constraintStart_toEndOf="@id/tv_singup"
@@ -142,7 +142,7 @@
         android:layout_width="0dp"
         android:layout_height="1dp"
         android:layout_marginTop="40dp"
-        android:background="@color/gray_100"
+        android:background="@color/grey_100"
         app:layout_constraintEnd_toEndOf="@id/btn_login"
         app:layout_constraintStart_toStartOf="@id/btn_login"
         app:layout_constraintTop_toBottomOf="@id/view_line1" />
