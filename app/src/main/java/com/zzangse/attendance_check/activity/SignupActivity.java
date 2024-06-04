@@ -341,7 +341,7 @@ public class SignupActivity extends AppCompatActivity {
         int unselectedBackgroundStart = R.drawable.btn_unclick_sex_start;
         int unselectedBackgroundCenter = R.drawable.btn_unclick_sex_center;
         int unselectedBackgroundEnd = R.drawable.btn_unclick_sex_end;
-        int unselectedTextColor = getColor(R.color.gray_100);
+        int unselectedTextColor = getColor(R.color.grey_100);
         m_sex = selectedButton.getText().toString();
         binding.btnMale.setBackgroundResource(unselectedBackgroundStart);
         binding.btnMale.setTextColor(unselectedTextColor);

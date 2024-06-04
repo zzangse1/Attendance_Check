@@ -48,7 +48,7 @@
 
     <style name="AppEditText.Hint">
         <item name="fontFamily">@font/spoqa_medium</item>
-        <item name="android:textColor">@color/gray_200</item>
+        <item name="android:textColor">@color/grey_200</item>
     </style>
 
     <style name="AppEditText.Hint.S16">
@@ -92,7 +92,7 @@
     </style>
     <style name="AppButtonText.Gray" parent="Widget.AppCompat.Button.Borderless">
         <item name="fontFamily">@font/spoqa_medium</item>
-        <item name="android:textColor">@color/gray_100</item>
+        <item name="android:textColor">@color/grey_100</item>
     </style>
 
     <style name="AppButtonText.Gray.S17">
@@ -136,8 +136,8 @@
     </style>
 
     <style name="AppBtnSex" parent="Widget.MaterialComponents.Button.OutlinedButton">
-        <item name="android:textColor">@color/gray_100</item>
-        <item name="strokeColor">@color/gray_100</item>
+        <item name="android:textColor">@color/grey_100</item>
+        <item name="strokeColor">@color/grey_100</item>
     </style>
 
     <style name="RoundedDialog" parent="Theme.AppCompat.Light.Dialog.Alert">
