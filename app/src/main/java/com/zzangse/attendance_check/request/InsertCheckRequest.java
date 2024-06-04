@@ -14,17 +14,18 @@ public class InsertCheckRequest extends StringRequest {
     private Map<String, String> map;
     private SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd");
 
-    public InsertCheckRequest(int priNum, String infoCheck, java.sql.Date infoDate, Response.Listener<String> listener) {
+    public InsertCheckRequest(int priNum, String infoCheck, String infoDate/*java.sql.Date infoDate*/, Response.Listener<String> listener) {
         super(Method.POST, URL, listener, null);
 
         map = new HashMap<>();
         map.put("priNum", String.valueOf(priNum));
         map.put("infoCheck", infoCheck);
-        map.put("infoDate", simpleDateFormat.format(infoDate)); // Date를 문자열로 변환하여 저장
+        map.put("infoDate", infoDate);
+       // map.put("infoDate", simpleDateFormat.format(infoDate)); // Date를 문자열로 변환하여 저장
 
         Log.d("InsertCheckRequest", "priNum: " + priNum);
         Log.d("InsertCheckRequest", "infoCheck: " + infoCheck);
-        Log.d("InsertCheckRequest", "infoDate: " + simpleDateFormat.format(infoDate));
+       // Log.d("InsertCheckRequest", "infoDate: " + simpleDateFormat.format(infoDate));
     }
 
     @Override

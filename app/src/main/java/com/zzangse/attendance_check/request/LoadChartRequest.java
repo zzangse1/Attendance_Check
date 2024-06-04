@@ -19,12 +19,14 @@ import com.android.volley.toolbox.Volley;
 import org.json.JSONArray;
 import org.json.JSONException;
 
+import java.text.SimpleDateFormat;
 import java.util.HashMap;
 import java.util.Map;
 
 public class LoadChartRequest {
     private Context context;
     private static final String BASE_URL = "http://zzangse.store/load_chart.php";
+    private SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd");
 
     public LoadChartRequest(Context context) {
         this.context = context;
@@ -43,7 +45,14 @@ public class LoadChartRequest {
         return false;
     }
 
-    public void sendMemberOutputRequest(final String groupName, final VolleyCallback callback) {
+//    public void sendMemberOutputRequest(
+//                                        final java.util.Date firstDate, final java.util.Date lastDate,
+//                                        final String userID,final String groupName,
+//                                        final VolleyCallback callback)
+    public void sendMemberOutputRequest(
+            final String firstDate, final String lastDate,
+            final String userID,final String groupName,
+            final VolleyCallback callback) {
         if (!isNetworkAvailable()) {
             callback.onError("No internet connection");
             return;
@@ -84,8 +93,15 @@ public class LoadChartRequest {
             @Override
             protected Map<String, String> getParams() {
                 Map<String, String> params = new HashMap<>();
+                params.put("userID", userID);
                 params.put("groupName", groupName);
+                params.put("firstDate", firstDate);
+                params.put("lastDate", lastDate);
+//                params.put("firstDate", simpleDateFormat.format(firstDate));
+//                params.put("lastDate", simpleDateFormat.format(lastDate));
               //  params.put("infoDate", infoDate.toString());
+//                Log.d("request", userID + ", " + groupName +
+//                        ", " + simpleDateFormat.format(firstDate) + ", " + simpleDateFormat.format(lastDate));
                 return params;
             }
         };

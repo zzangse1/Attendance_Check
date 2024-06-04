@@ -44,7 +44,7 @@ public class LoadMemberCheckPastRequest {
         return false;
     }
 
-    public void sendMemberOutputRequest(String groupName, final java.util.Date infoDate, final VolleyCallback callback) {
+    public void sendMemberOutputRequest(String groupName, String infoDate/*final java.util.Date infoDate*/, final VolleyCallback callback) {
         if (!isNetworkAvailable()) {
             callback.onError("No internet connection");
             return;
@@ -87,7 +87,8 @@ public class LoadMemberCheckPastRequest {
                 Map<String, String> params = new HashMap<>();
                 SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
                 params.put("groupName", groupName);
-                params.put("infoDate", dateFormat.format(infoDate));
+                params.put("infoDate", infoDate);
+             //   params.put("infoDate", dateFormat.format(infoDate));
                 return params;
             }
         };
