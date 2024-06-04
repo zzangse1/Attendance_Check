@@ -19,6 +19,20 @@
         app:titleCentered="true"
         app:titleTextAppearance="@style/AppToolbarText.S24" />
 
+    <View
+        android:id="@+id/view_top"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_marginStart="10dp"
+        android:layout_marginEnd="10dp"
+        android:layout_marginBottom="10dp"
+        android:background="@drawable/view_check_background"
+        android:elevation="10dp"
+        app:layout_constraintBottom_toTopOf="@id/view_bottom"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/toolbar_check" />
+
 
     <TextView
         android:id="@+id/tv_group_name"
@@ -29,7 +43,9 @@
         android:layout_marginTop="10dp"
         android:layout_marginEnd="20dp"
         android:background="@drawable/plane_outline_background"
+        android:elevation="15dp"
         android:gravity="center"
+        android:outlineProvider="none"
         android:text="@string/plain_group_name"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -40,18 +56,22 @@
         android:layout_height="wrap_content"
         android:layout_marginEnd="10dp"
         android:contentDescription="@string/fragment_check_iv_script"
+        android:elevation="15dp"
         android:src="@drawable/ic_drop_down"
         app:layout_constraintBottom_toBottomOf="@id/tv_group_name"
         app:layout_constraintEnd_toEndOf="@id/tv_group_name"
         app:layout_constraintTop_toTopOf="@id/tv_group_name" />
 
 
-    <com.google.android.material.button.MaterialButton
+    <Button
         android:id="@+id/btn_left"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="20dp"
+        android:layout_marginTop="10dp"
         android:background="@drawable/ic_arrow_left"
+        android:elevation="15dp"
+        android:outlineProvider="none"
+        android:stateListAnimator="@null"
         app:layout_constraintEnd_toStartOf="@id/tv_date"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/tv_group_name" />
@@ -61,8 +81,9 @@
         style="@style/AppEditText.Bold.S24"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="4월 20일"
-        app:layout_constraintBottom_toTopOf="@id/view"
+        android:elevation="15dp"
+        android:outlineProvider="none"
+        app:layout_constraintBottom_toTopOf="@id/view_inner"
         app:layout_constraintEnd_toStartOf="@id/btn_right"
         app:layout_constraintStart_toEndOf="@id/btn_left"
         app:layout_constraintTop_toBottomOf="@id/tv_group_name" />
@@ -72,11 +93,29 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:background="@drawable/ic_arrow_right"
+        android:elevation="15dp"
+        android:outlineProvider="none"
+        android:stateListAnimator="@null"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@id/tv_date"
         app:layout_constraintTop_toTopOf="@id/btn_left" />
 
     <View
+        android:id="@+id/view_inner"
+        android:layout_width="0dp"
+        android:layout_height="100dp"
+        android:layout_marginStart="20dp"
+        android:layout_marginTop="10dp"
+        android:layout_marginEnd="20dp"
+        android:layout_marginBottom="5dp"
+        android:background="@drawable/view_check_background_inner"
+        android:elevation="10dp"
+        app:layout_constraintBottom_toTopOf="@id/view_bottom"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/btn_left" />
+
+    <!--View
         android:id="@+id/view"
         android:layout_width="0dp"
         android:layout_height="100dp"
@@ -85,25 +124,29 @@
         android:layout_marginEnd="20dp"
         android:layout_marginBottom="200dp"
         android:background="@drawable/view_check_background"
+        android:elevation="10dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/btn_left" />
+        app:layout_constraintTop_toBottomOf="@id/btn_left"></View-->
 
     <View
         android:id="@+id/circle_green"
         android:layout_width="75dp"
         android:layout_height="75dp"
         android:background="@drawable/circle_green"
-        app:layout_constraintBottom_toBottomOf="@id/view"
+        android:elevation="15dp"
+        android:outlineProvider="none"
+        app:layout_constraintBottom_toBottomOf="@id/view_inner"
         app:layout_constraintEnd_toStartOf="@id/circle_yellow"
-        app:layout_constraintStart_toStartOf="@id/view"
-        app:layout_constraintTop_toTopOf="@id/view" />
+        app:layout_constraintStart_toStartOf="@id/view_inner"
+        app:layout_constraintTop_toTopOf="@id/view_inner" />
 
     <TextView
         android:id="@+id/tv_green"
         style="@style/AppEditText.White.S20"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:elevation="15dp"
         app:layout_constraintBottom_toBottomOf="@id/circle_green"
         app:layout_constraintEnd_toEndOf="@id/circle_green"
         app:layout_constraintStart_toStartOf="@id/circle_green"
@@ -114,15 +157,19 @@
         android:layout_width="75dp"
         android:layout_height="75dp"
         android:background="@drawable/circle_orange"
+        android:elevation="15dp"
+        android:outlineProvider="none"
         app:layout_constraintEnd_toStartOf="@id/circle_red"
         app:layout_constraintStart_toEndOf="@id/circle_green"
         app:layout_constraintTop_toTopOf="@id/circle_green" />
+
 
     <TextView
         android:id="@+id/tv_yellow"
         style="@style/AppEditText.White.S20"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:elevation="15dp"
         app:layout_constraintBottom_toBottomOf="@id/circle_yellow"
         app:layout_constraintEnd_toEndOf="@id/circle_yellow"
         app:layout_constraintStart_toStartOf="@id/circle_yellow"
@@ -133,7 +180,9 @@
         android:layout_width="75dp"
         android:layout_height="75dp"
         android:background="@drawable/circle_red"
-        app:layout_constraintEnd_toEndOf="@id/view"
+        android:elevation="15dp"
+        android:outlineProvider="none"
+        app:layout_constraintEnd_toEndOf="@id/view_inner"
         app:layout_constraintStart_toEndOf="@id/circle_yellow"
         app:layout_constraintTop_toTopOf="@id/circle_yellow" />
 
@@ -142,31 +191,50 @@
         style="@style/AppEditText.White.S20"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:elevation="15dp"
         app:layout_constraintBottom_toBottomOf="@id/circle_red"
         app:layout_constraintEnd_toEndOf="@id/circle_red"
         app:layout_constraintStart_toStartOf="@id/circle_red"
         app:layout_constraintTop_toTopOf="@id/circle_red" />
 
 
+    <View
+        android:id="@+id/view_bottom"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_marginStart="10dp"
+        android:layout_marginTop="15dp"
+        android:layout_marginEnd="10dp"
+        android:layout_marginBottom="5dp"
+        android:background="@drawable/view_check_background"
+        android:elevation="10dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/view_inner" />
+
     <TextView
         android:id="@+id/tv_member_null"
         style="@style/AppEditText.Bold.S32"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginStart="20dp"
         android:layout_marginTop="20dp"
+        android:elevation="15dp"
         android:visibility="gone"
-        app:layout_constraintStart_toStartOf="@id/view"
-        app:layout_constraintTop_toBottomOf="@id/view" />
+        app:layout_constraintStart_toStartOf="@id/view_bottom"
+        app:layout_constraintTop_toTopOf="@id/view_bottom" />
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/rv_check"
         android:layout_width="0dp"
         android:layout_height="0dp"
-        android:layout_margin="10dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/view"
+        android:elevation="15dp"
+        android:outlineProvider="none"
+        app:layout_constraintBottom_toBottomOf="@id/view_bottom"
+        app:layout_constraintEnd_toEndOf="@id/view_bottom"
+        app:layout_constraintStart_toStartOf="@id/view_bottom"
+        app:layout_constraintTop_toTopOf="@id/view_bottom"
         tools:listitem="@layout/rv_check" />
 
 
