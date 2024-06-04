@@ -2,16 +2,8 @@ package com.zzangse.attendance_check.fragmentmain;
 
 import android.app.AlertDialog;
 import android.graphics.Color;
+import android.os.Build;
 import android.os.Bundle;
-
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.fragment.app.Fragment;
-import androidx.lifecycle.Observer;
-import androidx.lifecycle.ViewModelProvider;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
-
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
@@ -21,19 +13,28 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.fragment.app.Fragment;
+import androidx.lifecycle.Observer;
+import androidx.lifecycle.ViewModelProvider;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+
 import com.github.mikephil.charting.animation.Easing;
 import com.github.mikephil.charting.components.Description;
-import com.github.mikephil.charting.components.Legend;
 import com.github.mikephil.charting.data.PieData;
 import com.github.mikephil.charting.data.PieDataSet;
 import com.github.mikephil.charting.data.PieEntry;
-import com.github.mikephil.charting.utils.ColorTemplate;
+import com.github.mikephil.charting.formatter.ValueFormatter;
 import com.google.android.material.textfield.TextInputEditText;
 import com.zzangse.attendance_check.R;
 import com.zzangse.attendance_check.adapter.CheckGroupNameAdapter;
+import com.zzangse.attendance_check.data.CheckChart;
 import com.zzangse.attendance_check.data.DateViewModel;
 import com.zzangse.attendance_check.data.GroupName;
 import com.zzangse.attendance_check.data.GroupViewModel;
+import com.zzangse.attendance_check.data.YearMonthPickerDialog;
 import com.zzangse.attendance_check.databinding.FragmentChartBinding;
 import com.zzangse.attendance_check.request.LoadChartRequest;
 import com.zzangse.attendance_check.request.LoadGroupRequest;
@@ -42,7 +43,13 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.text.SimpleDateFormat;
+import java.time.LocalDate;
+import java.time.YearMonth;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Locale;
 
 
 public class ChartFragment extends Fragment {
@@ -54,7 +61,11 @@ public class ChartFragment extends Fragment {
     private GroupName groupName;
     private ArrayList<GroupName> filterList = new ArrayList<>();
     private String choiceGroupName;
-    private java.util.Date sqlDate;
+    private CheckChart chart;
+    private SimpleDateFormat simpleDateFormat;
+    private ArrayList<CheckChart> chartArrayList = new ArrayList<>();
+    String date, firstDay, lastDay;
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -68,6 +79,10 @@ public class ChartFragment extends Fragment {
             @Override
             public void onChanged(String s) {
                 binding.tvGroupName.setText(s);
+                choiceGroupName = s;
+                Log.d("viewModel", "choiceGroupName: " + s);
+                // chart
+                loadCheckChart();
             }
         });
 
@@ -75,6 +90,7 @@ public class ChartFragment extends Fragment {
             @Override
             public void onChanged(Long dateInMillis) {
                 //  binding.tvTest2.setText(aLong + "");
+                Log.d("date", dateInMillis + "");
             }
         });
 
@@ -91,46 +107,135 @@ public class ChartFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        chart();
+        getDate();
         loadGroupNameDB();
-        test();
+        onClickGroupName();
+        onClickDate();
+       // test();
     }
 
+    private void getDate() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            // 현재 날짜를 가져옴
+            LocalDate today = LocalDate.now();
+            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+
+            YearMonth yearMonth = YearMonth.from(today);
+            LocalDate firstDayOfMonth = yearMonth.atDay(1);
+            LocalDate lastDayOfMonth = yearMonth.atEndOfMonth();
+
+            String formattedToday = today.format(formatter);
+            firstDay = firstDayOfMonth.format(formatter);
+            lastDay = lastDayOfMonth.format(formatter);
+            date = today.format(formatter);
+
+            int year = today.getYear();
+            int month = today.getMonthValue();
+
+            Log.d("java8 up", date);
+            Log.d("java8 up | formattedToday", formattedToday);
+            Log.d("java8 up | formattedFirstDay", firstDay);
+            Log.d("java8 up | formattedLastDay", lastDay);
+            binding.tvDate.setText(year+"년 "+month+"월");
+        } else {
+            Calendar calendar = Calendar.getInstance();
+            SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault());
+
+            String formattedToday = formatter.format(calendar.getTime());
+
+            calendar.set(Calendar.DAY_OF_MONTH, 1);
+            firstDay = formatter.format(calendar.getTime());
+
+            int lastDayOfMonth = calendar.getActualMaximum(Calendar.DAY_OF_MONTH);
+            calendar.set(Calendar.DAY_OF_MONTH, lastDayOfMonth);
+            lastDay = formatter.format(calendar.getTime());
+
+            int year = calendar.get(Calendar.YEAR);
+            int month = calendar.get(Calendar.MONTH) + 1;
+            binding.tvDate.setText(year+"년 "+month+"월");
+            Log.d("CurrentDate", "Today: " + formattedToday);
+            Log.d("FirstDay", "First day of the month: " + firstDay);
+            Log.d("LastDay", "Last day of the month: " + lastDay);
+
+            binding.tvDate.setText(formattedToday); // 예제 TextView 업데이트
+        }
+        loadCheckChart();
+    }
+
+    private void onClickGroupName() {
+        binding.tvGroupName.setOnClickListener(v -> showGroupNameDialog());
+    }
+
+
     private void test() {
-        binding.tvGroupName.setOnClickListener(v->showGroupNameDialog());
-        LoadChartRequest request = new LoadChartRequest(getContext());
-        request.sendMemberOutputRequest(binding.tvGroupName.getText().toString(), new LoadChartRequest.VolleyCallback() {
+        binding.checkBox.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onSuccess(JSONArray result) {
-               try {
-                   for (int i = 0; i < result.length(); i++) {
-                       JSONObject jsonObject = result.getJSONObject(i);
-                       String a = jsonObject.getString("출석");
-                       String b = jsonObject.getString("지각");
-                       String c = jsonObject.getString("결석");
-                       Log.d("log", a+", "+b+", "+c);
-
-                   }
-               } catch (JSONException e) {
-                   throw new RuntimeException(e);
-               }
-            }
-
-            @Override
-            public void onError(String errorMessage) {
-
+            public void onClick(View v) {
+                if (binding.checkBox.isChecked()) {
+                    binding.pieChart.setVisibility(View.GONE);
+                } else {
+                    binding.pieChart.setVisibility(View.VISIBLE);
+                }
             }
         });
     }
+    private void loadCheckChart() {
+        if (binding.tvGroupName.getText().equals("그룹 이름")) {
+            binding.tvGroupNull.setText("그룹을 선택해주세요");
+            binding.tvGroupNull.setVisibility(View.VISIBLE);
+            binding.pieChart.setVisibility(View.GONE);
+        } else {
+            binding.tvGroupNull.setVisibility(View.GONE);
+            LoadChartRequest request = new LoadChartRequest(getContext());
+            request.sendMemberOutputRequest(
+                    firstDay, lastDay,
+                    userID, binding.tvGroupName.getText().toString(),
+                    new LoadChartRequest.VolleyCallback() {
+                        @Override
+                        public void onSuccess(JSONArray result) {
+                            try {
+                                chartArrayList.clear();
+                                for (int i = 0; i < result.length(); i++) {
+                                    JSONObject jsonObject = result.getJSONObject(i);
+                                    String a = jsonObject.getString("infoCheck");
+                                    String b = jsonObject.getString("개수");
+                                    Log.d("log", a + "," + b);
+                                    chart = new CheckChart(a, b);
+                                    chartArrayList.add(chart);
+                                }
+                                setChart();
+                            } catch (JSONException e) {
+                                throw new RuntimeException(e);
+                            }
+                        }
 
-    private void chart() {
+                        @Override
+                        public void onError(String errorMessage) {
 
+                        }
+                    });
+        }
 
+    }
+
+    private void setChart() {
         ArrayList<PieEntry> entries = new ArrayList<>();
+        Log.d("chartArrayList.size()", chartArrayList.size() + "");
+        int count = 0;
+        for (CheckChart c : chartArrayList) {
+            count +=Integer.parseInt(c.getCheckCount());
+            if (count == 0) {
+                Log.d("count", count + "");
+                binding.pieChart.setVisibility(View.GONE);
+                binding.tvGroupNull.setText("해당 날짜는 기록이 없거나\n멤버가 없습니다.");
+                binding.tvGroupNull.setVisibility(View.VISIBLE);
+            } else {
+                entries.add(new PieEntry(Float.parseFloat(c.getCheckCount()), c.getInfoCheck()));
+                binding.pieChart.setVisibility(View.VISIBLE);
+                binding.tvGroupNull.setVisibility(View.GONE);
+            }
 
-        entries.add(new PieEntry(34f, "출석"));
-        entries.add(new PieEntry(12f, "지각"));
-        entries.add(new PieEntry(5f, "결석"));
+        }
 
         int[] colorArray = new int[]
                 {
@@ -152,8 +257,64 @@ public class ChartFragment extends Fragment {
         PieData data = new PieData(dataSet);
         data.setValueTextSize(10f);
         data.setValueTextColor(Color.WHITE);
+        data.setValueFormatter(new ValueFormatter() {
+            @Override
+            public String getFormattedValue(float value) {
+                return String.format("%d", (int) value);
+            }
+        });
 
         binding.pieChart.setData(data);
+        binding.pieChart.invalidate();
+    }
+
+    private void onClickDate() {
+        binding.tvDate.setOnClickListener(v -> showYearMonthPicker());
+    }
+
+    private void showYearMonthPicker() {
+        YearMonthPickerDialog yearMonthPickerDialog = new YearMonthPickerDialog(getContext(), new YearMonthPickerDialog.OnDateSetListener() {
+            @Override
+            public void onDateSet(int year, int month) {
+                Log.d("onDateSet", year + "," + month);
+                calculateFirstAndLastDayOfMonth(year, month);
+            }
+        });
+        yearMonthPickerDialog.show();
+    }
+
+    private void calculateFirstAndLastDayOfMonth(int year, int month) {
+        YearMonth yearMonth = null;
+        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
+            yearMonth = YearMonth.of(year, month);
+            LocalDate firstDayOfMonth = yearMonth.atDay(1);
+            LocalDate lastDayOfMonth = yearMonth.atEndOfMonth();
+
+            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+            firstDay = firstDayOfMonth.format(formatter);
+            lastDay = lastDayOfMonth.format(formatter);
+            binding.tvDate.setText(year + "년 " + month + "월");
+        } else {
+            Calendar calendar = Calendar.getInstance();
+            calendar.set(Calendar.YEAR, year);
+            calendar.set(Calendar.MONTH, month - 1);
+            // 첫날
+            calendar.set(Calendar.DAY_OF_MONTH, 1);
+            firstDay = String.format("%d-%02d-%02d", calendar.get(Calendar.YEAR),
+                    calendar.get(Calendar.MONTH) + 1,
+                    calendar.get(Calendar.DAY_OF_MONTH));
+            // 마지막 날
+            int lastDayOfMonth = calendar.getActualMaximum(Calendar.DAY_OF_MONTH);
+            calendar.set(Calendar.DAY_OF_MONTH, lastDayOfMonth);
+            lastDay = String.format("%d-%02d-%02d", calendar.get(Calendar.YEAR),
+                    calendar.get(Calendar.MONTH) + 1,
+                    calendar.get(Calendar.DAY_OF_MONTH));
+            binding.tvDate.setText(year + "년 " + month + "월");
+        }
+        // 결과 출력
+        Log.d("Date", "First day: " + firstDay);
+        Log.d("Date", "Last day: " + lastDay);
+        loadCheckChart();
     }
 
     private void showGroupNameDialog() {
@@ -226,11 +387,14 @@ public class ChartFragment extends Fragment {
             } else {
                 groupViewModel.setGroupName(choiceGroupName);
                 binding.tvGroupName.setText(choiceGroupName);
+                loadCheckChart();
+                setChart();
                 dialog.dismiss();
             }
         });
         dialog.show();
     }
+
     private void loadGroupNameDB() {
         LoadGroupRequest loadGroupRequest = new LoadGroupRequest(getContext());
         loadGroupRequest.sendGroupOutputRequest(userID, new LoadGroupRequest.VolleyCallback() {
