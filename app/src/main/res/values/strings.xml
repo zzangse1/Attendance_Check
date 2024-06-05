@@ -65,6 +65,17 @@
     <!-- 체크 프래그먼트 -->
     <string name="fragment_check_iv_script">textView안에 있는 화살표</string>
 
+    <!-- 에러 메세지 -->
+    <string name="error_msg_no_name">이름을 확인해 주세요.</string>
+    <string name="error_msg_no_member">멤버가 없습니다.</string>
+    <string name="error_msg_no_group">그룹이 없습니다.</string>
+    <string name="error_msg_over_name">이름은 10글자 이내로 작성해 주세요.</string>
+
+
+    <!-- 기본 메세지 -->
+    <string name="common_choice_group">그룹을 선택해 주세요</string>
+    <string name="common_move_call">전화 창으로 이동합니다.</string>
+    <string name="common_move">이동</string>
 
 
 </resources>
