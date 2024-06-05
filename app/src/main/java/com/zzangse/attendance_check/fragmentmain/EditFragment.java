@@ -50,7 +50,6 @@ public class EditFragment extends Fragment {
     private EditGroupNameAdapter adapter;
     private RecyclerView recyclerView;
     private GroupName groupName;
-    private String deleteGroupName;
     private String choiceGroupName;
     private GroupViewModel groupViewModel;
 
