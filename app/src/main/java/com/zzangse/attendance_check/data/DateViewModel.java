@@ -14,10 +14,6 @@ public class DateViewModel extends androidx.lifecycle.ViewModel {
         return selectedDate;
     }
 
-    public void setSelectedDate(java.util.Date date) {
-        selectedDate.setValue(date.getTime());
-
-    }
 
     @Override
     public String toString() {

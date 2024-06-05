@@ -44,7 +44,7 @@ public class LoadMemberCheckRequest {
         return false;
     }
 
-    public void sendMemberOutputRequest(final int priNum, String infoDate/*final java.util.Date infoDate*/, final VolleyCallback callback) {
+    public void sendMemberOutputRequest(final int priNum, String infoDate, final VolleyCallback callback) {
         if (!isNetworkAvailable()) {
             callback.onError("No internet connection");
             return;
@@ -85,10 +85,8 @@ public class LoadMemberCheckRequest {
             @Override
             protected Map<String, String> getParams() {
                 Map<String, String> params = new HashMap<>();
-                SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
                 params.put("priNum", String.valueOf(priNum));
                 params.put("infoDate", infoDate);
-                //params.put("infoDate", dateFormat.format(infoDate));
                 return params;
             }
         };

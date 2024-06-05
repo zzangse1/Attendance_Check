@@ -47,7 +47,6 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
@@ -261,8 +260,6 @@ public class CheckFragment extends Fragment {
                     simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd");
                     date = simpleDateFormat.format(selectedDate);
                     binding.tvDate.setText(date);
-                    //  sqlDate = new java.sql.Date(selectedDate.getTime());
-                    //loadPastMemberCheckDB();
                 }
             }
         });
@@ -359,7 +356,7 @@ public class CheckFragment extends Fragment {
     }
 
 
-    private void insertCheckDB(int priNum, String infoCheck, String infoDate /*java.sql.Date infoDate*/, DBCallback dbCallback) {
+    private void insertCheckDB(int priNum, String infoCheck, String infoDate, DBCallback dbCallback) {
         Response.Listener<String> listener = new Response.Listener<String>() {
             @Override
             public void onResponse(String s) {
@@ -392,7 +389,7 @@ public class CheckFragment extends Fragment {
         void onError(String errorMessage);
     }
 
-    private void loadMemberCheckDB(int priNum, String infoDate/*java.util.Date infoDate*/) {
+    private void loadMemberCheckDB(int priNum, String infoDate) {
         LoadMemberCheckRequest loadMemberCheckRequest = new LoadMemberCheckRequest(getContext());
         loadMemberCheckRequest.sendMemberOutputRequest(priNum, infoDate, new LoadMemberCheckRequest.VolleyCallback() {
             @Override

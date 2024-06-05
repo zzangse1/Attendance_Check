@@ -45,10 +45,6 @@ public class LoadChartRequest {
         return false;
     }
 
-//    public void sendMemberOutputRequest(
-//                                        final java.util.Date firstDate, final java.util.Date lastDate,
-//                                        final String userID,final String groupName,
-//                                        final VolleyCallback callback)
     public void sendMemberOutputRequest(
             final String firstDate, final String lastDate,
             final String userID,final String groupName,
