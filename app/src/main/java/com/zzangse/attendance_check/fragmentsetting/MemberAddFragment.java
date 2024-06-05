@@ -24,7 +24,7 @@ import com.zzangse.attendance_check.request.InsertMemberRequest;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-public class MemberAddFragment extends Fragment{
+public class MemberAddFragment extends Fragment {
     private FragmentMemberAddBinding binding;
     private String groupName;
     private String userID;
@@ -61,6 +61,12 @@ public class MemberAddFragment extends Fragment{
     private boolean checkName(String name) {
         if (name.isEmpty()) {
             binding.etMemberAddNameLayout.setBoxStrokeColor(COLOR_RED);
+            binding.tvErrorName.setText(R.string.error_msg_no_name);
+            binding.tvErrorName.setVisibility(View.VISIBLE);
+            return false;
+        } else if (name.length() > 10) {
+            binding.etMemberAddNameLayout.setBoxStrokeColor(COLOR_RED);
+            binding.tvErrorName.setText(R.string.error_msg_over_name);
             binding.tvErrorName.setVisibility(View.VISIBLE);
             return false;
         } else {
@@ -180,7 +186,7 @@ public class MemberAddFragment extends Fragment{
                         Log.d("DB접속 ", "저장실패");
                     }
                 } catch (JSONException e) {
-                    Log.e("DB에러", "JSON예외 발생: "+ e);
+                    Log.e("DB에러", "JSON예외 발생: " + e);
                     throw new RuntimeException(e);
                 }
             }
