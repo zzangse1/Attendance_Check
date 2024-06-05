@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <com.google.android.material.card.MaterialCardView
+        android:layout_width="match_parent"
+        android:layout_height="70dp"
+        app:cardBackgroundColor="@color/white"
+        app:cardCornerRadius="5dp"
+        app:cardElevation="3dp"
+        app:cardUseCompatPadding="true"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:strokeColor="@color/navy_300"
+        app:strokeWidth="3dp">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <TextView
+                android:id="@+id/tv_member_name"
+                style="@style/AppEditText.Bold.S24"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:background="@drawable/plane_outline_background"
+                android:gravity="center"
+                app:layout_constraintEnd_toStartOf="@id/tv_attendance"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintWidth_percent="0.5"
+                tools:text="@string/plain_name" />
+
+            <TextView
+                android:id="@+id/tv_attendance"
+                style="@style/AppEditText.Bold.S24"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:gravity="center"
+                android:textColor="@color/check_green"
+                app:layout_constraintEnd_toStartOf="@id/tv_tardy"
+                app:layout_constraintStart_toEndOf="@id/tv_member_name"
+                app:layout_constraintWidth_percent="0.1666"
+                tools:text="12" />
+
+            <TextView
+                android:id="@+id/tv_tardy"
+                style="@style/AppEditText.Bold.S24"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:gravity="center"
+                android:textColor="@color/check_orange"
+                app:layout_constraintEnd_toStartOf="@id/tv_absence"
+                app:layout_constraintStart_toEndOf="@id/tv_attendance"
+                app:layout_constraintWidth_percent="0.1666"
+                tools:text="2" />
+
+            <TextView
+                android:id="@+id/tv_absence"
+                style="@style/AppEditText.Bold.S24"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:gravity="center"
+                android:textColor="@color/check_red"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="@id/tv_tardy"
+                app:layout_constraintWidth_percent="0.1666"
+                tools:text="4" />
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+    </com.google.android.material.card.MaterialCardView>
+</androidx.constraintlayout.widget.ConstraintLayout>
