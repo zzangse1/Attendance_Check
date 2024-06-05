@@ -29,6 +29,7 @@ import com.github.mikephil.charting.data.PieEntry;
 import com.github.mikephil.charting.formatter.ValueFormatter;
 import com.google.android.material.textfield.TextInputEditText;
 import com.zzangse.attendance_check.R;
+import com.zzangse.attendance_check.adapter.ChartAdapter;
 import com.zzangse.attendance_check.adapter.CheckGroupNameAdapter;
 import com.zzangse.attendance_check.data.CheckChart;
 import com.zzangse.attendance_check.data.DateViewModel;
@@ -36,6 +37,7 @@ import com.zzangse.attendance_check.data.GroupName;
 import com.zzangse.attendance_check.data.GroupViewModel;
 import com.zzangse.attendance_check.data.YearMonthPickerDialog;
 import com.zzangse.attendance_check.databinding.FragmentChartBinding;
+import com.zzangse.attendance_check.request.LoadChartListRequest;
 import com.zzangse.attendance_check.request.LoadChartRequest;
 import com.zzangse.attendance_check.request.LoadGroupRequest;
 
@@ -57,15 +59,17 @@ public class ChartFragment extends Fragment {
     private GroupViewModel groupViewModel;
     private DateViewModel dateViewModel;
     private String userID;
+    private ChartAdapter adapter;
     private ArrayList<GroupName> groupNameList = new ArrayList<>();
     private GroupName groupName;
     private ArrayList<GroupName> filterList = new ArrayList<>();
     private String choiceGroupName;
     private CheckChart chart;
     private SimpleDateFormat simpleDateFormat;
-    private ArrayList<CheckChart> chartArrayList = new ArrayList<>();
+    private ArrayList<CheckChart> chartPieArrayList = new ArrayList<>();
+    private ArrayList<CheckChart> chartRvArrayList = new ArrayList<>();
     String date, firstDay, lastDay;
-
+    private boolean isRecycler = false;
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -89,7 +93,6 @@ public class ChartFragment extends Fragment {
         dateViewModel.getSelectedDate().observe(getViewLifecycleOwner(), new Observer<Long>() {
             @Override
             public void onChanged(Long dateInMillis) {
-                //  binding.tvTest2.setText(aLong + "");
                 Log.d("date", dateInMillis + "");
             }
         });
@@ -111,7 +114,8 @@ public class ChartFragment extends Fragment {
         loadGroupNameDB();
         onClickGroupName();
         onClickDate();
-       // test();
+        test();
+        initRecycler();
     }
 
     private void getDate() {
@@ -136,7 +140,7 @@ public class ChartFragment extends Fragment {
             Log.d("java8 up | formattedToday", formattedToday);
             Log.d("java8 up | formattedFirstDay", firstDay);
             Log.d("java8 up | formattedLastDay", lastDay);
-            binding.tvDate.setText(year+"년 "+month+"월");
+            binding.tvDate.setText(year + "년 " + month + "월");
         } else {
             Calendar calendar = Calendar.getInstance();
             SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault());
@@ -152,7 +156,7 @@ public class ChartFragment extends Fragment {
 
             int year = calendar.get(Calendar.YEAR);
             int month = calendar.get(Calendar.MONTH) + 1;
-            binding.tvDate.setText(year+"년 "+month+"월");
+            binding.tvDate.setText(year + "년 " + month + "월");
             Log.d("CurrentDate", "Today: " + formattedToday);
             Log.d("FirstDay", "First day of the month: " + firstDay);
             Log.d("LastDay", "Last day of the month: " + lastDay);
@@ -166,22 +170,73 @@ public class ChartFragment extends Fragment {
         binding.tvGroupName.setOnClickListener(v -> showGroupNameDialog());
     }
 
+    private void initRecycler() {
+        RecyclerView recyclerView = binding.rvChart;
+        recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
+        adapter = new ChartAdapter(getContext(), chartRvArrayList);
+        recyclerView.setAdapter(adapter);
+        adapter.setOnClick(new ChartAdapter.ChartAdapterClick() {
+            @Override
+            public void onClickInfo(CheckChart chart) {
+                Toast.makeText(getContext(), chart.getInfoName() + "", Toast.LENGTH_SHORT).show();
+            }
+        });
+    }
+
+
 
     private void test() {
         binding.checkBox.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 if (binding.checkBox.isChecked()) {
+                    binding.checkBox.setText("숨기기");
                     binding.pieChart.setVisibility(View.GONE);
                 } else {
+                    binding.checkBox.setText("숨기기");
                     binding.pieChart.setVisibility(View.VISIBLE);
                 }
             }
         });
     }
+
+    private void loadCheckList() {
+        LoadChartListRequest request = new LoadChartListRequest(getContext());
+        request.sendMemberOutputRequest(firstDay, lastDay, userID, binding.tvGroupName.getText().toString(),
+                new LoadChartListRequest.VolleyCallback() {
+            @Override
+            public void onSuccess(JSONArray result) {
+                try {
+                    chartRvArrayList.clear();
+                    for (int i = 0; i < result.length(); i++) {
+                        JSONObject jsonObject = result.getJSONObject(i);
+                        String infoName = jsonObject.getString("infoName");
+                        String check1 = jsonObject.getString("출석_개수");
+                        String check2 = jsonObject.getString("지각_개수");
+                        String check3 = jsonObject.getString("결석_개수");
+                        chart = new CheckChart(infoName, check1, check2, check3);
+                        Log.d("asdfasdf", infoName);
+                        Log.d("asdfasdf", check1);
+                        Log.d("asdfasdf", check2);
+                        Log.d("asdfasdf", check3);
+                        chartRvArrayList.add(chart);
+                    }
+                    adapter.notifyDataSetChanged();
+
+                } catch (JSONException e) {
+                    throw new RuntimeException(e);
+                }
+            }
+
+            @Override
+            public void onError(String errorMessage) {
+
+            }
+        });
+    }
     private void loadCheckChart() {
         if (binding.tvGroupName.getText().equals("그룹 이름")) {
-            binding.tvGroupNull.setText("그룹을 선택해주세요");
+            binding.tvGroupNull.setText(R.string.common_choice_group);
             binding.tvGroupNull.setVisibility(View.VISIBLE);
             binding.pieChart.setVisibility(View.GONE);
         } else {
@@ -194,14 +249,14 @@ public class ChartFragment extends Fragment {
                         @Override
                         public void onSuccess(JSONArray result) {
                             try {
-                                chartArrayList.clear();
+                                chartPieArrayList.clear();
                                 for (int i = 0; i < result.length(); i++) {
                                     JSONObject jsonObject = result.getJSONObject(i);
                                     String a = jsonObject.getString("infoCheck");
                                     String b = jsonObject.getString("개수");
                                     Log.d("log", a + "," + b);
                                     chart = new CheckChart(a, b);
-                                    chartArrayList.add(chart);
+                                    chartPieArrayList.add(chart);
                                 }
                                 setChart();
                             } catch (JSONException e) {
@@ -220,23 +275,29 @@ public class ChartFragment extends Fragment {
 
     private void setChart() {
         ArrayList<PieEntry> entries = new ArrayList<>();
-        Log.d("chartArrayList.size()", chartArrayList.size() + "");
+        Log.d("chartArrayList.size()", chartPieArrayList.size() + "");
         int count = 0;
-        for (CheckChart c : chartArrayList) {
-            count +=Integer.parseInt(c.getCheckCount());
+        for (CheckChart c : chartPieArrayList) {
+            count += Integer.parseInt(c.getCheckCount());
             if (count == 0) {
+                isRecycler = false;
                 Log.d("count", count + "");
                 binding.pieChart.setVisibility(View.GONE);
                 binding.tvGroupNull.setText("해당 날짜는 기록이 없거나\n멤버가 없습니다.");
                 binding.tvGroupNull.setVisibility(View.VISIBLE);
             } else {
+                isRecycler = true;
                 entries.add(new PieEntry(Float.parseFloat(c.getCheckCount()), c.getInfoCheck()));
                 binding.pieChart.setVisibility(View.VISIBLE);
                 binding.tvGroupNull.setVisibility(View.GONE);
             }
-
         }
-
+        // 차트가 있으면 리싸이클러뷰 업데이트
+        if (isRecycler) {
+            loadCheckList();
+        } else {
+            chartRvArrayList.clear();
+        }
         int[] colorArray = new int[]
                 {
                         getContext().getColor(R.color.check_green)
