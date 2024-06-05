@@ -216,9 +216,9 @@ public class CheckFragment extends Fragment {
         TextView btnOk = dialogView.findViewById(R.id.btn_ok);
         TextView btnCancel = dialogView.findViewById(R.id.btn_cancel);
 
-        tvTarget.setText("전화창으로 이동합니다.");
+        tvTarget.setText(R.string.common_move_call);
         tvLabel.setVisibility(View.GONE);
-        btnOk.setText("이동");
+        btnOk.setText(R.string.common_move);
         tvTitle.setText(dialogTitle);
 
         AlertDialog dialog = builder.setView(dialogView)
@@ -271,10 +271,10 @@ public class CheckFragment extends Fragment {
     private void isNullMemberInfoList(ArrayList<MemberInfo> memberInfoList) {
         if (memberInfoList.isEmpty()) {
             if (binding.tvGroupName.getText().equals("그룹 이름(수정)")) {
-                binding.tvMemberNull.setText("그룹을 선택해주세요.");
+                binding.tvMemberNull.setText(R.string.common_choice_group);
                 binding.tvMemberNull.setVisibility(View.VISIBLE);
             } else {
-                binding.tvMemberNull.setText("멤버가 없습니다.");
+                binding.tvMemberNull.setText(R.string.error_msg_no_member);
                 binding.tvMemberNull.setVisibility(View.VISIBLE);
             }
         } else {
@@ -292,7 +292,7 @@ public class CheckFragment extends Fragment {
 
     private void initScreen() {
         if (!isInitViewModel) {
-            binding.tvMemberNull.setText("그룹을 선택해주세요");
+            binding.tvMemberNull.setText(R.string.common_choice_group);
             binding.tvMemberNull.setVisibility(View.VISIBLE);
         }
     }
@@ -305,7 +305,6 @@ public class CheckFragment extends Fragment {
         memberAdapter.setOnClick(new CheckMemberNameAdapter.CheckMemberNameAdapterClick() {
             @Override
             public void onClickInfo(MemberInfo memberInfo) {
-                //Toast.makeText(getActivity(), memberInfo.getInfoName(), Toast.LENGTH_SHORT).show();
                 showSheet(memberInfo.getPriNum(), memberInfo.getInfoName(), memberInfo.getInfoNumber());
             }
         });
@@ -327,19 +326,6 @@ public class CheckFragment extends Fragment {
             binding.tvDate.setText(date); // TextView에 날짜 설정
         }
 
-    }
-
-    private void setCalendar() {
-        simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd");
-        date = simpleDateFormat.format(new Date());
-        try {
-            Date parsedDate = simpleDateFormat.parse(date);
-            if (parsedDate != null) {
-                selectedDateInMillis = parsedDate.getTime();
-            }
-        } catch (ParseException e) {
-            e.printStackTrace();
-        }
     }
 
 
@@ -381,10 +367,8 @@ public class CheckFragment extends Fragment {
                     JSONObject jsonObject = new JSONObject(s);
                     boolean isSuccess = jsonObject.getBoolean("success");
                     if (isSuccess) {
-                        // Toast.makeText(getActivity(), "DB ok", Toast.LENGTH_SHORT).show();
                         dbCallback.onSuccess();
                     } else {
-                        //Toast.makeText(getActivity(), "DB false", Toast.LENGTH_SHORT).show();
                         dbCallback.onError("failed to insert");
                     }
 
@@ -394,7 +378,6 @@ public class CheckFragment extends Fragment {
                 }
             }
         };
-        // InsertCheckRequest request = new InsertCheckRequest(priNum, infoCheck, infoDate, listener);
         InsertCheckRequest request = new InsertCheckRequest(priNum, infoCheck, infoDate, listener);
         if (getActivity() != null) {
             RequestQueue queue = Volley.newRequestQueue(getActivity());
@@ -453,7 +436,7 @@ public class CheckFragment extends Fragment {
     }
 
     private void loadPastMemberCheckDB() {
-        if (choiceGroupName == null /*|| sqlDate == null*/) return;
+        if (choiceGroupName == null) return;
         LoadMemberCheckPastRequest loadMemberCheckPastRequest = new LoadMemberCheckPastRequest(getContext());
         loadMemberCheckPastRequest.sendMemberOutputRequest(choiceGroupName, date, new LoadMemberCheckPastRequest.VolleyCallback() {
             @Override
@@ -504,7 +487,6 @@ public class CheckFragment extends Fragment {
                         String dbInfoNumber = jsonObject.getString("infoPhoneNumber");
                         memberInfo = new MemberInfo(priNum, dbInfoName, dbInfoNumber);
                         memberInfoList.add(memberInfo);
-                        // loadMemberCheckDB(priNum, sqlDate);
                     }
                     loadPastMemberCheckDB();
                     isNullMemberInfoList(memberInfoList);
@@ -516,7 +498,7 @@ public class CheckFragment extends Fragment {
 
             @Override
             public void onError(String errorMessage) {
-
+                Log.d("onError", errorMessage);
             }
         });
     }
@@ -542,7 +524,7 @@ public class CheckFragment extends Fragment {
 
             @Override
             public void onError(String errorMessage) {
-                Log.d("userData", "error " + errorMessage);
+                Log.d("onError", errorMessage);
             }
         });
     }
