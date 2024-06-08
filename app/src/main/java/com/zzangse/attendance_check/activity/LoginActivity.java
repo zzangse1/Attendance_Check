@@ -12,12 +12,19 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.toolbox.Volley;
+import com.kakao.sdk.auth.model.OAuthToken;
+import com.kakao.sdk.common.KakaoSdk;
+import com.kakao.sdk.user.UserApiClient;
+import com.kakao.sdk.user.model.User;
 import com.zzangse.attendance_check.R;
 import com.zzangse.attendance_check.databinding.ActivityLoginBinding;
 import com.zzangse.attendance_check.request.SignInRequest;
 
 import org.json.JSONException;
 import org.json.JSONObject;
+
+import kotlin.Unit;
+import kotlin.jvm.functions.Function2;
 
 public class LoginActivity extends AppCompatActivity {
     private ActivityLoginBinding binding;
@@ -27,9 +34,11 @@ public class LoginActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         initView();
+        initKakao();
         onClickLogin();
         onClickEditTextPassWordShow();
         onClickSignUp();
+        onClickKakaoLogin();
     }
 
     private void initView() {
@@ -37,6 +46,59 @@ public class LoginActivity extends AppCompatActivity {
         setContentView(binding.getRoot());
     }
 
+    private void initKakao() {
+        Log.d("initKakao", "appkey");
+        KakaoSdk.init(this,"f4e9cb70147f65159b379f578067d383");
+        String kakao = KakaoSdk.INSTANCE.getKeyHash();
+        Log.d("hash", kakao);
+    }
+
+    private void onClickKakaoLogin() {
+        Function2<OAuthToken,Throwable, Unit> callback = new Function2<OAuthToken, Throwable, Unit>() {
+            @Override
+            public Unit invoke(OAuthToken oAuthToken, Throwable throwable) {
+                if (oAuthToken != null) {
+                    Log.d("oAuthToken", "oAuthToken NULL");
+                }
+                if (throwable != null) {
+                    Log.d("throwable", "throwable NULL");
+                }
+                updateKakaoLogin();
+                return null;
+            }
+        };
+
+        binding.ibKakaoLogin.setOnClickListener(v->{
+            if (UserApiClient.getInstance().isKakaoTalkLoginAvailable(LoginActivity.this)) {
+                UserApiClient.getInstance().loginWithKakaoTalk(LoginActivity.this, callback);
+            } else {
+                UserApiClient.getInstance().loginWithKakaoAccount(LoginActivity.this, callback);
+            }
+        });
+    }
+
+
+    private void updateKakaoLogin() {
+        UserApiClient.getInstance().me(new Function2<User, Throwable, Unit>() {
+            @Override
+            public Unit invoke(User user, Throwable throwable) {
+                Log.d("user", user + "");
+                if (user != null) {
+//                    Log.d("KAKAO", "invoke id" + user.getId());
+//                    Log.d("KAKAO", "invoke email" + user.getKakaoAccount().getEmail());
+                    Log.d("KAKAO", "invoke nickName" + user.getKakaoAccount().getEmail());
+//                    Log.d("KAKAO", "invoke gender" + user.getKakaoAccount().getGender());
+//                    Log.d("KAKAO", "invoke age" + user.getKakaoAccount().getBirthday());
+//                    Log.d("KAKAO", "invoke age" + user.getKakaoAccount().getPhoneNumber());
+                    binding.tvTest.setText(user.getId()+"");
+
+                } else {
+                    Log.d("KAKAO", "로그인 X");
+                }
+                return null;
+            }
+        });
+    }
 
     private void onClickEditTextPassWordShow() {
         binding.ibShowPassword.setOnClickListener(v -> {
