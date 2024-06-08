@@ -205,7 +205,6 @@ public class ChartFragment extends Fragment {
         binding.checkBox.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v)  {
-                boolean
                 if (binding.checkBox.isChecked()) {
                     binding.checkBox.setText("숨기기");
                     binding.pieChart.setVisibility(View.GONE);
