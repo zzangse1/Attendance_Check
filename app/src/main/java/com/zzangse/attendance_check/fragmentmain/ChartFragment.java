@@ -32,6 +32,7 @@ import com.zzangse.attendance_check.R;
 import com.zzangse.attendance_check.adapter.ChartAdapter;
 import com.zzangse.attendance_check.adapter.CheckGroupNameAdapter;
 import com.zzangse.attendance_check.data.CheckChart;
+import com.zzangse.attendance_check.data.CheckViewModel;
 import com.zzangse.attendance_check.data.DateViewModel;
 import com.zzangse.attendance_check.data.GroupName;
 import com.zzangse.attendance_check.data.GroupViewModel;
@@ -58,6 +59,7 @@ public class ChartFragment extends Fragment {
     private FragmentChartBinding binding;
     private GroupViewModel groupViewModel;
     private DateViewModel dateViewModel;
+    private CheckViewModel checkViewModel;
     private String userID;
     private ChartAdapter adapter;
     private ArrayList<GroupName> groupNameList = new ArrayList<>();
@@ -78,7 +80,7 @@ public class ChartFragment extends Fragment {
         binding = FragmentChartBinding.inflate(inflater);
         groupViewModel = new ViewModelProvider(requireActivity()).get(GroupViewModel.class);
         dateViewModel = new ViewModelProvider(requireActivity()).get(DateViewModel.class);
-
+        checkViewModel = new ViewModelProvider(requireActivity()).get(CheckViewModel.class);
         groupViewModel.getGroupName().observe(getViewLifecycleOwner(), new Observer<String>() {
             @Override
             public void onChanged(String s) {
@@ -97,6 +99,21 @@ public class ChartFragment extends Fragment {
             }
         });
 
+        checkViewModel.getIsChecked().observe(getViewLifecycleOwner(), new Observer<Boolean>() {
+            @Override
+            public void onChanged(Boolean isChecked) {
+                if (isChecked != null) {
+                    binding.checkBox.setChecked(isChecked);
+                    if (isChecked) {
+                        binding.pieChart.setVisibility(View.GONE);
+                        binding.checkBox.setText("숨기기");
+                    } else {
+                        binding.pieChart.setVisibility(View.VISIBLE);
+                        binding.checkBox.setText("숨기기");
+                    }
+                }
+            }
+        });
         return binding.getRoot();
     }
 
@@ -184,17 +201,19 @@ public class ChartFragment extends Fragment {
     }
 
 
-
     private void test() {
         binding.checkBox.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View v) {
+            public void onClick(View v)  {
+                boolean
                 if (binding.checkBox.isChecked()) {
                     binding.checkBox.setText("숨기기");
                     binding.pieChart.setVisibility(View.GONE);
+                    checkViewModel.setIsChecked(true);
                 } else {
                     binding.checkBox.setText("숨기기");
                     binding.pieChart.setVisibility(View.VISIBLE);
+                    checkViewModel.setIsChecked(false);
                 }
             }
         });
@@ -215,10 +234,6 @@ public class ChartFragment extends Fragment {
                         String check2 = jsonObject.getString("지각_개수");
                         String check3 = jsonObject.getString("결석_개수");
                         chart = new CheckChart(infoName, check1, check2, check3);
-                        Log.d("asdfasdf", infoName);
-                        Log.d("asdfasdf", check1);
-                        Log.d("asdfasdf", check2);
-                        Log.d("asdfasdf", check3);
                         chartRvArrayList.add(chart);
                     }
                     adapter.notifyDataSetChanged();
