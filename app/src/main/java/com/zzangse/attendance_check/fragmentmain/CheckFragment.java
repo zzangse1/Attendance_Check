@@ -1,7 +1,11 @@
 package com.zzangse.attendance_check.fragmentmain;
 
 import android.app.AlertDialog;
+import android.content.Context;
 import android.content.Intent;
+import android.content.pm.PackageInfo;
+import android.content.pm.PackageManager;
+import android.content.pm.Signature;
 import android.net.Uri;
 import android.os.Bundle;
 import android.text.Editable;
@@ -47,6 +51,8 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
@@ -93,6 +99,29 @@ public class CheckFragment extends Fragment {
         loadGroupNameDB();
         onClickDateBtn();
         onClickGroupName();
+        Log.d("HASH: ", getKeyHash(getContext()));
+    }
+
+    public static String getKeyHash( Context context) {
+        PackageManager pm = context.getPackageManager();
+        try {
+            PackageInfo packageInfo = pm.getPackageInfo(context.getPackageName(), PackageManager.GET_SIGNATURES);
+            if (packageInfo == null)
+                return null;
+
+            for (Signature signature : packageInfo.signatures) {
+                try {
+                    MessageDigest md = MessageDigest.getInstance("SHA");
+                    md.update(signature.toByteArray());
+                    return android.util.Base64.encodeToString(md.digest(), android.util.Base64.NO_WRAP);
+                } catch (NoSuchAlgorithmException e) {
+                    e.printStackTrace();
+                }
+            }
+        } catch (PackageManager.NameNotFoundException e) {
+            e.printStackTrace();
+        }
+        return null;
     }
 
     @Override
@@ -500,6 +529,7 @@ public class CheckFragment extends Fragment {
         });
     }
 
+
     private void loadGroupNameDB() {
         LoadGroupRequest loadGroupRequest = new LoadGroupRequest(getContext());
         loadGroupRequest.sendGroupOutputRequest(userID, new LoadGroupRequest.VolleyCallback() {
@@ -576,17 +606,23 @@ public class CheckFragment extends Fragment {
                 }
             }
         });
+        AlertDialog dialog = builder.setView(dialogView)
+                .setCancelable(false)
+                .create();
 
         innerAdapter.setOnClick(groupName -> {
             // 리싸이클러뷰 아이템 클릭 이벤트
             choiceGroupName = groupName.getGroupName();
             textInputEditText.setText(choiceGroupName); // editText에 그룹이름 삽입
             textInputEditText.setSelection(choiceGroupName.length());    // 커서 위치 맨 뒤로
+            // 그룹이름 선택시 적용
+            binding.tvGroupName.setText(choiceGroupName);
+            groupViewModel.setGroupName(choiceGroupName);
+
+            dialog.dismiss();
         });
 
-        AlertDialog dialog = builder.setView(dialogView)
-                .setCancelable(false)
-                .create();
+
 
         // 취소 버튼 이벤트
         btnCancel.setOnClickListener(v -> {
