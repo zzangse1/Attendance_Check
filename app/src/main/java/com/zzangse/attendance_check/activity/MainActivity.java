@@ -13,13 +13,13 @@ import androidx.fragment.app.FragmentTransaction;
 import androidx.lifecycle.ViewModelProvider;
 
 import com.google.android.material.navigation.NavigationBarView;
+import com.zzangse.attendance_check.R;
 import com.zzangse.attendance_check.data.GroupViewModel;
+import com.zzangse.attendance_check.databinding.ActivityMainBinding;
 import com.zzangse.attendance_check.fragmentmain.ChartFragment;
 import com.zzangse.attendance_check.fragmentmain.CheckFragment;
 import com.zzangse.attendance_check.fragmentmain.EditFragment;
 import com.zzangse.attendance_check.fragmentmain.MoreFragment;
-import com.zzangse.attendance_check.R;
-import com.zzangse.attendance_check.databinding.ActivityMainBinding;
 
 public class MainActivity extends AppCompatActivity {
     private ActivityMainBinding binding;
@@ -29,14 +29,12 @@ public class MainActivity extends AppCompatActivity {
     private EditFragment editFragment;
     private MoreFragment moreFragment;
     private GroupViewModel groupViewModel;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         initView();
         initFragment();
         setupBottomNav();
-
         groupViewModel = new ViewModelProvider(this).get(GroupViewModel.class);
 
     }
