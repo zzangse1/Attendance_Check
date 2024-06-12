@@ -142,6 +142,7 @@ public class SignupActivity extends AppCompatActivity {
         String userBirth = binding.etBirth.getText().toString();
         String userSex = m_sex;
         String userPhoneNumber = binding.etNumber.getText().toString();
+        String userToken = "ZZANGSE";
 
         Response.Listener<String> listener = new Response.Listener<String>() {
             @Override
@@ -166,7 +167,7 @@ public class SignupActivity extends AppCompatActivity {
         };
         Log.d("hello", "6");
         SignUpRequest request = new SignUpRequest(userID, userPassword, userNickName,
-                userName, userBirth, userSex, userPhoneNumber, listener);
+                userName, userBirth, userSex, userPhoneNumber,userToken, listener);
         RequestQueue queue = Volley.newRequestQueue(SignupActivity.this);
         queue.add(request);
     }
