@@ -28,9 +28,6 @@
                 <category android:name="android.intent.category.LAUNCHER" />
                 <category android:name="android.intent.category.DEFAULT" />
                 <category android:name="android.intent.category.BROWSABLE" />
-                <data
-                    android:host="oauth"
-                    android:scheme="kakaof4e9cb70147f65159b379f578067d383" />
             </intent-filter>
         </activity>
         <activity
@@ -40,6 +37,21 @@
             android:name=".activity.SignupActivity"
             android:exported="false"
             android:windowSoftInputMode="adjustResize" />
+        <!-- 카카오 인증을 위한 AuthCodeHandlerActivity 추가 -->
+        <activity
+            android:name="com.kakao.sdk.auth.AuthCodeHandlerActivity"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+                <!-- Redirect URI: "kakao${NATIVE_APP_KEY}://oauth" -->
+                <data
+                    android:host="oauth"
+                    android:scheme="@string/kakao_native_key" />
+            </intent-filter>
+        </activity>
     </application>
 
 </manifest>
