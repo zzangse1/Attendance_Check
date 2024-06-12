@@ -19,6 +19,7 @@ import com.kakao.sdk.user.model.User;
 import com.zzangse.attendance_check.R;
 import com.zzangse.attendance_check.databinding.ActivityLoginBinding;
 import com.zzangse.attendance_check.request.SignInRequest;
+import com.zzangse.attendance_check.request.SignUpRequest;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -29,6 +30,7 @@ import kotlin.jvm.functions.Function2;
 public class LoginActivity extends AppCompatActivity {
     private ActivityLoginBinding binding;
     private boolean isVisibility = true;
+    private boolean isKakao = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -48,27 +50,29 @@ public class LoginActivity extends AppCompatActivity {
 
     private void initKakao() {
         Log.d("initKakao", "appkey");
-        KakaoSdk.init(this,"f4e9cb70147f65159b379f578067d383");
+        KakaoSdk.init(this, getString(R.string.kakao_app_key));
         String kakao = KakaoSdk.INSTANCE.getKeyHash();
         Log.d("hash", kakao);
     }
 
     private void onClickKakaoLogin() {
-        Function2<OAuthToken,Throwable, Unit> callback = new Function2<OAuthToken, Throwable, Unit>() {
-            @Override
-            public Unit invoke(OAuthToken oAuthToken, Throwable throwable) {
-                if (oAuthToken != null) {
-                    Log.d("oAuthToken", "oAuthToken NULL");
+        binding.ibKakaoLogin.setOnClickListener(v -> {
+            Function2<OAuthToken, Throwable, Unit> callback = new Function2<OAuthToken, Throwable, Unit>() {
+                @Override
+                public Unit invoke(OAuthToken oAuthToken, Throwable throwable) {
+                    if (oAuthToken != null) {
+                        Log.d("oAuthToken", oAuthToken + "oAuthToken not NULL");
+                        updateKakaoLogin();
+                    }
+                    if (throwable != null) {
+                        // 사용자가 로그인을 취소한 경우
+                        Log.d("KAKAO", "로그인 취소");
+                        runOnUiThread(() -> Toast.makeText(getApplicationContext(), "로그인이 취소되었습니다.", Toast.LENGTH_SHORT).show());
+                    }
+                    return null;
                 }
-                if (throwable != null) {
-                    Log.d("throwable", "throwable NULL");
-                }
-                updateKakaoLogin();
-                return null;
-            }
-        };
+            };
 
-        binding.ibKakaoLogin.setOnClickListener(v->{
             if (UserApiClient.getInstance().isKakaoTalkLoginAvailable(LoginActivity.this)) {
                 UserApiClient.getInstance().loginWithKakaoTalk(LoginActivity.this, callback);
             } else {
@@ -84,20 +88,68 @@ public class LoginActivity extends AppCompatActivity {
             public Unit invoke(User user, Throwable throwable) {
                 Log.d("user", user + "");
                 if (user != null) {
-//                    Log.d("KAKAO", "invoke id" + user.getId());
-//                    Log.d("KAKAO", "invoke email" + user.getKakaoAccount().getEmail());
-                    Log.d("KAKAO", "invoke nickName" + user.getKakaoAccount().getEmail());
-//                    Log.d("KAKAO", "invoke gender" + user.getKakaoAccount().getGender());
-//                    Log.d("KAKAO", "invoke age" + user.getKakaoAccount().getBirthday());
-//                    Log.d("KAKAO", "invoke age" + user.getKakaoAccount().getPhoneNumber());
-                    binding.tvTest.setText(user.getId()+"");
+                    Log.d("KAKAO", "invoke nickName" + user.getKakaoAccount().getProfile().getNickname());
+                    Log.d("KAKAO", "invoke email" + user.getKakaoAccount().getEmail());
+                    String userID = user.getKakaoAccount().getEmail();
+                    String userNickName = user.getKakaoAccount().getProfile().getNickname();
+                    String userName = user.getKakaoAccount().getName();
+                    String userToken = "KAKAO";
+                    binding.tvTest.setText(user.getKakaoAccount().getProfile().getNickname() + ", " + user.getKakaoAccount().getEmail());
+                    signUpKakao(userID, "12341234", userNickName, "카카오",
+                            "19981014", "선택안함", "01043214321", userToken);
 
                 } else {
                     Log.d("KAKAO", "로그인 X");
+                    isKakao = false;
                 }
                 return null;
             }
         });
+    }
+
+    private void signUpKakao(String kakaoID, String kakaoPassword, String kakaoNickName,
+                             String kakaoName, String kakaoBirth, String kakaoSex, String kakaoPhoneNumber, String userToken) {
+        Response.Listener<String> listener = new Response.Listener<String>() {
+            @Override
+            public void onResponse(String s) {
+                try {
+                    JSONObject jsonObject = new JSONObject(s);
+                    boolean isSuccess = jsonObject.getBoolean("success");
+                    String issue = jsonObject.getString("message");
+                    if (isSuccess) {
+                        Toast.makeText(getApplicationContext(), "회원가입 성공", Toast.LENGTH_SHORT).show();
+                        Log.d("KAKAO", issue);
+                        loginKakao(isKakao, kakaoID);
+                    } else if (issue.equals("카카오 회원가입 등록이 되어있습니다.")) {
+                        // 카카오 로그인 진행
+                        isKakao = true;
+                        loginKakao(isKakao, kakaoID);
+                    } else {
+                        Toast.makeText(getApplicationContext(), "회원가입 실패", Toast.LENGTH_SHORT).show();
+                        Log.d("KAKAO", issue);
+                        isKakao = false;
+                    }
+                } catch (JSONException e) {
+                    Log.d("JSON", e.toString());
+                }
+            }
+        };
+        SignUpRequest request = new SignUpRequest(kakaoID, kakaoPassword, kakaoNickName, kakaoName,
+                kakaoBirth, kakaoSex, kakaoPhoneNumber, userToken, listener);
+        Log.d("kakaoSIgn", kakaoID + ", " + kakaoPassword + ", " + kakaoNickName + ", " + kakaoName
+                + ", " + kakaoBirth + ", " + kakaoSex + ", " + kakaoPhoneNumber);
+        RequestQueue queue = Volley.newRequestQueue(LoginActivity.this);
+        queue.add(request);
+    }
+
+    private void loginKakao(boolean isKakao, String kakaoID) {
+        if (isKakao) {
+            Intent intent = new Intent(LoginActivity.this, MainActivity.class);
+            intent.putExtra("userID", kakaoID);
+            startActivity(intent);
+        } else {
+            Toast.makeText(getApplicationContext(), "카카오 취소", Toast.LENGTH_SHORT).show();
+        }
     }
 
     private void onClickEditTextPassWordShow() {
@@ -135,6 +187,7 @@ public class LoginActivity extends AppCompatActivity {
                             Intent intent = new Intent(LoginActivity.this, MainActivity.class);
                             intent.putExtra("userID", userID);
                             startActivity(intent);
+                            //finish();
                         } else {
                             binding.tvErrorLabel.setVisibility(View.VISIBLE);
                             Toast.makeText(getApplicationContext(), "로그인 실패", Toast.LENGTH_SHORT).show();
@@ -148,7 +201,6 @@ public class LoginActivity extends AppCompatActivity {
             RequestQueue queue = Volley.newRequestQueue(LoginActivity.this);
             queue.add(request);
         });
-
     }
 
     private void onClickSignUp() {
