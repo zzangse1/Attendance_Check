@@ -70,7 +70,8 @@ public class ChartFragment extends Fragment {
     private SimpleDateFormat simpleDateFormat;
     private ArrayList<CheckChart> chartPieArrayList = new ArrayList<>();
     private ArrayList<CheckChart> chartRvArrayList = new ArrayList<>();
-    String date, firstDay, lastDay;
+    private String date, firstDay, lastDay;
+    private int currentYear, currentMonth;
     private boolean isRecycler = false;
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -127,15 +128,16 @@ public class ChartFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        getDate();
+        initDate();
         loadGroupNameDB();
         onClickGroupName();
         onClickDate();
         test();
         initRecycler();
+        onClickMonthBtn();
     }
 
-    private void getDate() {
+    private void initDate() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             // 현재 날짜를 가져옴
             LocalDate today = LocalDate.now();
@@ -152,6 +154,8 @@ public class ChartFragment extends Fragment {
 
             int year = today.getYear();
             int month = today.getMonthValue();
+            currentMonth = today.getMonthValue();
+            currentYear = today.getYear();
 
             Log.d("java8 up", date);
             Log.d("java8 up | formattedToday", formattedToday);
@@ -173,6 +177,10 @@ public class ChartFragment extends Fragment {
 
             int year = calendar.get(Calendar.YEAR);
             int month = calendar.get(Calendar.MONTH) + 1;
+
+            currentYear =  calendar.get(Calendar.YEAR);
+            currentMonth = calendar.get(Calendar.MONTH) + 1;
+
             binding.tvDate.setText(year + "년 " + month + "월");
             Log.d("CurrentDate", "Today: " + formattedToday);
             Log.d("FirstDay", "First day of the month: " + firstDay);
@@ -186,6 +194,7 @@ public class ChartFragment extends Fragment {
     private void onClickGroupName() {
         binding.tvGroupName.setOnClickListener(v -> showGroupNameDialog());
     }
+
 
     private void initRecycler() {
         RecyclerView recyclerView = binding.rvChart;
@@ -356,6 +365,33 @@ public class ChartFragment extends Fragment {
             }
         });
         yearMonthPickerDialog.show();
+    }
+
+    private void changeMonth(boolean increase) {
+        if (increase) {
+            if (currentMonth == Calendar.DECEMBER) {
+                currentMonth = Calendar.JANUARY;
+                currentYear++;
+            } else {
+                currentMonth++;
+            }
+        } else {
+            if (currentMonth == Calendar.JANUARY) {
+                currentMonth = Calendar.DECEMBER;
+                currentYear--;
+            } else {
+                currentMonth--;
+            }
+        }
+        calculateFirstAndLastDayOfMonth(currentYear, currentMonth);
+    }
+    private void onClickMonthBtn() {
+        binding.btnRight.setOnClickListener(v->{
+            changeMonth(true);
+        });
+        binding.btnLeft.setOnClickListener(v->{
+            changeMonth(false);
+        });
     }
 
     private void calculateFirstAndLastDayOfMonth(int year, int month) {
