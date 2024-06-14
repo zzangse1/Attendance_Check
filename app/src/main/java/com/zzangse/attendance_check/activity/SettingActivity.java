@@ -82,6 +82,7 @@ public class SettingActivity extends AppCompatActivity {
         if (index == 0) {
             selectedFragment = MemberInfoFragment.newInstance(bundle);
             tag = "info_fragment";
+            fragmentManager.popBackStack(null, FragmentManager.POP_BACK_STACK_INCLUSIVE);
         } else if (index == 1) {
             selectedFragment = MemberAddFragment.newInstance(bundle);
             tag = "add_fragment";
@@ -89,6 +90,7 @@ public class SettingActivity extends AppCompatActivity {
             Log.d("setting", priNum + "");
             selectedFragment = MemberModifyFragment.newInstance(bundle);
             tag = "modify_fragment";
+            fragmentManager.popBackStack(null, FragmentManager.POP_BACK_STACK_INCLUSIVE);
         } else if (index == 3) {
             selectedFragment = MemberViewFragment.newInstance(bundle);
             tag = "view_fragment";
