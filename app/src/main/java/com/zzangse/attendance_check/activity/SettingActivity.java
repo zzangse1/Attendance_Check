@@ -90,7 +90,6 @@ public class SettingActivity extends AppCompatActivity {
             Log.d("setting", priNum + "");
             selectedFragment = MemberModifyFragment.newInstance(bundle);
             tag = "modify_fragment";
-            fragmentManager.popBackStack(null, FragmentManager.POP_BACK_STACK_INCLUSIVE);
         } else if (index == 3) {
             selectedFragment = MemberViewFragment.newInstance(bundle);
             tag = "view_fragment";
