@@ -94,7 +94,6 @@ public class LoginActivity extends AppCompatActivity {
                     String userNickName = user.getKakaoAccount().getProfile().getNickname();
                     String userName = user.getKakaoAccount().getName();
                     String userToken = "KAKAO";
-                    binding.tvTest.setText(user.getKakaoAccount().getProfile().getNickname() + ", " + user.getKakaoAccount().getEmail());
                     signUpKakao(userID, "12341234", userNickName, "카카오",
                             "19981014", "선택안함", "01043214321", userToken);
 
