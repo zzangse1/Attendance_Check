@@ -7,6 +7,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ArrayAdapter;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -16,16 +17,22 @@ import androidx.fragment.app.Fragment;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.toolbox.Volley;
+import com.zzangse.attendance_check.R;
 import com.zzangse.attendance_check.activity.SettingActivity;
 import com.zzangse.attendance_check.databinding.FragmentMemberModifyBinding;
+import com.zzangse.attendance_check.request.LoadGroupRequest;
 import com.zzangse.attendance_check.request.ModifyMemberRequest;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 public class MemberModifyFragment extends Fragment {
     private FragmentMemberModifyBinding binding;
     private int priNum;
     private String userID, groupName;
     private String modifyGroupName, modifyName, modifyNumber, modifyNumber2, modifyAddress, modifyMemo;
-
+    private String[] groupNameArr;
     public static MemberModifyFragment newInstance(Bundle bundle) {
         MemberModifyFragment fragment = new MemberModifyFragment();
         fragment.setArguments(bundle);
@@ -46,6 +53,7 @@ public class MemberModifyFragment extends Fragment {
         onClickSaveBtn();
         onClickBack();
         textWatcher();
+         setSpinner();
     }
 
     private void getBundle() {
@@ -60,6 +68,20 @@ public class MemberModifyFragment extends Fragment {
             String infoMemo = getArguments().getString("infoMemo");
             setMemberInfo(groupName, infoName, infoPhoneNumber, infoPhoneNumber2, infoAddress, infoMemo);
         }
+    }
+
+    private void setBundle() {
+        Bundle bundle = new Bundle();
+        bundle.putInt("priNum",priNum);
+        bundle.putString("userID", userID);
+        bundle.putString("groupName",modifyGroupName);
+        bundle.putString("infoName", modifyName);
+        bundle.putString("infoPhoneNumber", modifyNumber);
+        bundle.putString("infoPhoneNumber2", modifyNumber2);
+        bundle.putString("infoAddress",modifyAddress);
+        bundle.putString("infoMemo", modifyMemo);
+
+        moveToMemberViewFragment(bundle);
     }
 
     private void setMemberInfo(String groupName, String infoName, String infoPhoneNumber, String infoPhoneNumber2, String infoAddress, String infoMemo) {
@@ -102,7 +124,7 @@ public class MemberModifyFragment extends Fragment {
         binding.btnSave.setOnClickListener(v -> {
             updateMemberInfo();
             Toast.makeText(getActivity(), "저장되었습니다.", Toast.LENGTH_SHORT).show();
-            moveToMemberViewFragment();
+            setBundle();
         });
     }
 
@@ -126,14 +148,45 @@ public class MemberModifyFragment extends Fragment {
         }
     }
 
-    private void moveToMemberViewFragment() {
+    private void moveToMemberViewFragment(Bundle bundle) {
         if (getActivity() instanceof SettingActivity) {
             Log.d("modify -> view", priNum + "");
-            Bundle bundle = new Bundle();
-            bundle.putString("groupName", groupName);
-            bundle.putString("userID", userID);
-            ((SettingActivity) getActivity()).onFragmentChanged(3, bundle);
+//            Bundle bundle = new Bundle();
+//            bundle.putString("groupName", groupName);
+//            bundle.putString("userID", userID);
+            ((SettingActivity) getActivity()).onFragmentChanged(0, bundle);
 
         }
+    }
+
+    private void setSpinner() {
+        getGroupName();
+
+    }
+    private void getGroupName() {
+        LoadGroupRequest loadGroupRequest = new LoadGroupRequest(getContext());
+        loadGroupRequest.sendGroupOutputRequest(userID, new LoadGroupRequest.VolleyCallback() {
+            @Override
+            public void onSuccess(JSONArray result) {
+                try {
+                    groupNameArr = new String[result.length()];
+                    for (int i = 0; i < result.length(); i++) {
+                        JSONObject jsonObject = result.getJSONObject(i);
+                        String dbGroupName = jsonObject.getString("groupName");
+                        Log.d("groupName", dbGroupName);
+                        groupNameArr[i] = dbGroupName;
+                    }
+                    ArrayAdapter<String> adapter = new ArrayAdapter<>(getContext(), R.layout.list_item, groupNameArr);
+                    binding.etModifyGroupName.setAdapter(adapter);
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            }
+
+            @Override
+            public void onError(String errorMessage) {
+
+            }
+        });
     }
 }
