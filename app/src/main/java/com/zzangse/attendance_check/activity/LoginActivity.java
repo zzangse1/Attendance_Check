@@ -177,6 +177,7 @@ public class LoginActivity extends AppCompatActivity {
         if (isKakao) {
             Intent intent = new Intent(LoginActivity.this, MainActivity.class);
             intent.putExtra("userID", kakaoID);
+            intent.putExtra("userToken", "KAKAO");
             startActivity(intent);
         } else {
             Toast.makeText(getApplicationContext(), "카카오 취소", Toast.LENGTH_SHORT).show();
@@ -212,11 +213,14 @@ public class LoginActivity extends AppCompatActivity {
                         if (isSuccess) {
                             // json 데이터에서 userID 키에 해당하는 값을 가져옴
                             String userID = jsonObject.getString("userID");
+                            String userToken = jsonObject.getString("userToken");
                             Log.d("TEST", userID);
                             Log.d("TEST", userPassword);
+                            Log.d("TEST", userToken);
                             Toast.makeText(getApplicationContext(), "로그인 성공", Toast.LENGTH_SHORT).show();
                             Intent intent = new Intent(LoginActivity.this, MainActivity.class);
                             intent.putExtra("userID", userID);
+                            intent.putExtra("userToken", userToken);
                             startActivity(intent);
                             //finish();
                         } else {
