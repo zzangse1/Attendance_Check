@@ -42,7 +42,7 @@ public class SignupActivity extends AppCompatActivity {
     private static final String WARNING_MSG_NO_ID = "•아이디: 필수 정보 입니다.";
     private static final String WARNING_MSG_ERROR_ID = "•아이디: 사용할 수 없는 아이디입니다. 다른 아이디를 입력해 주세요.";
     private static final String WARNING_MSG_RULE_ID = "•아이디: 5~16자의 영문 소문자, 숫자를 사용해 주세요";
-    private static final String WARNING_MSG_RULE_PASSWORD = "•비밀번호: 8~16자의 영문 대/소문자, 숫자, [!,@,#,$]를 사용해 주세요.";
+    private static final String WARNING_MSG_RULE_PASSWORD = "•비밀번호: 8~20자의 영문 대/소문자, 숫자, [!,@,#,$]를 사용해 주세요.";
     private static final String WARNING_MSG_NO_PASSWORD = "•비밀번호: 필수 정보입니다.";
     private static final String WARNING_MSG_NO_NICKNAME = "•닉네임: 필수 정보입니다.";
     private static final String WARNING_MSG_RULE_NICKNAME = "•닉네임: 2~8자로 설정해주세요.";
@@ -274,7 +274,7 @@ public class SignupActivity extends AppCompatActivity {
     // 비밀번호 => 8~16자의 영문 대/소문자, 숫자, 특문
     private boolean checkPassword(String password) {
         boolean isMatch = Pattern.matches(REGEX_PASSWORD, password);
-        boolean isMatchPassword = password.length() < 8 || password.length() > 16;
+        boolean isMatchPassword = password.length() < 8 || password.length() > 20;
         Drawable drawable_ok = ContextCompat.getDrawable(getApplicationContext(), R.drawable.ic_lock);
         Drawable drawable_error = ContextCompat.getDrawable(getApplicationContext(), R.drawable.ic_error_lock);
         // 비밀번호 입력 에러 구분
