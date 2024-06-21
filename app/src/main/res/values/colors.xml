@@ -3,8 +3,10 @@
     <color name="colorPrimary">#191970</color>
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
+
     <color name="red">#FF0000</color>
-    <color name="red_200">#E85B5B</color>
+    <color name="red_100">#E85B5B</color>
+    <color name="red_200">#EF4040</color>
 
 
     <color name="navy_100">#BABAD4</color>
