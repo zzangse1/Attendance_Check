@@ -32,7 +32,6 @@ import com.zzangse.attendance_check.R;
 import com.zzangse.attendance_check.adapter.ChartAdapter;
 import com.zzangse.attendance_check.adapter.CheckGroupNameAdapter;
 import com.zzangse.attendance_check.data.CheckChart;
-import com.zzangse.attendance_check.data.CheckViewModel;
 import com.zzangse.attendance_check.data.DateViewModel;
 import com.zzangse.attendance_check.data.GroupName;
 import com.zzangse.attendance_check.data.GroupViewModel;
@@ -59,7 +58,6 @@ public class ChartFragment extends Fragment {
     private FragmentChartBinding binding;
     private GroupViewModel groupViewModel;
     private DateViewModel dateViewModel;
-    private CheckViewModel checkViewModel;
     private String userID;
     private ChartAdapter adapter;
     private ArrayList<GroupName> groupNameList = new ArrayList<>();
@@ -73,6 +71,7 @@ public class ChartFragment extends Fragment {
     private String date, firstDay, lastDay;
     private int currentYear, currentMonth;
     private boolean isRecycler = false;
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -81,7 +80,6 @@ public class ChartFragment extends Fragment {
         binding = FragmentChartBinding.inflate(inflater);
         groupViewModel = new ViewModelProvider(requireActivity()).get(GroupViewModel.class);
         dateViewModel = new ViewModelProvider(requireActivity()).get(DateViewModel.class);
-        checkViewModel = new ViewModelProvider(requireActivity()).get(CheckViewModel.class);
         groupViewModel.getGroupName().observe(getViewLifecycleOwner(), new Observer<String>() {
             @Override
             public void onChanged(String s) {
@@ -97,22 +95,6 @@ public class ChartFragment extends Fragment {
             @Override
             public void onChanged(Long dateInMillis) {
                 Log.d("date", dateInMillis + "");
-            }
-        });
-
-        checkViewModel.getIsChecked().observe(getViewLifecycleOwner(), new Observer<Boolean>() {
-            @Override
-            public void onChanged(Boolean isChecked) {
-                if (isChecked != null) {
-                    binding.checkBox.setChecked(isChecked);
-                    if (isChecked) {
-                        binding.pieChart.setVisibility(View.GONE);
-                        binding.checkBox.setText("숨기기");
-                    } else {
-                        binding.pieChart.setVisibility(View.VISIBLE);
-                        binding.checkBox.setText("숨기기");
-                    }
-                }
             }
         });
         return binding.getRoot();
@@ -132,9 +114,15 @@ public class ChartFragment extends Fragment {
         loadGroupNameDB();
         onClickGroupName();
         onClickDate();
-        test();
+        setupCheckBox();
         initRecycler();
         onClickMonthBtn();
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        binding.checkBox.setChecked(false);
     }
 
     private void initDate() {
@@ -178,7 +166,7 @@ public class ChartFragment extends Fragment {
             int year = calendar.get(Calendar.YEAR);
             int month = calendar.get(Calendar.MONTH) + 1;
 
-            currentYear =  calendar.get(Calendar.YEAR);
+            currentYear = calendar.get(Calendar.YEAR);
             currentMonth = calendar.get(Calendar.MONTH) + 1;
 
             binding.tvDate.setText(year + "년 " + month + "월");
@@ -209,19 +197,17 @@ public class ChartFragment extends Fragment {
         });
     }
 
-
-    private void test() {
+    private void setupCheckBox() {
         binding.checkBox.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View v)  {
-                if (binding.checkBox.isChecked()) {
+            public void onClick(View v) {
+                boolean isChecked = binding.checkBox.isChecked();
+                if (isChecked) {
                     binding.checkBox.setText("숨기기");
                     binding.pieChart.setVisibility(View.GONE);
-                    checkViewModel.setIsChecked(true);
                 } else {
                     binding.checkBox.setText("숨기기");
                     binding.pieChart.setVisibility(View.VISIBLE);
-                    checkViewModel.setIsChecked(false);
                 }
             }
         });
@@ -231,32 +217,33 @@ public class ChartFragment extends Fragment {
         LoadChartListRequest request = new LoadChartListRequest(getContext());
         request.sendMemberOutputRequest(firstDay, lastDay, userID, binding.tvGroupName.getText().toString(),
                 new LoadChartListRequest.VolleyCallback() {
-            @Override
-            public void onSuccess(JSONArray result) {
-                try {
-                    chartRvArrayList.clear();
-                    for (int i = 0; i < result.length(); i++) {
-                        JSONObject jsonObject = result.getJSONObject(i);
-                        String infoName = jsonObject.getString("infoName");
-                        String check1 = jsonObject.getString("출석_개수");
-                        String check2 = jsonObject.getString("지각_개수");
-                        String check3 = jsonObject.getString("결석_개수");
-                        chart = new CheckChart(infoName, check1, check2, check3);
-                        chartRvArrayList.add(chart);
+                    @Override
+                    public void onSuccess(JSONArray result) {
+                        try {
+                            chartRvArrayList.clear();
+                            for (int i = 0; i < result.length(); i++) {
+                                JSONObject jsonObject = result.getJSONObject(i);
+                                String infoName = jsonObject.getString("infoName");
+                                String check1 = jsonObject.getString("출석_개수");
+                                String check2 = jsonObject.getString("지각_개수");
+                                String check3 = jsonObject.getString("결석_개수");
+                                chart = new CheckChart(infoName, check1, check2, check3);
+                                chartRvArrayList.add(chart);
+                            }
+                            adapter.notifyDataSetChanged();
+
+                        } catch (JSONException e) {
+                            throw new RuntimeException(e);
+                        }
                     }
-                    adapter.notifyDataSetChanged();
 
-                } catch (JSONException e) {
-                    throw new RuntimeException(e);
-                }
-            }
+                    @Override
+                    public void onError(String errorMessage) {
 
-            @Override
-            public void onError(String errorMessage) {
-
-            }
-        });
+                    }
+                });
     }
+
     private void loadCheckChart() {
         if (binding.tvGroupName.getText().equals("그룹 이름")) {
             binding.tvGroupNull.setText(R.string.common_choice_group);
@@ -385,11 +372,12 @@ public class ChartFragment extends Fragment {
         }
         calculateFirstAndLastDayOfMonth(currentYear, currentMonth);
     }
+
     private void onClickMonthBtn() {
-        binding.btnRight.setOnClickListener(v->{
+        binding.btnRight.setOnClickListener(v -> {
             changeMonth(true);
         });
-        binding.btnLeft.setOnClickListener(v->{
+        binding.btnLeft.setOnClickListener(v -> {
             changeMonth(false);
         });
     }
