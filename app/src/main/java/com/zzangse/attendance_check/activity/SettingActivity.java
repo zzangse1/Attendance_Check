@@ -40,7 +40,7 @@ public class SettingActivity extends AppCompatActivity {
     }
 
     private void initFragment() {
-        getGroupName();
+        getIntentItem();
         fragmentManager = getSupportFragmentManager();
 
         Bundle viewBundle = new Bundle();
@@ -67,7 +67,7 @@ public class SettingActivity extends AppCompatActivity {
     }
 
 
-    private void getGroupName() {
+    private void getIntentItem() {
         Intent intent = getIntent();
         groupName = intent.getStringExtra("groupName");
         userID = intent.getStringExtra("userID");
