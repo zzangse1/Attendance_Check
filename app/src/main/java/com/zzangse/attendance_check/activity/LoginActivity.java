@@ -24,6 +24,8 @@ import com.zzangse.attendance_check.request.SignUpRequest;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.security.SecureRandom;
+
 import kotlin.Unit;
 import kotlin.jvm.functions.Function2;
 
@@ -50,7 +52,8 @@ public class LoginActivity extends AppCompatActivity {
 
     private void initKakao() {
         Log.d("initKakao", "appkey");
-        KakaoSdk.init(this, getString(R.string.kakao_app_key));
+        // KakaoSdk.init(this, getString(R.string.kakao_app_key));          // 카카오 init
+        KakaoSdk.init(this, getString(R.string.kakao_app_test_key)); // 카카오 init테스트
         String kakao = KakaoSdk.INSTANCE.getKeyHash();
         Log.d("hash", kakao);
     }
@@ -81,6 +84,28 @@ public class LoginActivity extends AppCompatActivity {
         });
     }
 
+    private String transferSex(String kakaoSex) {
+        if (kakaoSex.equals("MALE")) {
+            return kakaoSex = "남자";
+        } else if (kakaoSex.equals("FEMALE")) {
+            return kakaoSex = "여자";
+        } else {
+            return kakaoSex = "선택안함";
+        }
+    }
+
+    // 카카오계정 비밀번호 난수화
+    private String randomPassword() {
+        String randomString = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789!@#$%^&*()";
+        SecureRandom random = new SecureRandom();
+        StringBuilder sb = new StringBuilder(20);
+
+        for (int i = 0; i < 20; i++) {
+            int index = random.nextInt(randomString.length());
+            sb.append(randomString.charAt(index));
+        }
+        return sb.toString();
+    }
 
     private void updateKakaoLogin() {
         UserApiClient.getInstance().me(new Function2<User, Throwable, Unit>() {
@@ -93,9 +118,15 @@ public class LoginActivity extends AppCompatActivity {
                     String userID = user.getKakaoAccount().getEmail();
                     String userNickName = user.getKakaoAccount().getProfile().getNickname();
                     String userName = user.getKakaoAccount().getName();
+                    String userBirthYear = user.getKakaoAccount().getBirthyear();
+                    String userBirth = user.getKakaoAccount().getBirthday();
+                    String userSex = String.valueOf(user.getKakaoAccount().getGender());
+                    String userPhoneNumber = user.getKakaoAccount().getPhoneNumber();
                     String userToken = "KAKAO";
-                    signUpKakao(userID, "12341234", userNickName, "카카오",
-                            "19981014", "선택안함", "01043214321", userToken);
+                    userSex = transferSex(userSex);  // 카카오 성별 한글화
+                    String userPassword = randomPassword(); // 카카오계정 비밀번호 생성
+                    signUpKakao(userID, userPassword, userNickName, userName,
+                            userBirthYear + userBirth, userSex, userPhoneNumber, userToken);
 
                 } else {
                     Log.d("KAKAO", "로그인 X");
@@ -105,6 +136,7 @@ public class LoginActivity extends AppCompatActivity {
             }
         });
     }
+
 
     private void signUpKakao(String kakaoID, String kakaoPassword, String kakaoNickName,
                              String kakaoName, String kakaoBirth, String kakaoSex, String kakaoPhoneNumber, String userToken) {
