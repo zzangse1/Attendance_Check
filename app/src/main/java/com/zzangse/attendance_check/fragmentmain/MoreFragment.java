@@ -1,5 +1,6 @@
 package com.zzangse.attendance_check.fragmentmain;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -9,6 +10,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
+import com.zzangse.attendance_check.activity.MoreActivity;
 import com.zzangse.attendance_check.databinding.FragmentMoreBinding;
 
 
@@ -33,6 +35,7 @@ public class MoreFragment extends Fragment {
         super.onViewCreated(view, savedInstanceState);
         // 구현
         setTextView();
+        moveToChangePW();
     }
 
     private void getArgs() {
@@ -44,5 +47,14 @@ public class MoreFragment extends Fragment {
 
     private void setTextView() {
         binding.tvId.setText(userID);
+    }
+
+    private void moveToChangePW() {
+        binding.tvPasswordLabel.setOnClickListener(v->{
+            Intent intent = new Intent(getContext(), MoreActivity.class);
+            intent.putExtra("userID", userID);
+            startActivity(intent);
+        });
+
     }
 }
