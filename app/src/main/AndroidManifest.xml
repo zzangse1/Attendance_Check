@@ -34,6 +34,9 @@
             android:name=".activity.MainActivity"
             android:exported="false" />
         <activity
+            android:name=".activity.ChangePasswordActivity"
+            android:exported="false" />
+        <activity
             android:name=".activity.SignupActivity"
             android:exported="false"
             android:windowSoftInputMode="adjustResize" />
@@ -47,9 +50,12 @@
                 <category android:name="android.intent.category.DEFAULT" />
                 <category android:name="android.intent.category.BROWSABLE" />
                 <!-- Redirect URI: "kakao${NATIVE_APP_KEY}://oauth" -->
+                <!--data
+                    android:host="oauth"
+                    android:scheme="@string/kakao_native_key" /-->
                 <data
                     android:host="oauth"
-                    android:scheme="@string/kakao_native_key" />
+                    android:scheme="@string/kakao_native_test_key" />
             </intent-filter>
         </activity>
     </application>
