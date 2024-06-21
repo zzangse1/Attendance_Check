@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.MenuItem;
 
+import androidx.activity.OnBackPressedCallback;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
@@ -13,6 +14,7 @@ import androidx.fragment.app.FragmentTransaction;
 import androidx.lifecycle.ViewModelProvider;
 
 import com.google.android.material.navigation.NavigationBarView;
+import com.google.android.material.snackbar.Snackbar;
 import com.zzangse.attendance_check.R;
 import com.zzangse.attendance_check.data.GroupViewModel;
 import com.zzangse.attendance_check.databinding.ActivityMainBinding;
@@ -29,6 +31,9 @@ public class MainActivity extends AppCompatActivity {
     private EditFragment editFragment;
     private MoreFragment moreFragment;
     private GroupViewModel groupViewModel;
+    private String userToken;
+    private long backBtnTime  = 0;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -43,6 +48,7 @@ public class MainActivity extends AppCompatActivity {
     public GroupViewModel getGroupViewModel() {
         return groupViewModel;
     }
+
     private void setupBottomNav() {
         binding.bottomNav.setOnItemSelectedListener(new BottomNavSelect());
     }
@@ -64,6 +70,8 @@ public class MainActivity extends AppCompatActivity {
 
     private String initAccount() {
         Intent intent = getIntent();
+        userToken = intent.getStringExtra("userToken");
+        Log.d("TEST", userToken+"");
         return intent != null ? intent.getStringExtra("userID") : "false";
     }
 
@@ -95,6 +103,7 @@ public class MainActivity extends AppCompatActivity {
     private void setBundle(Fragment fragment) {
         Bundle bundle = new Bundle();
         bundle.putString("userID", initAccount());
+        bundle.putString("userToken", userToken);
         fragment.setArguments(bundle);
     }
 
@@ -104,4 +113,36 @@ public class MainActivity extends AppCompatActivity {
         transaction.replace(R.id.nav_host_fragment, fragment);
         transaction.commit();
     }
+
+    // 뒤로가기   API 33 이상 버전
+    private final OnBackPressedCallback onBackPressedCallback = new OnBackPressedCallback(true) {
+        @Override
+        public void handleOnBackPressed() {
+            long curTime = System.currentTimeMillis();
+            long gapTime = curTime - backBtnTime;
+            if (gapTime >= 0 && gapTime <= 200) {
+                finish();
+            } else {
+                backBtnTime=curTime;
+                Snackbar.make(binding.navHostFragment,"한번 더 누르면 종료됩니다.",Snackbar.LENGTH_SHORT).show();
+            }
+        }
+    };
+
+    // 뒤로가기  API 33 미만 버전
+    @Override
+    public void onBackPressed() {
+
+        long curTime = System.currentTimeMillis();
+        long gapTime = curTime - backBtnTime;
+
+        if (gapTime >= 0 && gapTime <= 2000) {
+            Log.d("Back_BTN","onBackPressed");
+            super.onBackPressed();
+        } else {
+            backBtnTime = curTime;
+            Snackbar.make(binding.navHostFragment, "한번 더 누르면 종료됩니다.", Snackbar.LENGTH_SHORT).show();
+        }
+    }
+
 }
