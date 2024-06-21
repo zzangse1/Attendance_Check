@@ -116,7 +116,6 @@ public class EditFragment extends Fragment {
         adapter.setOnClick(new EditGroupNameAdapter.GroupNameAdapterClick() {
             @Override
             public void onClickInfo(GroupName groupName) {
-                Toast.makeText(getActivity(), groupName.getGroupName(), Toast.LENGTH_SHORT).show();
                 Intent intent = new Intent(getActivity(), SettingActivity.class);
                 intent.putExtra("groupName", groupName.getGroupName());
                 intent.putExtra("userID", userID);
