@@ -41,6 +41,9 @@
     <string name="signup_btn_none_label">선택안함</string>
     <string name="signup_request_label">인증요청</string>
 
+    <!-- activity_changePW -->
+    <string name="change_password_title_label">비밀번호 변경</string>
+
     <!-- dialog_add_group -->
     <string name="dialog_add_group_title_label">그룹 생성하기</string>
 
