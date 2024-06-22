@@ -13,7 +13,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:navigationIcon="@drawable/ic_back2"
+        app:navigationIcon="@drawable/ic_back"
         app:title="@string/fragment_member_modify_title"
         app:titleCentered="true"
         app:titleTextAppearance="@style/AppEditText.Bold.S24" />
@@ -46,13 +46,13 @@
 
             <com.google.android.material.textfield.TextInputLayout
                 android:id="@+id/et_modify_group_name_layout"
+                style="@style/Widget.Material3.TextInputLayout.OutlinedBox.ExposedDropdownMenu"
                 android:layout_width="0dp"
                 android:layout_height="60dp"
                 android:layout_marginStart="20dp"
-                style="@style/Widget.Material3.TextInputLayout.OutlinedBox.ExposedDropdownMenu"
                 android:layout_marginEnd="20dp"
-                app:boxBackgroundColor="@color/white"
                 android:hint="@string/modify_group_name"
+                app:boxBackgroundColor="@color/dialogPrimary"
                 app:boxStrokeColor="@color/navy_300"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
@@ -63,8 +63,7 @@
                     style="@style/AppEditText.S17"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:inputType="none"
-                   />
+                    android:inputType="none" />
             </com.google.android.material.textfield.TextInputLayout>
 
 
@@ -76,6 +75,7 @@
                 android:layout_marginTop="20dp"
                 android:layout_marginEnd="20dp"
                 android:hint="@string/modify_name"
+                app:boxBackgroundColor="@color/dialogPrimary"
                 app:boxStrokeColor="@color/navy_300"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
@@ -98,6 +98,7 @@
                 android:layout_marginTop="20dp"
                 android:layout_marginEnd="20dp"
                 android:hint="@string/modify_number"
+                app:boxBackgroundColor="@color/dialogPrimary"
                 app:boxStrokeColor="@color/navy_300"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
@@ -121,6 +122,7 @@
                 android:layout_marginTop="20dp"
                 android:layout_marginEnd="20dp"
                 android:hint="@string/modify_number2"
+                app:boxBackgroundColor="@color/dialogPrimary"
                 app:boxStrokeColor="@color/navy_300"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
@@ -143,6 +145,7 @@
                 android:layout_marginTop="20dp"
                 android:layout_marginEnd="20dp"
                 android:hint="@string/modify_address"
+                app:boxBackgroundColor="@color/dialogPrimary"
                 app:boxStrokeColor="@color/navy_300"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
@@ -167,6 +170,7 @@
                 android:layout_marginEnd="20dp"
                 android:layout_marginBottom="10dp"
                 android:hint="@string/modify_memo"
+                app:boxBackgroundColor="@color/dialogPrimary"
                 app:boxStrokeColor="@color/navy_300"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"

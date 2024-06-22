@@ -12,7 +12,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:navigationIcon="@drawable/ic_back2"
+        app:navigationIcon="@drawable/ic_back"
         app:title="@string/fragment_member_add_title"
         app:titleCentered="true"
         app:titleTextAppearance="@style/AppEditText.Bold.S24" />
@@ -50,6 +50,7 @@
                 android:layout_marginStart="20dp"
                 android:layout_marginEnd="20dp"
                 android:hint="이름"
+                app:boxBackgroundColor="@color/dialogPrimary"
                 app:boxStrokeColor="@color/navy_300"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
@@ -83,6 +84,7 @@
                 android:layout_marginTop="10dp"
                 android:layout_marginEnd="20dp"
                 android:hint="전화 번호"
+                app:boxBackgroundColor="@color/dialogPrimary"
                 app:boxStrokeColor="@color/navy_300"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
@@ -116,6 +118,7 @@
                 android:layout_marginTop="10dp"
                 android:layout_marginEnd="20dp"
                 android:hint="비상연락망"
+                app:boxBackgroundColor="@color/dialogPrimary"
                 app:boxStrokeColor="@color/navy_300"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
@@ -149,6 +152,7 @@
                 android:layout_marginTop="10dp"
                 android:layout_marginEnd="20dp"
                 android:hint="주소"
+                app:boxBackgroundColor="@color/dialogPrimary"
                 app:boxStrokeColor="@color/navy_300"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
@@ -182,6 +186,7 @@
                 android:layout_marginTop="10dp"
                 android:layout_marginEnd="20dp"
                 android:hint="메모"
+                app:boxBackgroundColor="@color/dialogPrimary"
                 app:boxStrokeColor="@color/navy_300"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
@@ -191,12 +196,11 @@
                     android:id="@+id/et_member_add_memo"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:inputType="textMultiLine"
                     android:gravity="left|top"
+                    android:inputType="textMultiLine"
                     android:maxLength="300"
                     android:singleLine="false" />
             </com.google.android.material.textfield.TextInputLayout>
-
 
 
         </androidx.constraintlayout.widget.ConstraintLayout>

@@ -3,6 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    android:background="@color/backgroundPrimary"
     android:paddingBottom="40dp">
 
     <TextView
@@ -22,7 +23,7 @@
         android:layout_height="70dp"
         android:layout_margin="20dp"
         android:hint="@string/plain_group_name"
-        app:boxStrokeColor="@color/navy_300"
+        app:boxStrokeColor="@color/boxPrimary"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/tv_title">

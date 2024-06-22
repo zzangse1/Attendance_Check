@@ -13,7 +13,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:menu="@menu/toolbar_menu"
-        app:navigationIcon="@drawable/ic_back2"
+        app:navigationIcon="@drawable/ic_back"
         app:title="@string/fragment_member_view_title"
         app:titleCentered="true"
         app:titleTextAppearance="@style/AppEditText.Bold.S24" />

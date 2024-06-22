@@ -24,6 +24,7 @@
     <string name="plain_memo">메모</string>
     <string name="plain_more">더보기</string>
     <string name="plain_choice">선택</string>
+    <string name="plain_confirm">확인</string>
 
     <!-- modify_label -->
     <string name="modify_group_name">그룹 이름(수정)</string>
@@ -43,6 +44,10 @@
 
     <!-- activity_changePW -->
     <string name="change_password_title_label">비밀번호 변경</string>
+
+    <!-- activity_find_account -->
+    <string name="find_account_title_label">계정 찾기</string>
+    <string name="find_account_key_label">인증번호</string>
 
     <!-- dialog_add_group -->
     <string name="dialog_add_group_title_label">그룹 생성하기</string>
@@ -86,5 +91,6 @@
     <string name="common_choice_group">그룹을 선택해 주세요</string>
     <string name="common_move_call">전화 창으로 이동합니다.</string>
     <string name="common_move">이동</string>
+
 
 </resources>

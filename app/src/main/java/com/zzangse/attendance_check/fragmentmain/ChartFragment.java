@@ -1,6 +1,7 @@
 package com.zzangse.attendance_check.fragmentmain;
 
 import android.app.AlertDialog;
+import android.content.res.Configuration;
 import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
@@ -23,6 +24,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.github.mikephil.charting.animation.Easing;
 import com.github.mikephil.charting.components.Description;
+import com.github.mikephil.charting.components.Legend;
 import com.github.mikephil.charting.data.PieData;
 import com.github.mikephil.charting.data.PieDataSet;
 import com.github.mikephil.charting.data.PieEntry;
@@ -325,9 +327,24 @@ public class ChartFragment extends Fragment {
         dataSet.setSelectionShift(5f);
         dataSet.setColors(colorArray);
 
+
         PieData data = new PieData(dataSet);
         data.setValueTextSize(10f);
-        data.setValueTextColor(Color.WHITE);
+        int nightModeFlags = getContext().getResources().getConfiguration().uiMode & Configuration.UI_MODE_NIGHT_MASK;
+        if (nightModeFlags == Configuration.UI_MODE_NIGHT_YES) {
+            data.setValueTextColor(Color.WHITE);
+        } else {
+            data.setValueTextColor(Color.BLACK);
+        }
+        Legend legend = binding.pieChart.getLegend();
+        legend.setEnabled(true);
+        legend.setTextColor(nightModeFlags == Configuration.UI_MODE_NIGHT_YES ? Color.WHITE : Color.BLACK);
+        legend.setHorizontalAlignment(Legend.LegendHorizontalAlignment.LEFT);
+        legend.setVerticalAlignment(Legend.LegendVerticalAlignment.BOTTOM);
+        legend.setOrientation(Legend.LegendOrientation.HORIZONTAL);
+        legend.setDrawInside(false);
+
+        //data.setValueTextColor(R.color.iconPrimary);
         data.setValueFormatter(new ValueFormatter() {
             @Override
             public String getFormattedValue(float value) {

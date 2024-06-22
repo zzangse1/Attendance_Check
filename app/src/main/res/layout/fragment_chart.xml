@@ -57,7 +57,6 @@
         style="@style/AppEditText.Bold.S24"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="4월 20일"
         app:layout_constraintBottom_toBottomOf="@id/btn_right"
         app:layout_constraintEnd_toStartOf="@id/btn_right"
         app:layout_constraintStart_toEndOf="@id/btn_left"

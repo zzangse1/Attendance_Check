@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="colorPrimary">#191970</color>
+    <color name="backgroundPrimary">#1F1F1F</color>
+    <color name="windowPrimary">#FF000000</color>
+    <color name="iconPrimary">#FFFFFFFF</color>
+
+    <color name="bottomNavSelectedPrimary">#46468c</color>
+    <color name="bottomNavPrimary">#5F6868</color>
+    <color name="boxPrimary">#FFFFFFFF</color>
+    <color name="dialogPrimary">#333333</color>
+    <color name="viewPrimary">#303030</color>
+    <color name="viewChartPrimary">#B1B1BE</color>
+    <color name="bottomBackground">#303134</color>
+    <color name="viewBackground">#262626</color>
+    <color name="btnLogin">#46468c</color>
+
+
+
+    <color name="black">#FF000000</color>
+    <color name="white">#FFFFFFFF</color>
+
+    <color name="red">#FF0000</color>
+    <color name="red_200">#E85B5B</color>
+    <color name="red_100">#EF4040</color>
+
+
+    <color name="navy_300">#B1B1BE</color>
+    <color name="navy_200">#46468c</color>
+    <color name="navy_100">#191970</color>
+
+    <color name="grey_400">#EEEEEE</color>
+    <color name="grey_300">#DCDCDC</color>
+    <color name="grey_200">#C0C0C0</color>
+    <color name="grey_100">#8897AE</color>
+    <color name="grey_50">#686D76</color>
+    <!--color name="grey_50">#5F6868</color-->
+
+    <!-- 출결 체크 색상 -->
+    <color name="check_green">#66BB6A</color>
+    <color name="check_orange">#FFB74D</color>
+    <color name="check_red">#FF8A80</color>
+
+
+</resources>

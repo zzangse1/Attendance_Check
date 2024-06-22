@@ -1,6 +1,20 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <color name="colorPrimary">#191970</color>
+    <color name="backgroundPrimary">#FFFFFFFF</color>
+    <color name="windowPrimary">#FFFFFFFF</color>
+    <color name="iconPrimary">#FF000000</color>
+
+    <color name="bottomNavSelectedPrimary">#191970</color>
+    <color name="bottomNavPrimary">#5F6868</color>
+    <color name="boxPrimary">#191970</color>
+    <color name="dialogPrimary">#FFFFFFFF</color>
+    <color name="viewPrimary">#FFFFFFFF</color>
+    <color name="viewChartPrimary">#FFFFFFFF</color>
+    <color name="bottomBackground">#FFFFFFFF</color>
+    <color name="viewBackground">#FFFFFFFF</color>
+    <color name="btnLogin">#191970</color>
+
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
 
