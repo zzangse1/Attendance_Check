@@ -43,6 +43,7 @@ public class LoginActivity extends AppCompatActivity {
         onClickEditTextPassWordShow();
         onClickSignUp();
         onClickKakaoLogin();
+        onClickFindAccount();
     }
 
     private void initView() {
@@ -63,6 +64,7 @@ public class LoginActivity extends AppCompatActivity {
             Function2<OAuthToken, Throwable, Unit> callback = new Function2<OAuthToken, Throwable, Unit>() {
                 @Override
                 public Unit invoke(OAuthToken oAuthToken, Throwable throwable) {
+                    Log.d("oAuth", oAuthToken + "");
                     if (oAuthToken != null) {
                         Log.d("oAuthToken", oAuthToken + "oAuthToken not NULL");
                         updateKakaoLogin();
@@ -241,6 +243,13 @@ public class LoginActivity extends AppCompatActivity {
     private void onClickSignUp() {
         binding.tvSingup.setOnClickListener(v -> {
             Intent intent = new Intent(LoginActivity.this, SignupActivity.class);
+            startActivity(intent);
+        });
+    }
+
+    private void onClickFindAccount() {
+        binding.tvFind.setOnClickListener(v->{
+            Intent intent = new Intent(LoginActivity.this, FindAccountActivity.class);
             startActivity(intent);
         });
     }
