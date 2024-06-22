@@ -47,7 +47,7 @@
                 android:drawablePadding="20dp"
                 android:hint="@string/plain_id"
                 android:inputType="text"
-                android:maxLength="16"
+                android:maxLength="30"
                 android:nextFocusDown="@id/et_password"
                 android:paddingStart="20dp"
                 app:layout_constraintEnd_toEndOf="parent"
