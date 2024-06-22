@@ -1,8 +1,6 @@
 package com.zzangse.attendance_check.activity;
 
-import android.content.Context;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.text.InputType;
 import android.util.Log;
@@ -183,6 +181,7 @@ public class LoginActivity extends AppCompatActivity {
                     MySharedPreferences.setUserId(getApplicationContext(),userID);
                     MySharedPreferences.setUserPass(getApplicationContext(), userPassword);
 
+                    moveToSignUp(userID,userNickName,userName,userBirthYear + userBirth,userSex,userPhoneNumber,userToken);
                     signUpKakao(userID, userPassword, userNickName, userName,
                             userBirthYear + userBirth, userSex, userPhoneNumber, userToken);
 
@@ -209,11 +208,11 @@ public class LoginActivity extends AppCompatActivity {
                         // 회원가입창으로 이동
                         Toast.makeText(getApplicationContext(), "회원가입 성공", Toast.LENGTH_SHORT).show();
                         Log.d("KAKAO", issue);
-                        loginKakao(isKakao, kakaoID);
+                       /// loginKakao(isKakao, kakaoID);
                     } else if (issue.equals("카카오 회원가입 등록이 되어있습니다.")) {
                         // 카카오 로그인 진행
                         isKakao = true;
-                        loginKakao(isKakao, kakaoID);
+                      ///  loginKakao(isKakao, kakaoID);
                     } else {
                         Toast.makeText(getApplicationContext(), "회원가입 실패", Toast.LENGTH_SHORT).show();
                         Log.d("KAKAO", issue);
@@ -232,26 +231,28 @@ public class LoginActivity extends AppCompatActivity {
         queue.add(request);
     }
 
+    private void moveToSignUp(String userID, String userNickName, String userName, String userBirth,
+                              String userSex, String userPhoneNumber, String userToken) {
+        Intent intent = new Intent(LoginActivity.this, SignupActivity.class);
+        intent.putExtra("userID",userID);
+        intent.putExtra("userNickName",userNickName);
+        intent.putExtra("userName",userName);
+        intent.putExtra("userBirth",userBirth);
+        intent.putExtra("userSex",userSex);
+        intent.putExtra("userPhoneNumber",userPhoneNumber);
+        intent.putExtra("userToken",userToken);
+        startActivity(intent);
+    }
+
     private void loginKakao(boolean isKakao, String kakaoID) {
         if (isKakao) {
-            Intent intent = new Intent(LoginActivity.this, SignupActivity.class);
+            Intent intent = new Intent(LoginActivity.this, MainActivity.class);
             intent.putExtra("userID", kakaoID);
-//            intent.putExtra("userNickName",);
-//            intent.putExtra("userBirth", );
-//            intent.putExtra("userPhoneNumber", );
             intent.putExtra("userToken", "KAKAO");
             startActivity(intent);
         } else {
             Toast.makeText(getApplicationContext(), "카카오 취소", Toast.LENGTH_SHORT).show();
         }
-//        if (isKakao) {
-//            Intent intent = new Intent(LoginActivity.this, MainActivity.class);
-//            intent.putExtra("userID", kakaoID);
-//            intent.putExtra("userToken", "KAKAO");
-//            startActivity(intent);
-//        } else {
-//            Toast.makeText(getApplicationContext(), "카카오 취소", Toast.LENGTH_SHORT).show();
-//        }
     }
 
     private void onClickEditTextPassWordShow() {

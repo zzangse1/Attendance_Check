@@ -73,9 +73,18 @@ public class SignupActivity extends AppCompatActivity {
     private void test() {
         Intent intent = getIntent();
         String userID = intent.getStringExtra("userID");
-        Log.d("userID", userID);
+        String userName = intent.getStringExtra("userName");
+        String userNickName = intent.getStringExtra("userNickName");
+        String userBirth = intent.getStringExtra("userBirth");
+        String userSex = intent.getStringExtra("userSex");
+        String userPhoneNumber = intent.getStringExtra("userPhoneNumber");
+        String userToken = intent.getStringExtra("userToken");
+        Log.d("userSex", userSex);
         binding.etId.setText(userID);
-
+        binding.etName.setText(userName);
+        binding.etNickName.setText(userNickName);
+        binding.etBirth.setText(userBirth);
+        binding.etNumber.setText(userPhoneNumber);
     }
     private void initView() {
         binding = ActivitySignupBinding.inflate(getLayoutInflater());
