@@ -9,6 +9,6 @@
         <item name="colorPrimary">@color/navy_300</item>
         <item name="colorOnPrimary">@color/backgroundPrimary</item>
         <item name="android:colorBackground">@color/windowPrimary</item>
-        <!--item name="android:navigationBarColor">@color/backgroundPrimary</item-->
+        <item name="android:navigationBarColor">@color/backgroundPrimary</item>
     </style>
 </resources>
