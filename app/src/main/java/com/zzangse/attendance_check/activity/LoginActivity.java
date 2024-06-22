@@ -1,6 +1,8 @@
 package com.zzangse.attendance_check.activity;
 
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.text.InputType;
 import android.util.Log;
@@ -16,6 +18,7 @@ import com.kakao.sdk.auth.model.OAuthToken;
 import com.kakao.sdk.common.KakaoSdk;
 import com.kakao.sdk.user.UserApiClient;
 import com.kakao.sdk.user.model.User;
+import com.zzangse.attendance_check.MySharedPreferences;
 import com.zzangse.attendance_check.R;
 import com.zzangse.attendance_check.databinding.ActivityLoginBinding;
 import com.zzangse.attendance_check.request.SignInRequest;
@@ -37,13 +40,14 @@ public class LoginActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        initView();
         initKakao();
+        initView();
         onClickLogin();
         onClickEditTextPassWordShow();
         onClickSignUp();
         onClickKakaoLogin();
         onClickFindAccount();
+        test();
     }
 
     private void initView() {
@@ -51,6 +55,53 @@ public class LoginActivity extends AppCompatActivity {
         setContentView(binding.getRoot());
     }
 
+    private void test() {
+        if (MySharedPreferences.getUserId(getApplicationContext()).isEmpty() ||
+                MySharedPreferences.getUserPass(getApplicationContext()).isEmpty()) {
+            Log.d("자동로그인", "비어있음");
+        } else {
+            test2(MySharedPreferences.getUserId(getApplicationContext()),MySharedPreferences.getUserPass(getApplicationContext()));
+        }
+    }
+
+    private void test2(String userID,String userPassword) {
+        Log.d("자동 저장", userID + ", " + userPassword);
+            binding.tvErrorLabel.setVisibility(View.GONE);
+            Response.Listener<String> listener = new Response.Listener<String>() {
+                @Override
+                public void onResponse(String s) {
+                    try {
+                        JSONObject jsonObject = new JSONObject(s);
+                        boolean isSuccess = jsonObject.getBoolean("success");
+                        if (isSuccess) {
+                            // json 데이터에서 userID 키에 해당하는 값을 가져옴
+                            String userID = jsonObject.getString("userID");
+                            String userToken = jsonObject.getString("userToken");
+                            Log.d("TEST", userID);
+                            Log.d("TEST", userPassword);
+                            Log.d("TEST", userToken);
+                            Toast.makeText(getApplicationContext(), "자동 로그인 성공", Toast.LENGTH_SHORT).show();
+                            Intent intent = new Intent(LoginActivity.this, MainActivity.class);
+                            // 자동로그인
+                            MySharedPreferences.setUserId(getApplicationContext(),userID);
+                            MySharedPreferences.setUserId(getApplicationContext(),userPassword);
+                            intent.putExtra("userID", userID);
+                            intent.putExtra("userToken", userToken);
+                            startActivity(intent);
+                            // finish();
+                        } else {
+                            binding.tvErrorLabel.setVisibility(View.VISIBLE);
+                            Toast.makeText(getApplicationContext(), "로그인 실패", Toast.LENGTH_SHORT).show();
+                        }
+                    } catch (JSONException e) {
+                        throw new RuntimeException(e);
+                    }
+                }
+            };
+            SignInRequest request = new SignInRequest(userID, userPassword, listener);
+            RequestQueue queue = Volley.newRequestQueue(LoginActivity.this);
+            queue.add(request);
+    }
     private void initKakao() {
         Log.d("initKakao", "appkey");
         // KakaoSdk.init(this, getString(R.string.kakao_app_key));          // 카카오 init
@@ -86,6 +137,7 @@ public class LoginActivity extends AppCompatActivity {
         });
     }
 
+
     private String transferSex(String kakaoSex) {
         if (kakaoSex.equals("MALE")) {
             return kakaoSex = "남자";
@@ -96,7 +148,7 @@ public class LoginActivity extends AppCompatActivity {
         }
     }
 
-    // 카카오계정 비밀번호 난수화
+    // 카카오계정 비밀번호 생성
     private String randomPassword() {
         String randomString = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789!@#$%^&*()";
         SecureRandom random = new SecureRandom();
@@ -127,6 +179,10 @@ public class LoginActivity extends AppCompatActivity {
                     String userToken = "KAKAO";
                     userSex = transferSex(userSex);  // 카카오 성별 한글화
                     String userPassword = randomPassword(); // 카카오계정 비밀번호 생성
+                    //자동로그인
+                    MySharedPreferences.setUserId(getApplicationContext(),userID);
+                    MySharedPreferences.setUserPass(getApplicationContext(), userPassword);
+
                     signUpKakao(userID, userPassword, userNickName, userName,
                             userBirthYear + userBirth, userSex, userPhoneNumber, userToken);
 
@@ -150,6 +206,7 @@ public class LoginActivity extends AppCompatActivity {
                     boolean isSuccess = jsonObject.getBoolean("success");
                     String issue = jsonObject.getString("message");
                     if (isSuccess) {
+                        // 회원가입창으로 이동
                         Toast.makeText(getApplicationContext(), "회원가입 성공", Toast.LENGTH_SHORT).show();
                         Log.d("KAKAO", issue);
                         loginKakao(isKakao, kakaoID);
@@ -177,13 +234,24 @@ public class LoginActivity extends AppCompatActivity {
 
     private void loginKakao(boolean isKakao, String kakaoID) {
         if (isKakao) {
-            Intent intent = new Intent(LoginActivity.this, MainActivity.class);
+            Intent intent = new Intent(LoginActivity.this, SignupActivity.class);
             intent.putExtra("userID", kakaoID);
+//            intent.putExtra("userNickName",);
+//            intent.putExtra("userBirth", );
+//            intent.putExtra("userPhoneNumber", );
             intent.putExtra("userToken", "KAKAO");
             startActivity(intent);
         } else {
             Toast.makeText(getApplicationContext(), "카카오 취소", Toast.LENGTH_SHORT).show();
         }
+//        if (isKakao) {
+//            Intent intent = new Intent(LoginActivity.this, MainActivity.class);
+//            intent.putExtra("userID", kakaoID);
+//            intent.putExtra("userToken", "KAKAO");
+//            startActivity(intent);
+//        } else {
+//            Toast.makeText(getApplicationContext(), "카카오 취소", Toast.LENGTH_SHORT).show();
+//        }
     }
 
     private void onClickEditTextPassWordShow() {
@@ -221,10 +289,13 @@ public class LoginActivity extends AppCompatActivity {
                             Log.d("TEST", userToken);
                             Toast.makeText(getApplicationContext(), "로그인 성공", Toast.LENGTH_SHORT).show();
                             Intent intent = new Intent(LoginActivity.this, MainActivity.class);
+                            // 자동로그인
+                            MySharedPreferences.setUserId(getApplicationContext(),userID);
+                            MySharedPreferences.setUserPass(getApplicationContext(),userPassword);
                             intent.putExtra("userID", userID);
                             intent.putExtra("userToken", userToken);
                             startActivity(intent);
-                            //finish();
+                           // finish();
                         } else {
                             binding.tvErrorLabel.setVisibility(View.VISIBLE);
                             Toast.makeText(getApplicationContext(), "로그인 실패", Toast.LENGTH_SHORT).show();
