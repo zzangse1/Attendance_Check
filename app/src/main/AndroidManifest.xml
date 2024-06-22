@@ -16,20 +16,22 @@
         android:theme="@style/Theme.Attendance_Check"
         android:usesCleartextTraffic="true"
         tools:targetApi="31">
-        <activity
-            android:name=".activity.SettingActivity"
-            android:exported="false" />
+
         <activity
             android:name=".activity.LoginActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
                 <category android:name="android.intent.category.DEFAULT" />
                 <category android:name="android.intent.category.BROWSABLE" />
             </intent-filter>
         </activity>
+
+        <activity
+            android:name=".activity.SettingActivity"
+            android:exported="false"
+            android:windowSoftInputMode="adjustResize"/>
         <activity
             android:name=".activity.MainActivity"
             android:exported="false"
@@ -43,6 +45,11 @@
             android:name=".activity.MoreActivity"
             android:exported="false"
             android:windowSoftInputMode="adjustResize" />
+        <activity
+            android:name=".activity.FindAccountActivity"
+            android:exported="false"
+            android:windowSoftInputMode="adjustResize" />
+
 
         <!-- 카카오 인증을 위한 AuthCodeHandlerActivity 추가 -->
         <activity
@@ -50,13 +57,8 @@
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.VIEW" />
-
                 <category android:name="android.intent.category.DEFAULT" />
                 <category android:name="android.intent.category.BROWSABLE" />
-                <!-- Redirect URI: "kakao${NATIVE_APP_KEY}://oauth" -->
-                <!--data
-                    android:host="oauth"
-                    android:scheme="@string/kakao_native_key" /-->
                 <data
                     android:host="oauth"
                     android:scheme="@string/kakao_native_test_key" />
