@@ -67,7 +67,7 @@ public class MoreFragment extends Fragment {
                 intent.putExtra("userID", userID);
                 startActivity(intent);
             } else {
-                Toast.makeText(getContext(), "카카오 로그인은 비밀번호 변경을 할 수 없습니다.", Toast.LENGTH_SHORT).show();
+                Toast.makeText(getContext(), "카카오 계정은 비밀번호 변경을 할 수 없습니다.", Toast.LENGTH_SHORT).show();
             }
         });
     }
