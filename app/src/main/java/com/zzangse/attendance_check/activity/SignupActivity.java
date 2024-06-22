@@ -67,8 +67,16 @@ public class SignupActivity extends AppCompatActivity {
         onClickSignUp();
         onClickBack();
         onClickEditTextPassWordShow();
+        test();
     }
 
+    private void test() {
+        Intent intent = getIntent();
+        String userID = intent.getStringExtra("userID");
+        Log.d("userID", userID);
+        binding.etId.setText(userID);
+
+    }
     private void initView() {
         binding = ActivitySignupBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
