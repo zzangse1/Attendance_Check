@@ -11,12 +11,10 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
-import androidx.lifecycle.ViewModelProvider;
 
 import com.google.android.material.navigation.NavigationBarView;
 import com.google.android.material.snackbar.Snackbar;
 import com.zzangse.attendance_check.R;
-import com.zzangse.attendance_check.data.GroupViewModel;
 import com.zzangse.attendance_check.databinding.ActivityMainBinding;
 import com.zzangse.attendance_check.fragmentmain.ChartFragment;
 import com.zzangse.attendance_check.fragmentmain.CheckFragment;
@@ -30,7 +28,6 @@ public class MainActivity extends AppCompatActivity {
     private ChartFragment chartFragment;
     private EditFragment editFragment;
     private MoreFragment moreFragment;
-    private GroupViewModel groupViewModel;
     private String userToken;
     private long backBtnTime  = 0;
 
@@ -40,13 +37,6 @@ public class MainActivity extends AppCompatActivity {
         initView();
         initFragment();
         setupBottomNav();
-        groupViewModel = new ViewModelProvider(this).get(GroupViewModel.class);
-
-    }
-
-
-    public GroupViewModel getGroupViewModel() {
-        return groupViewModel;
     }
 
     private void setupBottomNav() {
@@ -132,10 +122,8 @@ public class MainActivity extends AppCompatActivity {
     // 뒤로가기  API 33 미만 버전
     @Override
     public void onBackPressed() {
-
         long curTime = System.currentTimeMillis();
         long gapTime = curTime - backBtnTime;
-
         if (gapTime >= 0 && gapTime <= 2000) {
             Log.d("Back_BTN","onBackPressed");
             super.onBackPressed();
