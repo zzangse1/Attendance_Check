@@ -30,6 +30,9 @@
         <item name="android:textSize">24sp</item>
     </style>
 
+    <style name="AppEditText.S14">
+        <item name="android:textSize">14sp</item>
+    </style>
 
     <style name="AppEditText.S17">
         <item name="android:textSize">17sp</item>
@@ -89,9 +92,11 @@
     <style name="AppEditText.Red.S17">
         <item name="android:textSize">17sp</item>
     </style>
+
     <style name="AppEditText.Red_200.S17">
         <item name="android:textSize">17sp</item>
     </style>
+
     <style name="AppButtonText.Gray" parent="Widget.AppCompat.Button.Borderless">
         <item name="fontFamily">@font/spoqa_medium</item>
         <item name="android:textColor">@color/grey_100</item>
