@@ -1,7 +1,9 @@
 package com.zzangse.attendance_check.fragmentmain;
 
 import android.app.AlertDialog;
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -14,7 +16,9 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
+import com.zzangse.attendance_check.MySharedPreferences;
 import com.zzangse.attendance_check.R;
+import com.zzangse.attendance_check.activity.LoginActivity;
 import com.zzangse.attendance_check.activity.MoreActivity;
 import com.zzangse.attendance_check.databinding.FragmentMoreBinding;
 
@@ -73,10 +77,11 @@ public class MoreFragment extends Fragment {
     }
 
     private void onClickLogout() {
-        binding.tvOtherLogout.setOnClickListener(v->{
+        binding.tvOtherLogout.setOnClickListener(v -> {
             showLogOutDialog();
         });
     }
+
     private void showLogOutDialog() {
 
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity(), R.style.RoundedDialog);
@@ -92,8 +97,18 @@ public class MoreFragment extends Fragment {
             dialog.dismiss();
         });
         btnOk.setOnClickListener(v -> {
-            requireActivity().finish();
+            clearAutoLogin();
+            dialog.dismiss();
         });
         dialog.show();
+    }
+
+    private void clearAutoLogin() {
+        Intent intent = new Intent(requireContext(), LoginActivity.class);
+        intent.putExtra("LOGOUT", true);
+        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK); // 모든 기존 Activity를 제거하고 새로운 태스크로 시작
+        startActivity(intent);
+        requireActivity().finish(); // 현재 Activity를 종료
+        MySharedPreferences.clearUser(requireContext());
     }
 }
