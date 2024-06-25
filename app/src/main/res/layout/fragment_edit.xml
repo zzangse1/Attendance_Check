@@ -15,6 +15,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:menu="@menu/toolbar_menu"
+        android:paddingEnd="10dp"
         app:title="@string/fragment_edit_title"
         app:titleCentered="true"
         app:titleTextAppearance="@style/AppToolbarText.S24" />
