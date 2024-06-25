@@ -7,10 +7,10 @@
     <string name="login_btn_label">이메일로 로그인</string>
     <string name="login_signup_label">회원가입</string>
     <string name="login_id_find_label">계정 찾기</string>
-    <string name="login_sns_label">소셜로 로그인</string>
+    <string name="login_sns_label">소셜로 간편가입</string>
 
     <!-- plain_label -->
-    <string name="plain_id">아이디</string>
+    <string name="plain_id">이메일</string>
     <string name="plain_password">비밀번호</string>
     <string name="plain_nickname">닉네임</string>
     <string name="plain_group_name">그룹 이름</string>
@@ -59,7 +59,7 @@
 
     <!-- dialog_logout -->
     <string name="dialog_logout_title_label">로그아웃</string>
-    <string name="dialog_logout_label">로그아웃 하시겠습니까?</string>
+    <string name="dialog_logout_label">로그아웃 하시겠습니까?\n로그인 정보가 삭제 됩니다.</string>
 
     <!-- dialog_search -->
     <string name="dialog_search_label">그룹을 검색하거나 선택하세요.</string>
@@ -75,7 +75,7 @@
 
     <string name="menu_check">출결</string>
     <string name="menu_chart">통계</string>
-    <string name="menu_edit">편집</string>
+    <string name="menu_edit">관리</string>
 
     <!-- 체크 프래그먼트 -->
     <string name="fragment_check_iv_script">textView안에 있는 화살표</string>
