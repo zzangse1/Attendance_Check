@@ -20,12 +20,9 @@ import com.zzangse.attendance_check.MySharedPreferences;
 import com.zzangse.attendance_check.R;
 import com.zzangse.attendance_check.databinding.ActivityLoginBinding;
 import com.zzangse.attendance_check.request.SignInRequest;
-import com.zzangse.attendance_check.request.SignUpRequest;
 
 import org.json.JSONException;
 import org.json.JSONObject;
-
-import java.security.SecureRandom;
 
 import kotlin.Unit;
 import kotlin.jvm.functions.Function2;
@@ -33,19 +30,28 @@ import kotlin.jvm.functions.Function2;
 public class LoginActivity extends AppCompatActivity {
     private ActivityLoginBinding binding;
     private boolean isVisibility = true;
-    private boolean isKakao = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         initKakao();
         initView();
+        initAutoLogin();
         onClickLogin();
         onClickEditTextPassWordShow();
         onClickSignUp();
         onClickKakaoLogin();
         onClickFindAccount();
-        test();
+    }
+
+    @Override
+    protected void onResume() {
+        // 로그아웃시 작동
+        super.onResume();
+        boolean isLogout = getIntent().getBooleanExtra("LOGOUT", false);
+        if (isLogout) {
+            clearLoginFields();
+        }
     }
 
     private void initView() {
@@ -53,53 +59,72 @@ public class LoginActivity extends AppCompatActivity {
         setContentView(binding.getRoot());
     }
 
-    private void test() {
-        if (MySharedPreferences.getUserId(getApplicationContext()).isEmpty() ||
-                MySharedPreferences.getUserPass(getApplicationContext()).isEmpty()) {
-            Log.d("자동로그인", "비어있음");
+    private void isCheckedBox(String userID, String userPassword) {
+        Log.d("isCHeck", binding.cbAutoLogin.isChecked() + "asdf");
+        if (binding.cbAutoLogin.isChecked()) {
+            binding.etId.setText(userID);
+            binding.etPassword.setText(userPassword);
+            MySharedPreferences.setCheckBox(getApplicationContext(), "true");
+            MySharedPreferences.setUserId(getApplicationContext(), userID);
+            MySharedPreferences.setUserPass(getApplicationContext(), userPassword);
         } else {
-            test2(MySharedPreferences.getUserId(getApplicationContext()),MySharedPreferences.getUserPass(getApplicationContext()));
+            MySharedPreferences.setCheckBox(getApplicationContext(), "false");
         }
     }
 
-    private void test2(String userID,String userPassword) {
-        Log.d("자동 저장", userID + ", " + userPassword);
-            binding.tvErrorLabel.setVisibility(View.GONE);
-            Response.Listener<String> listener = new Response.Listener<String>() {
-                @Override
-                public void onResponse(String s) {
-                    try {
-                        JSONObject jsonObject = new JSONObject(s);
-                        boolean isSuccess = jsonObject.getBoolean("success");
-                        if (isSuccess) {
-                            // json 데이터에서 userID 키에 해당하는 값을 가져옴
-                            String userID = jsonObject.getString("userID");
-                            String userToken = jsonObject.getString("userToken");
-                            Log.d("TEST", userID);
-                            Log.d("TEST", userPassword);
-                            Log.d("TEST", userToken);
-                            Toast.makeText(getApplicationContext(), "자동 로그인 성공", Toast.LENGTH_SHORT).show();
-                            Intent intent = new Intent(LoginActivity.this, MainActivity.class);
-                            // 자동로그인
-                            MySharedPreferences.setUserId(getApplicationContext(),userID);
-                            MySharedPreferences.setUserId(getApplicationContext(),userPassword);
-                            intent.putExtra("userID", userID);
-                            intent.putExtra("userToken", userToken);
-                            startActivity(intent);
-                            // finish();
-                        } else {
-                            binding.tvErrorLabel.setVisibility(View.VISIBLE);
-                            Toast.makeText(getApplicationContext(), "로그인 실패", Toast.LENGTH_SHORT).show();
-                        }
-                    } catch (JSONException e) {
-                        throw new RuntimeException(e);
-                    }
-                }
-            };
-            SignInRequest request = new SignInRequest(userID, userPassword, listener);
-            RequestQueue queue = Volley.newRequestQueue(LoginActivity.this);
-            queue.add(request);
+    private void initAutoLogin() {
+        if (MySharedPreferences.getCheckBox(getApplicationContext()).equals("false")) {
+            binding.etId.setText("");
+            binding.etPassword.setText("");
+            Log.d("자동로그인", "비어있음");
+        } else {
+            binding.cbAutoLogin.setChecked(true);
+            autoLogin(MySharedPreferences.getUserId(getApplicationContext()), MySharedPreferences.getUserPass(getApplicationContext()));
+        }
     }
+
+    private void clearLoginFields() {
+        binding.etId.setText("");
+        binding.etPassword.setText("");
+    }
+
+    private void autoLogin(String userID, String userPassword) {
+        Log.d("자동 저장", userID + ", " + userPassword);
+        binding.tvErrorLabel.setVisibility(View.GONE);
+        Response.Listener<String> listener = new Response.Listener<String>() {
+            @Override
+            public void onResponse(String s) {
+                try {
+                    JSONObject jsonObject = new JSONObject(s);
+                    boolean isSuccess = jsonObject.getBoolean("success");
+                    if (isSuccess) {
+                        // json 데이터에서 userID 키에 해당하는 값을 가져옴
+                        String userID = jsonObject.getString("userID");
+                        String userToken = jsonObject.getString("userToken");
+                        Log.d("TEST", userID);
+                        Log.d("TEST", userPassword);
+                        Log.d("TEST", userToken);
+                        Toast.makeText(getApplicationContext(), "자동 로그인 성공", Toast.LENGTH_SHORT).show();
+                        Intent intent = new Intent(LoginActivity.this, MainActivity.class);
+                        // 자동로그인
+                        isCheckedBox(userID, userPassword);
+                        intent.putExtra("userID", userID);
+                        intent.putExtra("userToken", userToken);
+                        startActivity(intent);
+                    } else {
+                        binding.tvErrorLabel.setVisibility(View.VISIBLE);
+                        Toast.makeText(getApplicationContext(), "로그인 실패", Toast.LENGTH_SHORT).show();
+                    }
+                } catch (JSONException e) {
+                    throw new RuntimeException(e);
+                }
+            }
+        };
+        SignInRequest request = new SignInRequest(userID, userPassword, listener);
+        RequestQueue queue = Volley.newRequestQueue(LoginActivity.this);
+        queue.add(request);
+    }
+
     private void initKakao() {
         Log.d("initKakao", "appkey");
         // KakaoSdk.init(this, getString(R.string.kakao_app_key));          // 카카오 init
@@ -146,18 +171,6 @@ public class LoginActivity extends AppCompatActivity {
         }
     }
 
-    // 카카오계정 비밀번호 생성
-    private String randomPassword() {
-        String randomString = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789!@#$%^&*()";
-        SecureRandom random = new SecureRandom();
-        StringBuilder sb = new StringBuilder(20);
-
-        for (int i = 0; i < 20; i++) {
-            int index = random.nextInt(randomString.length());
-            sb.append(randomString.charAt(index));
-        }
-        return sb.toString();
-    }
 
     private void updateKakaoLogin() {
         UserApiClient.getInstance().me(new Function2<User, Throwable, Unit>() {
@@ -176,84 +189,29 @@ public class LoginActivity extends AppCompatActivity {
                     String userPhoneNumber = user.getKakaoAccount().getPhoneNumber();
                     String userToken = "KAKAO";
                     userSex = transferSex(userSex);  // 카카오 성별 한글화
-                    String userPassword = randomPassword(); // 카카오계정 비밀번호 생성
-                    //자동로그인
-                    MySharedPreferences.setUserId(getApplicationContext(),userID);
-                    MySharedPreferences.setUserPass(getApplicationContext(), userPassword);
 
-                    moveToSignUp(userID,userNickName,userName,userBirthYear + userBirth,userSex,userPhoneNumber,userToken);
-                    signUpKakao(userID, userPassword, userNickName, userName,
-                            userBirthYear + userBirth, userSex, userPhoneNumber, userToken);
-
+                    moveToSignUp(userID, userNickName, userName, userBirthYear + userBirth, userSex, userPhoneNumber, userToken);
                 } else {
                     Log.d("KAKAO", "로그인 X");
-                    isKakao = false;
                 }
                 return null;
             }
         });
     }
 
-
-    private void signUpKakao(String kakaoID, String kakaoPassword, String kakaoNickName,
-                             String kakaoName, String kakaoBirth, String kakaoSex, String kakaoPhoneNumber, String userToken) {
-        Response.Listener<String> listener = new Response.Listener<String>() {
-            @Override
-            public void onResponse(String s) {
-                try {
-                    JSONObject jsonObject = new JSONObject(s);
-                    boolean isSuccess = jsonObject.getBoolean("success");
-                    String issue = jsonObject.getString("message");
-                    if (isSuccess) {
-                        // 회원가입창으로 이동
-                        Toast.makeText(getApplicationContext(), "회원가입 성공", Toast.LENGTH_SHORT).show();
-                        Log.d("KAKAO", issue);
-                       /// loginKakao(isKakao, kakaoID);
-                    } else if (issue.equals("카카오 회원가입 등록이 되어있습니다.")) {
-                        // 카카오 로그인 진행
-                        isKakao = true;
-                      ///  loginKakao(isKakao, kakaoID);
-                    } else {
-                        Toast.makeText(getApplicationContext(), "회원가입 실패", Toast.LENGTH_SHORT).show();
-                        Log.d("KAKAO", issue);
-                        isKakao = false;
-                    }
-                } catch (JSONException e) {
-                    Log.d("JSON", e.toString());
-                }
-            }
-        };
-        SignUpRequest request = new SignUpRequest(kakaoID, kakaoPassword, kakaoNickName, kakaoName,
-                kakaoBirth, kakaoSex, kakaoPhoneNumber, userToken, listener);
-        Log.d("kakaoSIgn", kakaoID + ", " + kakaoPassword + ", " + kakaoNickName + ", " + kakaoName
-                + ", " + kakaoBirth + ", " + kakaoSex + ", " + kakaoPhoneNumber);
-        RequestQueue queue = Volley.newRequestQueue(LoginActivity.this);
-        queue.add(request);
-    }
-
     private void moveToSignUp(String userID, String userNickName, String userName, String userBirth,
                               String userSex, String userPhoneNumber, String userToken) {
         Intent intent = new Intent(LoginActivity.this, SignupActivity.class);
-        intent.putExtra("userID",userID);
-        intent.putExtra("userNickName",userNickName);
-        intent.putExtra("userName",userName);
-        intent.putExtra("userBirth",userBirth);
-        intent.putExtra("userSex",userSex);
-        intent.putExtra("userPhoneNumber",userPhoneNumber);
-        intent.putExtra("userToken",userToken);
+        intent.putExtra("userID", userID);
+        intent.putExtra("userNickName", userNickName);
+        intent.putExtra("userName", userName);
+        intent.putExtra("userBirth", userBirth);
+        intent.putExtra("userSex", userSex);
+        intent.putExtra("userPhoneNumber", userPhoneNumber);
+        intent.putExtra("userToken", userToken);
         startActivity(intent);
     }
 
-    private void loginKakao(boolean isKakao, String kakaoID) {
-        if (isKakao) {
-            Intent intent = new Intent(LoginActivity.this, MainActivity.class);
-            intent.putExtra("userID", kakaoID);
-            intent.putExtra("userToken", "KAKAO");
-            startActivity(intent);
-        } else {
-            Toast.makeText(getApplicationContext(), "카카오 취소", Toast.LENGTH_SHORT).show();
-        }
-    }
 
     private void onClickEditTextPassWordShow() {
         binding.ibShowPassword.setOnClickListener(v -> {
@@ -291,12 +249,11 @@ public class LoginActivity extends AppCompatActivity {
                             Toast.makeText(getApplicationContext(), "로그인 성공", Toast.LENGTH_SHORT).show();
                             Intent intent = new Intent(LoginActivity.this, MainActivity.class);
                             // 자동로그인
-                            MySharedPreferences.setUserId(getApplicationContext(),userID);
-                            MySharedPreferences.setUserPass(getApplicationContext(),userPassword);
+                            isCheckedBox(userID, userPassword);
                             intent.putExtra("userID", userID);
                             intent.putExtra("userToken", userToken);
                             startActivity(intent);
-                           // finish();
+                            // finish();
                         } else {
                             binding.tvErrorLabel.setVisibility(View.VISIBLE);
                             Toast.makeText(getApplicationContext(), "로그인 실패", Toast.LENGTH_SHORT).show();
@@ -315,12 +272,14 @@ public class LoginActivity extends AppCompatActivity {
     private void onClickSignUp() {
         binding.tvSingup.setOnClickListener(v -> {
             Intent intent = new Intent(LoginActivity.this, SignupActivity.class);
+            intent.putExtra("userToken", "ZZANGSE");
+            intent.putExtra("userSex", "선택안함");
             startActivity(intent);
         });
     }
 
     private void onClickFindAccount() {
-        binding.tvFind.setOnClickListener(v->{
+        binding.tvFind.setOnClickListener(v -> {
             Intent intent = new Intent(LoginActivity.this, FindAccountActivity.class);
             startActivity(intent);
         });
