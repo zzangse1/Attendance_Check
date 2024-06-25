@@ -9,6 +9,7 @@
         android:id="@+id/toolbar_member_view"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:paddingEnd="10dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
@@ -28,10 +29,10 @@
         android:layout_marginEnd="20dp"
         android:background="@drawable/plane_fill_background"
         android:gravity="center"
-        tools:text="그룹이름표시"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/toolbar_member_view" />
+        app:layout_constraintTop_toBottomOf="@id/toolbar_member_view"
+        tools:text="그룹이름표시" />
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/rv_member_view"
@@ -43,7 +44,6 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/tv_groupName"
         tools:listitem="@layout/rv_plain_name" />
-
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>
