@@ -18,6 +18,18 @@ public class MySharedPreferences {
         return prefs.getString("MY_ID", "");
     }
 
+    public static void setCheckBox(Context context, String isCheck) {
+        SharedPreferences prefs = context.getSharedPreferences(MY_ACCOUNT, Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = prefs.edit();
+        editor.putString("MY_CHECK", isCheck);
+        editor.apply();
+    }
+
+    public static String getCheckBox(Context context) {
+        SharedPreferences prefs = context.getSharedPreferences(MY_ACCOUNT, Context.MODE_PRIVATE);
+        return prefs.getString("MY_CHECK", "false");
+    }
+
     public static void setUserPass(Context context, String input) {
         SharedPreferences prefs = context.getSharedPreferences(MY_ACCOUNT, Context.MODE_PRIVATE);
         SharedPreferences.Editor editor = prefs.edit();
