@@ -1,8 +1,5 @@
 package com.zzangse.attendance_check.activity;
 
-import com.android.volley.RequestQueue;
-import com.android.volley.toolbox.Volley;
-
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.drawable.Drawable;
@@ -19,7 +16,9 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
 
+import com.android.volley.RequestQueue;
 import com.android.volley.Response;
+import com.android.volley.toolbox.Volley;
 import com.zzangse.attendance_check.R;
 import com.zzangse.attendance_check.databinding.ActivitySignupBinding;
 import com.zzangse.attendance_check.request.SignUpRequest;
@@ -35,13 +34,14 @@ public class SignupActivity extends AppCompatActivity {
     private String m_sex = "";
     // *** 정규식
     private static final String YYYYMMDD = "(19|20)\\d{2}(0[1-9]|1[012])(0[1-9]|[12][0-9]|3[01])";
-    private static final String REGEX_ID = "^[a-z0-9]{5,16}$";
+    //private static final String REGEX_ID = "^[a-zA-Z0-9@]{5,30}$";
+    private static final String REGEX_ID = "^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,6}$";
     private static final String REGEX_PASSWORD = "^[a-zA-Z0-9!@#$]+$";
     private static final String REGEX_NAME = "^[가-힣]{2,6}$";
     private static final String REGEX_PHONE_NUMBER = "^\\d{3}-?\\d{3,4}-?\\d{4}$";
-    private static final String WARNING_MSG_NO_ID = "•아이디: 필수 정보 입니다.";
-    private static final String WARNING_MSG_ERROR_ID = "•아이디: 사용할 수 없는 아이디입니다. 다른 아이디를 입력해 주세요.";
-    private static final String WARNING_MSG_RULE_ID = "•아이디: 5~16자의 영문 소문자, 숫자를 사용해 주세요";
+    private static final String WARNING_MSG_NO_ID = "•이메일: 필수 정보 입니다.";
+    private static final String WARNING_MSG_ERROR_ID = "•이메일: 사용할 수 없는 이메일입니다. 다른 이메일를 입력해 주세요.";
+    private static final String WARNING_MSG_RULE_ID = "•이메일: 5~30자의 이메일 형식을 맞춰주세요";
     private static final String WARNING_MSG_RULE_PASSWORD = "•비밀번호: 8~20자의 영문 대/소문자, 숫자, [!,@,#,$]를 사용해 주세요.";
     private static final String WARNING_MSG_NO_PASSWORD = "•비밀번호: 필수 정보입니다.";
     private static final String WARNING_MSG_NO_NICKNAME = "•닉네임: 필수 정보입니다.";
@@ -57,35 +57,57 @@ public class SignupActivity extends AppCompatActivity {
     private static boolean IS_VALID_BIRTH = false;
     private static boolean IS_VALID_SEX = false;
     private static boolean IS_VALID_PHONE_NUMBER = false;
+    private String userToken = "ZZANGSE";
 
     // 할일
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         initView();
+        initIntent();
         onClickBtn();
         onClickSignUp();
         onClickBack();
         onClickEditTextPassWordShow();
-        test();
     }
 
-    private void test() {
-        Intent intent = getIntent();
-        String userID = intent.getStringExtra("userID");
-        String userName = intent.getStringExtra("userName");
-        String userNickName = intent.getStringExtra("userNickName");
-        String userBirth = intent.getStringExtra("userBirth");
-        String userSex = intent.getStringExtra("userSex");
-        String userPhoneNumber = intent.getStringExtra("userPhoneNumber");
-        String userToken = intent.getStringExtra("userToken");
-        Log.d("userSex", userSex);
-        binding.etId.setText(userID);
-        binding.etName.setText(userName);
-        binding.etNickName.setText(userNickName);
-        binding.etBirth.setText(userBirth);
-        binding.etNumber.setText(userPhoneNumber);
+    private void initCheckBox() {
     }
+    private void initIntent() {
+        Intent intent = getIntent();
+        userToken = intent.getStringExtra("userToken");
+        if (userToken.equals("KAKAO")) {
+            String userID = intent.getStringExtra("userID");
+            String userName = intent.getStringExtra("userName");
+            String userNickName = intent.getStringExtra("userNickName");
+            String userBirth = intent.getStringExtra("userBirth");
+            String userSex = intent.getStringExtra("userSex");
+            String userPhoneNumber = intent.getStringExtra("userPhoneNumber");
+            userPhoneNumber = formatPhoneNumber(userPhoneNumber);
+            Log.d("userSex", userSex + "");
+            Log.d("userToken", userToken + "");
+            binding.etId.setText(userID);
+            binding.etName.setText(userName);
+            binding.etNickName.setText(userNickName);
+            binding.etBirth.setText(userBirth);
+            binding.etNumber.setText(userPhoneNumber);
+        } else {
+            userToken = "ZZANGSE";
+        }
+    }
+
+    // 카카오 전화번호 +82 형식 포멧
+    private String formatPhoneNumber(String userPhoneNumber) {
+        String numberWithoutCountryCode = userPhoneNumber.replaceFirst("^\\+82\\s*", "");
+        String formattedNumber = numberWithoutCountryCode.replaceAll("[^0-9]", "");
+
+        if (!formattedNumber.startsWith("0")) {
+            formattedNumber = "0" + formattedNumber;
+        }
+
+        return formattedNumber;
+    }
+
     private void initView() {
         binding = ActivitySignupBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
@@ -159,7 +181,6 @@ public class SignupActivity extends AppCompatActivity {
         String userBirth = binding.etBirth.getText().toString();
         String userSex = m_sex;
         String userPhoneNumber = binding.etNumber.getText().toString();
-        String userToken = "ZZANGSE";
 
         Response.Listener<String> listener = new Response.Listener<String>() {
             @Override
@@ -173,8 +194,9 @@ public class SignupActivity extends AppCompatActivity {
                         Intent intent = new Intent(SignupActivity.this, LoginActivity.class);
                         startActivity(intent);
                     } else {
+                        Log.d("issue", issue + "");
                         Toast.makeText(getApplicationContext(), issue, Toast.LENGTH_SHORT).show();
-                        isDuplication();
+                        isDuplication(issue);
                     }
                 } catch (JSONException e) {
                     Log.d("hello", "5");
@@ -184,18 +206,31 @@ public class SignupActivity extends AppCompatActivity {
         };
         Log.d("hello", "6");
         SignUpRequest request = new SignUpRequest(userID, userPassword, userNickName,
-                userName, userBirth, userSex, userPhoneNumber,userToken, listener);
+                userName, userBirth, userSex, userPhoneNumber, userToken, listener);
         RequestQueue queue = Volley.newRequestQueue(SignupActivity.this);
         queue.add(request);
     }
 
-    private void isDuplication() {
+    private void isDuplication(String issue) {
 //        Drawable drawable_ok = ContextCompat.getDrawable(getApplicationContext(), R.drawable.ic_person);
+        if (issue.equals("이미 사용중인 이메일 입니다.")) {
+            Drawable drawable_error_person = ContextCompat.getDrawable(getApplicationContext(), R.drawable.ic_error_person);
+            binding.etId.setCompoundDrawablesRelativeWithIntrinsicBounds(drawable_error_person, null, null, null);
+        }
+        if (issue.equals("휴대전화번호가 이미 사용 중입니다.")) {
+            Drawable drawable_error_phone = ContextCompat.getDrawable(getApplicationContext(), R.drawable.ic_error_phone);
+            binding.etNumber.setCompoundDrawablesRelativeWithIntrinsicBounds(drawable_error_phone, null, null, null);
+        }
         Drawable drawable_error_person = ContextCompat.getDrawable(getApplicationContext(), R.drawable.ic_error_person);
         Drawable drawable_error_phone = ContextCompat.getDrawable(getApplicationContext(), R.drawable.ic_error_phone);
         // 기입 안했을 때
-        binding.etId.setCompoundDrawablesRelativeWithIntrinsicBounds(drawable_error_person, null, null, null);
-        binding.etNumber.setCompoundDrawablesRelativeWithIntrinsicBounds(drawable_error_phone, null, null, null);
+        if (binding.etId.getText().toString().isEmpty()) {
+            binding.etId.setCompoundDrawablesRelativeWithIntrinsicBounds(drawable_error_person, null, null, null);
+        }
+        if (binding.etNumber.getText().toString().isEmpty()) {
+            binding.etNumber.setCompoundDrawablesRelativeWithIntrinsicBounds(drawable_error_phone, null, null, null);
+        }
+
     }
 
     private void setClearFocus() {
@@ -353,6 +388,7 @@ public class SignupActivity extends AppCompatActivity {
         binding.btnFemale.setOnClickListener(v -> updateButtonState(binding.btnFemale));
         binding.btnNone.setOnClickListener(v -> updateButtonState(binding.btnNone));
     }
+
 
     private void updateButtonState(@NonNull Button selectedButton) {
         // 모든 버튼의 초기 상태 설정
