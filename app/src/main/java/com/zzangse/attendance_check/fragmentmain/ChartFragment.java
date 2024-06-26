@@ -87,8 +87,6 @@ public class ChartFragment extends Fragment {
             public void onChanged(String s) {
                 binding.tvGroupName.setText(s);
                 choiceGroupName = s;
-                Log.d("viewModel", "choiceGroupName: " + s);
-                // chart
                 loadCheckChart();
             }
         });
@@ -248,6 +246,7 @@ public class ChartFragment extends Fragment {
 
     private void loadCheckChart() {
         if (binding.tvGroupName.getText().equals("그룹 이름")) {
+            chartRvArrayList.clear();
             binding.tvGroupNull.setText(R.string.common_choice_group);
             binding.tvGroupNull.setVisibility(View.VISIBLE);
             binding.pieChart.setVisibility(View.GONE);
