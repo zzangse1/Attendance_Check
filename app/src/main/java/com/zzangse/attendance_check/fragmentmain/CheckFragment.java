@@ -99,9 +99,15 @@ public class CheckFragment extends Fragment {
         loadGroupNameDB();
         onClickDateBtn();
         onClickGroupName();
+        initChoiceGroupName();
         Log.d("HASH: ", getKeyHash(getContext()));
     }
 
+    private void initChoiceGroupName() {
+        if (choiceGroupName == null) {
+            groupViewModel.setGroupName("그룹 이름");
+        }
+    }
     public static String getKeyHash( Context context) {
         PackageManager pm = context.getPackageManager();
         try {
@@ -226,6 +232,7 @@ public class CheckFragment extends Fragment {
     }
 
 
+
     private void moveToCall(String number) {
         Intent intent = new Intent(Intent.ACTION_DIAL);
         intent.setData(Uri.parse("tel:" + number));
@@ -270,9 +277,9 @@ public class CheckFragment extends Fragment {
             @Override
             public void onChanged(String s) {
                 if (!s.isEmpty()) {
-                    Log.d("intiViewModel", s);
-                    binding.tvGroupName.setText(s);
+                    Log.d("choiceGroupName", "바뀐 viewModel"+s);
                     choiceGroupName = s; // loadMemberName에 들어갈 변수 할당
+                    binding.tvGroupName.setText(s);
                     isInitViewModel = true;
                     loadMemberNameDB();
                     initRecycler();
