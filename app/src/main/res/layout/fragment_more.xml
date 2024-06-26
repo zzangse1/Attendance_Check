@@ -59,7 +59,7 @@
                 style="@style/AppEditText.More.S17"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/plain_id"
+                android:text="@string/plain_email"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/tv_account_label" />
 
