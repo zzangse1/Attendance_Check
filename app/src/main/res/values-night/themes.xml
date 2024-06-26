@@ -3,12 +3,15 @@
     <style name="Base.Theme.Attendance_Check" parent="Theme.Material3.DayNight.NoActionBar">
         <!-- Customize your dark theme here. -->
         <!-- <item name="colorPrimary">@color/my_dark_primary</item> -->
-        <item name="android:windowBackground">@color/backgroundPrimary</item>
-        <item name="android:windowLightStatusBar">false</item>
-        <item name="android:statusBarColor">@color/backgroundPrimary</item>
         <item name="colorPrimary">@color/navy_300</item>
         <item name="colorOnPrimary">@color/backgroundPrimary</item>
         <item name="android:colorBackground">@color/windowPrimary</item>
+        <item name="android:windowBackground">@color/backgroundPrimary</item>
+
+        <item name="android:windowLightStatusBar">false</item>
+        <item name="android:windowDrawsSystemBarBackgrounds">true</item>
+        <item name="android:statusBarColor">@color/backgroundPrimary</item>
         <item name="android:navigationBarColor">@color/backgroundPrimary</item>
+        <item name="android:windowLightNavigationBar" tools:targetApi="27">false</item>
     </style>
 </resources>

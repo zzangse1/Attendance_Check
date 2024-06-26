@@ -3,14 +3,19 @@
     <style name="Base.Theme.Attendance_Check" parent="Theme.Material3.DayNight.NoActionBar">
         <!-- Customize your light theme here. -->
         <!-- <item name="colorPrimary">@color/my_light_primary</item> -->
-        <item name="android:windowBackground">@color/backgroundPrimary</item>
-        <item name="android:windowLightStatusBar">true</item>
-        <item name="android:statusBarColor">@color/backgroundPrimary</item>
         <item name="colorPrimary">@color/navy_300</item>
         <item name="colorOnPrimary">@color/backgroundPrimary</item>
         <item name="android:colorBackground">@color/windowPrimary</item>
+        <item name="android:windowBackground">@color/backgroundPrimary</item>
+
+        <item name="android:windowLightStatusBar">true</item>
+        <item name="android:windowDrawsSystemBarBackgrounds">true</item>
+        <item name="android:statusBarColor">@color/backgroundPrimary</item> <!-- 상단 상태바 색상 -->
         <item name="android:navigationBarColor">@color/backgroundPrimary</item>
+        <item name="android:windowLightNavigationBar" tools:targetApi="27">true</item>
     </style>
+
+
 
     <style name="Theme.Attendance_Check" parent="Base.Theme.Attendance_Check" />
 </resources>
