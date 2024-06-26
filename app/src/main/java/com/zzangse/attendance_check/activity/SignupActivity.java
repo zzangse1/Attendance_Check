@@ -34,7 +34,6 @@ public class SignupActivity extends AppCompatActivity {
     private String m_sex = "";
     // *** 정규식
     private static final String YYYYMMDD = "(19|20)\\d{2}(0[1-9]|1[012])(0[1-9]|[12][0-9]|3[01])";
-    //private static final String REGEX_ID = "^[a-zA-Z0-9@]{5,30}$";
     private static final String REGEX_ID = "^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,6}$";
     private static final String REGEX_PASSWORD = "^[a-zA-Z0-9!@#$]+$";
     private static final String REGEX_NAME = "^[가-힣]{2,6}$";
@@ -216,6 +215,14 @@ public class SignupActivity extends AppCompatActivity {
         if (issue.equals("이미 사용중인 이메일 입니다.")) {
             Drawable drawable_error_person = ContextCompat.getDrawable(getApplicationContext(), R.drawable.ic_error_person);
             binding.etId.setCompoundDrawablesRelativeWithIntrinsicBounds(drawable_error_person, null, null, null);
+            binding.tvErrorId.setVisibility(View.VISIBLE);
+            binding.tvErrorId.setText(WARNING_MSG_ERROR_ID);
+        }
+        if (issue.equals("카카오 회원가입 등록이 되어있습니다.")) {
+            Drawable drawable_error_person = ContextCompat.getDrawable(getApplicationContext(), R.drawable.ic_error_person);
+            binding.etId.setCompoundDrawablesRelativeWithIntrinsicBounds(drawable_error_person, null, null, null);
+            binding.tvErrorId.setVisibility(View.VISIBLE);
+            binding.tvErrorId.setText(WARNING_MSG_ERROR_ID);
         }
         if (issue.equals("휴대전화번호가 이미 사용 중입니다.")) {
             Drawable drawable_error_phone = ContextCompat.getDrawable(getApplicationContext(), R.drawable.ic_error_phone);
