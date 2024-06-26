@@ -14,6 +14,7 @@
     <color name="bottomBackground">#303134</color>
     <color name="viewBackground">#262626</color>
     <color name="btnLogin">#46468c</color>
+    <color name="btnLoginClicked">#BABAD4</color>
 
 
 
