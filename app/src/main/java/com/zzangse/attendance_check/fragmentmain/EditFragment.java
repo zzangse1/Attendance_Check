@@ -62,7 +62,7 @@ public class EditFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         binding = FragmentEditBinding.inflate(inflater);
         getArgs();
-        test();
+        initViewModel();
         return binding.getRoot();
     }
 
@@ -73,18 +73,20 @@ public class EditFragment extends Fragment {
         }
     }
 
-    private void test() {
+    private void initViewModel() {
         groupViewModel = new ViewModelProvider(requireActivity()).get(GroupViewModel.class);
         groupViewModel.getGroupName().observe(getViewLifecycleOwner(), new Observer<String>() {
             @Override
             public void onChanged(String s) {
                 choiceGroupName = s;
+                Log.d("choiceGroupName", "eidt에 적용된: " + choiceGroupName);
             }
         });
     }
 
     private void viewModelDelete() {
-        groupViewModel.setGroupName("그룹 이름(수정)");
+        groupViewModel.setGroupName("그룹 이름");
+        Log.d("choiceGroupName", "삭제 후 적용된: " + groupViewModel.getGroupName().getValue());
     }
 
     @Override
@@ -139,7 +141,8 @@ public class EditFragment extends Fragment {
             }
         });
         if (getActivity() != null) {
-            if (choiceGroupName.equals(groupName)) {
+            if (choiceGroupName != null && choiceGroupName.equals(groupName)) {
+                Log.d("choiceGroupName", "eidt에서 지운: " + choiceGroupName);
                 viewModelDelete();
             }
             RequestQueue queue = Volley.newRequestQueue(getActivity());
@@ -160,8 +163,8 @@ public class EditFragment extends Fragment {
 
         tvScript.setVisibility(View.VISIBLE);
         tvGroup.setText(String.format("[ %s ] 삭제 하시겠습니까?", groupName));
-
         tvTitle.setText(dialogTitle);
+
         AlertDialog dialog = builder.setView(dialogView)
                 .setCancelable(false)
                 .create();
@@ -229,7 +232,7 @@ public class EditFragment extends Fragment {
                     String error = jsonObject.getString("message");
                     Log.d("test", isSuccess + ", " + error);
                     if (isSuccess) {
-                        Toast.makeText(getActivity(), "db ok", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(getActivity(), "[ "+groupName+" ] 추가 되었습니다.", Toast.LENGTH_SHORT).show();
                         dataLoad();
                     } else {
                         Toast.makeText(getActivity(), error, Toast.LENGTH_SHORT).show();
