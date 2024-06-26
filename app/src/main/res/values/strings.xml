@@ -10,7 +10,7 @@
     <string name="login_sns_label">소셜로 간편가입</string>
 
     <!-- plain_label -->
-    <string name="plain_id">이메일</string>
+    <string name="plain_email">이메일</string>
     <string name="plain_password">비밀번호</string>
     <string name="plain_nickname">닉네임</string>
     <string name="plain_group_name">그룹 이름</string>
@@ -91,6 +91,12 @@
     <string name="common_choice_group">그룹을 선택해 주세요</string>
     <string name="common_move_call">전화 창으로 이동합니다.</string>
     <string name="common_move">이동</string>
+
+    <!-- 아이디 및 비밀번호 찾기 -->
+    <string name="find_account_certification_number_send">인증번호발송</string>
+    <string name="find_account_certification_number">인증 번호</string>
+    <string name="find_account_top_label">회원정보에 등록한 휴대전화로 인증</string>
+    <string name="find_account_bottom_label">본인확인 이메일로 인증</string>
 
 
 </resources>
