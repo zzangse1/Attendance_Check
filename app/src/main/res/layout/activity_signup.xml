@@ -45,7 +45,7 @@
                 android:background="@drawable/selector_et_id"
                 android:drawableStart="@drawable/ic_person"
                 android:drawablePadding="20dp"
-                android:hint="@string/plain_id"
+                android:hint="@string/plain_email"
                 android:inputType="text"
                 android:maxLength="30"
                 android:nextFocusDown="@id/et_password"
