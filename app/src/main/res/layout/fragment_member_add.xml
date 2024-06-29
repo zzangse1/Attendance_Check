@@ -58,6 +58,7 @@
 
                 <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/et_member_add_name"
+                    style="@style/AppEditText.S17"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:inputType="text"
@@ -92,6 +93,7 @@
 
                 <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/et_member_add_number"
+                    style="@style/AppEditText.S17"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:inputType="number"
@@ -126,6 +128,7 @@
 
                 <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/et_member_add_number2"
+                    style="@style/AppEditText.S17"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:inputType="number"
@@ -144,27 +147,21 @@
                 app:layout_constraintStart_toStartOf="@id/et_member_add_number2_layout"
                 app:layout_constraintTop_toBottomOf="@id/et_member_add_number2_layout" />
 
-            <com.google.android.material.textfield.TextInputLayout
-                android:id="@+id/et_member_add_address_layout"
-                android:layout_width="0dp"
+            <TextView
+                android:id="@+id/tv_address"
+                style="@style/AppEditText.S17"
+                android:layout_width="match_parent"
                 android:layout_height="60dp"
                 android:layout_marginStart="20dp"
                 android:layout_marginTop="10dp"
                 android:layout_marginEnd="20dp"
+                android:background="@drawable/plain_outline_background_grey"
+                android:gravity="center|left"
                 android:hint="주소 (필수)"
-                app:boxBackgroundColor="@color/dialogPrimary"
-                app:boxStrokeColor="@color/navy_300"
+                android:paddingStart="20dp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/tv_error_number2">
-
-                <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/et_member_add_address"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:cursorVisible="false"
-                    android:maxLines="1" />
-            </com.google.android.material.textfield.TextInputLayout>
+                app:layout_constraintTop_toBottomOf="@id/et_member_add_number2_layout" />
 
             <TextView
                 android:id="@+id/tv_error_address"
@@ -174,8 +171,8 @@
                 android:layout_marginTop="10dp"
                 android:text="주소를 입력해주세요"
                 android:visibility="gone"
-                app:layout_constraintStart_toStartOf="@id/et_member_add_address_layout"
-                app:layout_constraintTop_toBottomOf="@id/et_member_add_address_layout" />
+                app:layout_constraintStart_toStartOf="@id/tv_address"
+                app:layout_constraintTop_toBottomOf="@id/tv_address" />
 
 
             <com.google.android.material.textfield.TextInputLayout
@@ -194,6 +191,7 @@
 
                 <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/et_member_add_memo"
+                    style="@style/AppEditText.S17"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:gravity="left|top"

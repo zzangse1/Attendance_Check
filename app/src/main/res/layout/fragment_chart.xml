@@ -25,7 +25,7 @@
         android:layout_marginStart="20dp"
         android:layout_marginTop="10dp"
         android:layout_marginEnd="20dp"
-        android:background="@drawable/plane_outline_background"
+        android:background="@drawable/plain_outline_background"
         android:gravity="center"
         android:text="@string/plain_group_name"
         app:layout_constraintEnd_toEndOf="parent"
