@@ -1,5 +1,7 @@
 package com.zzangse.attendance_check.fragmentsetting;
 
+import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -9,6 +11,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
 
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.core.content.ContextCompat;
@@ -18,6 +22,7 @@ import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.toolbox.Volley;
 import com.zzangse.attendance_check.R;
+import com.zzangse.attendance_check.activity.SearchAddressActivity;
 import com.zzangse.attendance_check.databinding.FragmentMemberAddBinding;
 import com.zzangse.attendance_check.request.InsertMemberRequest;
 
@@ -31,6 +36,7 @@ public class MemberAddFragment extends Fragment {
     private static final String REGEX_PHONE_NUMBER = "^\\d{3}-?\\d{3,4}-?\\d{4}$";
     private int COLOR_RED;
     private int COLOR_NAVY;
+    private ActivityResultLauncher<Intent> activityResultLauncher;
 
     public static MemberAddFragment newInstance(Bundle bundle) {
         MemberAddFragment fragment = new MemberAddFragment();
@@ -55,6 +61,8 @@ public class MemberAddFragment extends Fragment {
         setInfo();
         onClickSaveBtn();
         textWatcherMemo();
+        getAddress();
+        moveToSearchAddress();
     }
 
 
@@ -212,4 +220,29 @@ public class MemberAddFragment extends Fragment {
         });
     }
 
+    private void moveToSearchAddress() {
+        binding.etMemberAddAddress.setOnClickListener(v -> {
+            Intent intent = new Intent(getActivity(), SearchAddressActivity.class);
+            activityResultLauncher.launch(intent);
+
+        });
+    }
+
+    private void getAddress() {
+        activityResultLauncher = registerForActivityResult(
+                new ActivityResultContracts.StartActivityForResult(),
+                result -> {
+                    if (result.getResultCode() == Activity.RESULT_OK) {
+                        Intent data = result.getData();
+                        if (data != null) {
+                            String test = data.getStringExtra("data");
+                            if (test != null) {
+                                Log.d("test", test);
+                                binding.etMemberAddAddress.setText(test);
+
+                            }
+                        }
+                    }
+                });
+    }
 }
