@@ -3,9 +3,7 @@ package com.zzangse.attendance_check.activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
-import android.util.Log;
 import android.webkit.JavascriptInterface;
-import android.webkit.WebChromeClient;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 
@@ -16,38 +14,43 @@ import com.zzangse.attendance_check.databinding.ActivitySearchAddressBinding;
 
 public class SearchAddressActivity extends AppCompatActivity {
     private ActivitySearchAddressBinding binding;
+    private Handler handler;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         initView();
         initWebView();
+        handler = new Handler();
     }
 
     private void initView() {
         binding = ActivitySearchAddressBinding.inflate(getLayoutInflater());
+
         setContentView(binding.getRoot());
+
     }
 
     private void initWebView() {
-        binding.webviewLayout.clearCache(true);
-
         binding.webviewLayout.getSettings().setJavaScriptEnabled(true);
-        binding.webviewLayout.getSettings().setJavaScriptCanOpenWindowsAutomatically(true);
-
-        binding.webviewLayout.addJavascriptInterface(new AndroidBridge(), "Android");
-        binding.webviewLayout.setWebChromeClient(new WebChromeClient());
-        binding.webviewLayout.loadUrl("zzangse.store/html/daum_address.html");
+        binding.webviewLayout.addJavascriptInterface(new BridgeInterface(), "Android");
+        binding.webviewLayout.setWebViewClient(new WebViewClient() {
+            @Override
+            public void onPageFinished(WebView view, String url) {
+                binding.webviewLayout.loadUrl("javascript:sample2_execDaumPostcode();");
+            }
+        });
+        binding.webviewLayout.loadUrl("http://zzangse.store/html/index.html");
     }
 
-    private class AndroidBridge {
+    private class BridgeInterface {
         @JavascriptInterface
         public void processDATA(String data) {
-            // 카카오 주소 검색 api 결과
+            // 카카오 주소 검색 API 결과 값을 전달받음. (from javascript)
             Intent intent = new Intent();
             intent.putExtra("data", data);
-            Log.d("test", data);
             setResult(RESULT_OK, intent);
+            finish();
         }
     }
 }
