@@ -47,11 +47,10 @@ public class FindIdFragment extends Fragment {
             // db에 이름과 휴대전화번호가 동일하면 인증번호 발송
             String userName = binding.etFindTopAccountName.getText().toString();
             String userPhoneNumber = binding.etFindAccountNumber.getText().toString();
-          //  String userID = binding.etFindAccountEmail.getText().toString();
             findAccountDB(userName, userPhoneNumber, "null");
 
         });
-        binding.btnBottomCertificationNumber.setOnClickListener(v->{
+        binding.btnBottomCertificationNumber.setOnClickListener(v -> {
             String userName = binding.etFindBottomAccountName.getText().toString();
             String userID = binding.etFindAccountEmail.getText().toString();
             findAccountDB(userName, "null", userID);
@@ -93,8 +92,11 @@ public class FindIdFragment extends Fragment {
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
 
             }
+
             @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) {}
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+            }
+
             @Override
             public void afterTextChanged(Editable s) {
                 int tvLength = editText.length();
@@ -112,15 +114,14 @@ public class FindIdFragment extends Fragment {
     private void settingBtn() {
         setActivateBtn(binding.etFindAccountNumber, binding.btnTopCertificationNumber, 11);
         setActivateBtn(binding.etFindAccountTopCertificationNumber, binding.btnTopConfirm, 4);
-        setActivateBtn(binding.etFindAccountBottomCertificationNumber,binding.btnBottomConfirm,4);
+        setActivateBtn(binding.etFindAccountBottomCertificationNumber, binding.btnBottomConfirm, 4);
     }
 
 
-
-    private void findAccountDB(String userName,String userPhoneNumber,String userID) {
-            Response.Listener<String> listener = new Response.Listener<String>() {
-                @Override
-                public void onResponse(String s) {
+    private void findAccountDB(String userName, String userPhoneNumber, String userID) {
+        Response.Listener<String> listener = new Response.Listener<String>() {
+            @Override
+            public void onResponse(String s) {
                 try {
                     JSONObject jsonObject = new JSONObject(s);
                     boolean isEmailSuccess = jsonObject.getBoolean("email_success");
@@ -129,13 +130,13 @@ public class FindIdFragment extends Fragment {
                         Log.d("isEmailSuccess", isEmailSuccess + "");
 
                     } else {
-                        Log.d("isEmailSuccess", isEmailSuccess+"");
+                        Log.d("isEmailSuccess", isEmailSuccess + "");
                     }
                     if (isNumberSuccess) {
                         Log.d("isNumberSuccess", isNumberSuccess + "");
 
                     } else {
-                        Log.d("isNumberSuccess", isNumberSuccess+"");
+                        Log.d("isNumberSuccess", isNumberSuccess + "");
                     }
                 } catch (JSONException e) {
                     throw new RuntimeException(e);
