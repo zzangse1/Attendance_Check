@@ -50,7 +50,15 @@ public class LoginActivity extends AppCompatActivity {
         super.onResume();
         boolean isLogout = getIntent().getBooleanExtra("LOGOUT", false);
         if (isLogout) {
+            Log.d("로구아웃", "로그아웃");
             clearLoginFields();
+        } else {
+            Log.d("뒤로가기", "");
+            Log.d("뒤로가기", binding.cbAutoLogin.isChecked()+"");
+            binding.etId.setText(MySharedPreferences.getUserId(getApplicationContext()));
+            binding.etPassword.setText(MySharedPreferences.getUserPass(getApplicationContext()));
+            Log.d("뒤로가기", MySharedPreferences.getUserId(getApplicationContext()));
+            Log.d("뒤로가기", MySharedPreferences.getUserPass(getApplicationContext()));
         }
     }
 
@@ -128,7 +136,7 @@ public class LoginActivity extends AppCompatActivity {
     private void initKakao() {
         Log.d("initKakao", "appkey");
         // KakaoSdk.init(this, getString(R.string.kakao_app_key));          // 카카오 init
-        KakaoSdk.init(this, getString(R.string.kakao_app_test_key)); // 카카오 init테스트
+        KakaoSdk.init(this, getString(R.string.kakao_app_key_2)); // 카카오 init테스트
         String kakao = KakaoSdk.INSTANCE.getKeyHash();
         Log.d("hash", kakao);
     }
