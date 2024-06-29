@@ -27,7 +27,7 @@
                 style="@style/AppEditText.Bold.S24"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
-                android:background="@drawable/plane_outline_background"
+                android:background="@drawable/plain_outline_background"
                 android:gravity="center"
                 app:layout_constraintEnd_toStartOf="@id/tv_attendance"
                 app:layout_constraintStart_toStartOf="parent"
