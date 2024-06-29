@@ -133,11 +133,11 @@ public class MemberAddFragment extends Fragment {
 
     private boolean checkAddress(String address) {
         if (address.isEmpty()) {
-            binding.etMemberAddAddressLayout.setBoxStrokeColor(COLOR_RED);
+           // binding.etMemberAddAddressLayout.setBoxStrokeColor(COLOR_RED);
             binding.tvErrorAddress.setVisibility(View.VISIBLE);
             return false;
         } else {
-            binding.etMemberAddAddressLayout.setBoxStrokeColor(COLOR_NAVY);
+           // binding.etMemberAddAddressLayout.setBoxStrokeColor(COLOR_NAVY);
             binding.tvErrorAddress.setVisibility(View.GONE);
             return true;
         }
@@ -155,7 +155,8 @@ public class MemberAddFragment extends Fragment {
         String name = binding.etMemberAddName.getText().toString();
         String number = binding.etMemberAddNumber.getText().toString();
         String number2 = binding.etMemberAddNumber2.getText().toString();
-        String address = binding.etMemberAddAddress.getText().toString();
+//        String address = binding.etMemberAddAddress.getText().toString();
+        String address = binding.tvAddress.getText().toString();
         String memo = binding.etMemberAddMemo.getText().toString();
         boolean isCheckName = checkName(name);
         boolean isCheckNumber = checkNumber(number);
@@ -221,13 +222,27 @@ public class MemberAddFragment extends Fragment {
     }
 
     private void moveToSearchAddress() {
-        binding.etMemberAddAddress.setOnClickListener(v -> {
+//        binding.etMemberAddAddress.setOnClickListener(v -> {
+//            Intent intent = new Intent(getActivity(), SearchAddressActivity.class);
+//            activityResultLauncher.launch(intent);
+//
+//        });
+        binding.tvAddress.setOnClickListener(v -> {
             Intent intent = new Intent(getActivity(), SearchAddressActivity.class);
             activityResultLauncher.launch(intent);
 
         });
     }
 
+    private void setTEst() {
+        String check = binding.tvAddress.getText().toString();
+        Log.d("check", check );
+        if (!check.isEmpty()) {
+            binding.tvAddress.setBackgroundResource(R.drawable.plain_outline_background);
+        } else {
+            binding.tvAddress.setBackgroundResource(R.drawable.plain_outline_background_grey);
+        }
+    }
     private void getAddress() {
         activityResultLauncher = registerForActivityResult(
                 new ActivityResultContracts.StartActivityForResult(),
@@ -238,8 +253,9 @@ public class MemberAddFragment extends Fragment {
                             String test = data.getStringExtra("data");
                             if (test != null) {
                                 Log.d("test", test);
-                                binding.etMemberAddAddress.setText(test);
-
+                               // binding.etMemberAddAddress.setText(test);
+                                binding.tvAddress.setText(test);
+                                setTEst();
                             }
                         }
                     }
