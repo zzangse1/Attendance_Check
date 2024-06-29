@@ -233,6 +233,7 @@ public class LoginActivity extends AppCompatActivity {
             String userID = binding.etId.getText().toString();
             String userPassword = binding.etPassword.getText().toString();
             binding.tvErrorLabel.setVisibility(View.GONE);
+            Log.d("TEST", userID+", "+userPassword);
             Response.Listener<String> listener = new Response.Listener<String>() {
                 @Override
                 public void onResponse(String s) {
