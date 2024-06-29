@@ -203,10 +203,8 @@ public class ChartFragment extends Fragment {
             public void onClick(View v) {
                 boolean isChecked = binding.checkBox.isChecked();
                 if (isChecked) {
-                    binding.checkBox.setText("숨기기");
                     binding.pieChart.setVisibility(View.GONE);
                 } else {
-                    binding.checkBox.setText("숨기기");
                     binding.pieChart.setVisibility(View.VISIBLE);
                 }
             }
