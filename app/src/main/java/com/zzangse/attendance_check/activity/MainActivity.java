@@ -29,6 +29,7 @@ public class MainActivity extends AppCompatActivity {
     private EditFragment editFragment;
     private MoreFragment moreFragment;
     private String userToken;
+    private String userNickName;
     private long backBtnTime  = 0;
 
     @Override
@@ -61,7 +62,8 @@ public class MainActivity extends AppCompatActivity {
     private String initAccount() {
         Intent intent = getIntent();
         userToken = intent.getStringExtra("userToken");
-        Log.d("TEST", userToken+"");
+        userNickName = intent.getStringExtra("userNickName");
+        Log.d("TEST", userToken + "" + userNickName);
         return intent != null ? intent.getStringExtra("userID") : "false";
     }
 
@@ -94,6 +96,7 @@ public class MainActivity extends AppCompatActivity {
         Bundle bundle = new Bundle();
         bundle.putString("userID", initAccount());
         bundle.putString("userToken", userToken);
+        bundle.putString("userNickName", userNickName);
         fragment.setArguments(bundle);
     }
 
