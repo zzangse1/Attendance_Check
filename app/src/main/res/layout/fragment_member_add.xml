@@ -24,7 +24,7 @@
         android:layout_height="40dp"
         android:layout_marginEnd="20dp"
         android:background="@drawable/btn_selector"
-        android:text="저장"
+        android:text="@string/plain_save"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@id/toolbar_member_add" />
 
@@ -49,7 +49,7 @@
                 android:layout_height="60dp"
                 android:layout_marginStart="20dp"
                 android:layout_marginEnd="20dp"
-                android:hint="이름 (필수)"
+                android:hint="@string/fragment_member_add_name_hint"
                 app:boxBackgroundColor="@color/dialogPrimary"
                 app:boxStrokeColor="@color/navy_300"
                 app:layout_constraintEnd_toEndOf="parent"
@@ -72,7 +72,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="10dp"
-                android:text="이름을 입력해주세요"
+                android:text="@string/fragment_member_add_name_error"
                 android:visibility="gone"
                 app:layout_constraintStart_toStartOf="@id/et_member_add_name_layout"
                 app:layout_constraintTop_toBottomOf="@id/et_member_add_name_layout" />
@@ -84,7 +84,7 @@
                 android:layout_marginStart="20dp"
                 android:layout_marginTop="10dp"
                 android:layout_marginEnd="20dp"
-                android:hint="전화 번호 (필수)"
+                android:hint="@string/fragment_member_add_number_hint"
                 app:boxBackgroundColor="@color/dialogPrimary"
                 app:boxStrokeColor="@color/navy_300"
                 app:layout_constraintEnd_toEndOf="parent"
@@ -107,7 +107,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="10dp"
-                android:text="전화번호를 입력해주세요"
+                android:text="@string/fragment_member_add_number_error"
                 android:visibility="gone"
                 app:layout_constraintStart_toStartOf="@id/et_member_add_number_layout"
                 app:layout_constraintTop_toBottomOf="@id/et_member_add_number_layout" />
@@ -119,7 +119,7 @@
                 android:layout_marginStart="20dp"
                 android:layout_marginTop="10dp"
                 android:layout_marginEnd="20dp"
-                android:hint="비상연락망 (필수)"
+                android:hint="@string/fragment_member_add_number2_hint"
                 app:boxBackgroundColor="@color/dialogPrimary"
                 app:boxStrokeColor="@color/navy_300"
                 app:layout_constraintEnd_toEndOf="parent"
@@ -142,7 +142,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="10dp"
-                android:text="비상연락망을 입력해주세요"
+                android:text="@string/fragment_member_add_number2_error"
                 android:visibility="gone"
                 app:layout_constraintStart_toStartOf="@id/et_member_add_number2_layout"
                 app:layout_constraintTop_toBottomOf="@id/et_member_add_number2_layout" />
@@ -157,11 +157,11 @@
                 android:layout_marginEnd="20dp"
                 android:background="@drawable/plain_outline_background_grey"
                 android:gravity="center|left"
-                android:hint="주소 (필수)"
                 android:paddingStart="20dp"
+                android:text="@string/fragment_member_add_address_hint"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/et_member_add_number2_layout" />
+                app:layout_constraintTop_toBottomOf="@id/tv_error_number2" />
 
             <TextView
                 android:id="@+id/tv_error_address"
@@ -169,10 +169,40 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="10dp"
-                android:text="주소를 입력해주세요"
+                android:text="@string/fragment_member_add_address_error"
                 android:visibility="gone"
                 app:layout_constraintStart_toStartOf="@id/tv_address"
                 app:layout_constraintTop_toBottomOf="@id/tv_address" />
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/et_member_add_address2_layout"
+                android:layout_width="0dp"
+                android:layout_height="60dp"
+                android:layout_marginStart="20dp"
+                android:layout_marginTop="10dp"
+                android:layout_marginEnd="20dp"
+                android:hint="@string/fragment_member_add_address2_hint"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/tv_error_address">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/et_member_add_address2"
+                    style="@style/AppEditText.S17"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent" />
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <TextView
+                android:id="@+id/tv_error_address2"
+                style="@style/AppEditText.Red.S14"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:text="@string/fragment_member_add_address2_error"
+                android:visibility="gone"
+                app:layout_constraintStart_toStartOf="@id/et_member_add_address2_layout"
+                app:layout_constraintTop_toBottomOf="@id/et_member_add_address2_layout" />
 
 
             <com.google.android.material.textfield.TextInputLayout
@@ -182,12 +212,12 @@
                 android:layout_marginStart="20dp"
                 android:layout_marginTop="10dp"
                 android:layout_marginEnd="20dp"
-                android:hint="메모"
+                android:hint="@string/fragment_member_add_memo_hint"
                 app:boxBackgroundColor="@color/dialogPrimary"
                 app:boxStrokeColor="@color/navy_300"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/tv_error_address">
+                app:layout_constraintTop_toBottomOf="@id/tv_error_address2">
 
                 <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/et_member_add_memo"
