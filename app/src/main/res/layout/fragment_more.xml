@@ -50,7 +50,7 @@
                 style="@style/AppEditText.Bold.More.S24"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="계정"
+                android:text="@string/plain_account"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="@id/view_id" />
 
@@ -79,7 +79,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:paddingBottom="20dp"
-                android:text="비밀번호 변경"
+                android:text="@string/fragment_more_change_pw_label"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/tv_id_label" />
 
@@ -101,7 +101,7 @@
                 style="@style/AppEditText.Bold.More.S24"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="이용 안내"
+                android:text="@string/fragment_more_info_label"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="@id/view_app_info" />
 
@@ -110,7 +110,7 @@
                 style="@style/AppEditText.More.S17"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="앱 버전"
+                android:text="@string/fragment_more_app_version_label"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/tv_app_info_label" />
 
@@ -120,7 +120,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginEnd="30dp"
                 app:layout_constraintBottom_toBottomOf="@id/tv_app_version_label"
-                android:text="1.1.1"
+                android:text="@string/app_version"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toTopOf="@id/tv_app_version_label" />
 
@@ -129,7 +129,7 @@
                 style="@style/AppEditText.More.S17"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="공지사항"
+                android:text="@string/fragment_more_notice_label"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/tv_app_version_label" />
 
@@ -138,7 +138,7 @@
                 style="@style/AppEditText.More.S17"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="서비스 이용약관"
+                android:text="@string/fragment_more_term_of_service_label"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/tv_app_notice_label" />
 
@@ -147,7 +147,7 @@
                 style="@style/AppEditText.More.S17"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="개인정보 처리방침"
+                android:text="@string/fragment_more_personal_info_label"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/tv_app_term_of_service_label" />
 
@@ -156,7 +156,7 @@
                 style="@style/AppEditText.More.S17"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="청소년 보호정책"
+                android:text="@string/fragment_more_youth_protection_policy_label"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/tv_app_personal_info_label" />
 
@@ -166,7 +166,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:paddingBottom="20dp"
-                android:text="오픈소스 라이선스"
+                android:text="@string/fragment_more_open_source_label"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/tv_app_youth_protection_policy_label" />
 
@@ -187,7 +187,7 @@
                 style="@style/AppEditText.Bold.More.S24"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="기타"
+                android:text="@string/plain_other"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="@id/view_other_label" />
 
@@ -196,16 +196,16 @@
                 style="@style/AppEditText.More.S17"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="정보 동의 설정"
+                android:text="@string/fragment_more_other_info_consent_label"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/tv_other_label" />
 
             <TextView
-                android:id="@+id/tv_other_unsubscribing"
+                android:id="@+id/tv_withdrawal_app"
                 style="@style/AppEditText.More.S17"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="회원탈퇴"
+                android:text="@string/fragment_more_withdrawal_label"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/tv_other_info_consent_statement" />
 
@@ -215,9 +215,9 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:paddingBottom="20dp"
-                android:text="로그아웃"
+                android:text="@string/plain_logout"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/tv_other_unsubscribing" />
+                app:layout_constraintTop_toBottomOf="@id/tv_withdrawal_app" />
 
             <!--하단 빈공간-->
             <View
