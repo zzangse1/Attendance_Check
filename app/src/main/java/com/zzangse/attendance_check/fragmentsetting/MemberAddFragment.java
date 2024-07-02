@@ -132,16 +132,24 @@ public class MemberAddFragment extends Fragment {
     }
 
     private boolean checkAddress(String address) {
-        if (address.isEmpty()) {
-           // binding.etMemberAddAddressLayout.setBoxStrokeColor(COLOR_RED);
+        if (address.equals(getResources().getString(R.string.fragment_member_add_address_hint))) {
             binding.tvErrorAddress.setVisibility(View.VISIBLE);
             return false;
         } else {
-           // binding.etMemberAddAddressLayout.setBoxStrokeColor(COLOR_NAVY);
             binding.tvErrorAddress.setVisibility(View.GONE);
             return true;
         }
 
+    }
+
+    private boolean checkAddress2(String address2) {
+        if (address2.isEmpty()) {
+            binding.tvErrorAddress2.setVisibility(View.VISIBLE);
+            return false;
+        } else {
+            binding.tvErrorAddress2.setVisibility(View.GONE);
+            return true;
+        }
     }
 
     private void onClickSaveBtn() {
@@ -155,22 +163,32 @@ public class MemberAddFragment extends Fragment {
         String name = binding.etMemberAddName.getText().toString();
         String number = binding.etMemberAddNumber.getText().toString();
         String number2 = binding.etMemberAddNumber2.getText().toString();
-//        String address = binding.etMemberAddAddress.getText().toString();
         String address = binding.tvAddress.getText().toString();
+        String address2 = binding.etMemberAddAddress2.getText().toString();
         String memo = binding.etMemberAddMemo.getText().toString();
+
         boolean isCheckName = checkName(name);
         boolean isCheckNumber = checkNumber(number);
         boolean isCheckNumber2 = checkNumber2(number2);
         boolean isCheckAddress = checkAddress(address);
-        isValidMemberInfo(name, number, number2, address, memo, isCheckName, isCheckNumber, isCheckNumber2, isCheckAddress);
+        boolean isCheckAddress2 = checkAddress2(address2);
+        isValidMemberInfo(name, number, number2, address, address2, memo,
+                isCheckName, isCheckNumber, isCheckNumber2, isCheckAddress, isCheckAddress2);
     }
 
-    private void isValidMemberInfo(String name, String number, String number2, String address, String memo,
-                                   boolean isCheckName, boolean isCheckNumber, boolean isCheckNumber2, boolean isCheckAddress) {
-        if (isCheckName && isCheckNumber && isCheckNumber2 && isCheckAddress) {
-            insertAddMember(name, number, number2, address, memo);
+    private void isValidMemberInfo(String name, String number, String number2, String address, String address2, String memo,
+                                   boolean isCheckName, boolean isCheckNumber, boolean isCheckNumber2, boolean isCheckAddress, boolean isCheckAddress2) {
+        if (isCheckName && isCheckNumber && isCheckNumber2 && isCheckAddress && isCheckAddress2) {
+            String combineAddress = address + " " + address2;
+            Log.d("combineAddress", combineAddress);
+            insertAddMember(name, number, number2, combineAddress, memo);
         } else {
-            Log.d("멤버추가 공백 확인", "null");
+            Log.d("멤버추가 공백 확인 이름", name + ", " + name.length());
+            Log.d("멤버추가 공백 확인 번호", number + ", " + number.length());
+            Log.d("멤버추가 공백 확인 비상연락망", number2 + ", " + number2.length());
+            Log.d("멤버추가 공백 주소", address + ", " + address.length());
+            Log.d("멤버추가 공백 상세주소", address2 + ", " + address.length());
+            Log.d("멤버추가 공백 메모", memo + ", " + memo.length());
         }
     }
 
@@ -222,11 +240,6 @@ public class MemberAddFragment extends Fragment {
     }
 
     private void moveToSearchAddress() {
-//        binding.etMemberAddAddress.setOnClickListener(v -> {
-//            Intent intent = new Intent(getActivity(), SearchAddressActivity.class);
-//            activityResultLauncher.launch(intent);
-//
-//        });
         binding.tvAddress.setOnClickListener(v -> {
             Intent intent = new Intent(getActivity(), SearchAddressActivity.class);
             activityResultLauncher.launch(intent);
@@ -236,13 +249,14 @@ public class MemberAddFragment extends Fragment {
 
     private void setTEst() {
         String check = binding.tvAddress.getText().toString();
-        Log.d("check", check );
+        Log.d("check", check);
         if (!check.isEmpty()) {
             binding.tvAddress.setBackgroundResource(R.drawable.plain_outline_background);
         } else {
             binding.tvAddress.setBackgroundResource(R.drawable.plain_outline_background_grey);
         }
     }
+
     private void getAddress() {
         activityResultLauncher = registerForActivityResult(
                 new ActivityResultContracts.StartActivityForResult(),
@@ -253,7 +267,6 @@ public class MemberAddFragment extends Fragment {
                             String test = data.getStringExtra("data");
                             if (test != null) {
                                 Log.d("test", test);
-                               // binding.etMemberAddAddress.setText(test);
                                 binding.tvAddress.setText(test);
                                 setTEst();
                             }
