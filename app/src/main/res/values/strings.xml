@@ -1,6 +1,9 @@
 <resources>
     <string name="app_name">Attendance_Check</string>
 
+    <!-- app_version -->
+    <string name="app_version">1.0.0</string>
+
     <!-- activity_login -->
     <string name="login_error_label">아이디 및 비밀번호를 확인해주세요.</string>
     <string name="login_title_label">로그인</string>
@@ -25,6 +28,10 @@
     <string name="plain_more">더보기</string>
     <string name="plain_choice">선택</string>
     <string name="plain_confirm">확인</string>
+    <string name="plain_save">저장</string>
+    <string name="plain_account">계정</string>
+    <string name="plain_other">기타</string>
+    <string name="plain_logout">로그아웃</string>
 
     <!-- modify_label -->
     <string name="modify_group_name">그룹 이름(수정)</string>
@@ -41,6 +48,17 @@
     <string name="signup_btn_female_label">여자</string>
     <string name="signup_btn_none_label">선택안함</string>
     <string name="signup_request_label">인증요청</string>
+
+    <!-- activity_withdrawal_app -->
+    <string name="withdrawal_app_title_label">회원 탈퇴</string>
+    <string name="withdrawal_app_reason_hint">서비스 탈퇴 사유에 대해 알려주세요.\n고객님의 소중한 피드백을 담아\n더 나은 서비스로 보답 드리도록 하겠습니다.</string>
+    <string name="withdrawal_app_question1">지금 탈퇴하시면 출석체크를 더 이상 이용하실 수 없습니다.</string>
+    <string name="withdrawal_app_question2">탈퇴 후에는 앱에 기록한 모든 정보가 삭제됩니다. 또한 복수 할 수 없습니다.</string>
+    <string name="withdrawal_app_agree">회원 탈퇴 유의사항을 확인하였으며 동의합니다.</string>
+    <string name="withdrawal_app_top_label">님 \n정말 탈퇴하시겠어요?</string>
+    <string name="withdrawal_app_bottom_label">떠나시는 이유를 알려주세요.</string>
+    <string name="withdrawal_app_error_msg">체크박스를 확인해주세요</string>
+    <string name="fragment_withdrawal_btn_label">탈퇴하기</string>
 
     <!-- activity_changePW -->
     <string name="change_password_title_label">비밀번호 변경</string>
@@ -73,12 +91,39 @@
     <string name="fragment_member_modify_title">멤버 수정</string>
     <string name="fragment_member_view_title">멤버 조회</string>
 
+    <!-- 메뉴 출결 관리 -->
     <string name="menu_check">출결</string>
     <string name="menu_chart">통계</string>
     <string name="menu_edit">관리</string>
 
     <!-- 체크 프래그먼트 -->
     <string name="fragment_check_iv_script">textView안에 있는 화살표</string>
+
+    <!-- 멤버 추가 프래그먼트 -->
+    <string name="fragment_member_add_name_hint">이름 (필수)</string>
+    <string name="fragment_member_add_number_hint">전화번호 (필수)</string>
+    <string name="fragment_member_add_number2_hint">비상연락망 (필수)</string>
+    <string name="fragment_member_add_address_hint">주소 (필수)</string>
+    <string name="fragment_member_add_address2_hint">상세 주소(필수)</string>
+    <string name="fragment_member_add_memo_hint">메모</string>
+    <string name="fragment_member_add_address2_error">상세 주소를 입력해주세요</string>
+    <string name="fragment_member_add_address_error">주소를 입력해주세요</string>
+    <string name="fragment_member_add_number2_error">비상연락망을 입력해주세요</string>
+    <string name="fragment_member_add_number_error">전화번호를 입력해주세요</string>
+    <string name="fragment_member_add_name_error">이름을 입력해주세요</string>
+
+
+    <!-- 더보기 프래그먼트 -->
+    <string name="fragment_more_change_pw_label">비밀번호 변경</string>
+    <string name="fragment_more_info_label">이용 안내</string>
+    <string name="fragment_more_app_version_label">앱 버전</string>
+    <string name="fragment_more_notice_label">공지사항</string>
+    <string name="fragment_more_term_of_service_label">서비스 이용약관</string>
+    <string name="fragment_more_personal_info_label">개인정보 처리방침</string>
+    <string name="fragment_more_youth_protection_policy_label">청소년 보호정책</string>
+    <string name="fragment_more_open_source_label">오픈소스 라이선스</string>
+    <string name="fragment_more_other_info_consent_label">정보 동의 설정</string>
+    <string name="fragment_more_withdrawal_label">회원탈퇴</string>
 
     <!-- 에러 메세지 -->
     <string name="error_msg_no_name">이름을 확인해 주세요.</string>
