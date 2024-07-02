@@ -39,6 +39,15 @@ public class SettingActivity extends AppCompatActivity {
         setContentView(binding.getRoot());
     }
 
+    private void getIntentItem() {
+        Intent intent = getIntent();
+        groupName = intent.getStringExtra("groupName");
+        userID = intent.getStringExtra("userID");
+
+        Log.d("groupName", groupName);
+        Log.d("userID", userID);
+    }
+    
     private void initFragment() {
         getIntentItem();
         fragmentManager = getSupportFragmentManager();
@@ -55,26 +64,17 @@ public class SettingActivity extends AppCompatActivity {
 
         Bundle infoBundle = new Bundle();
         infoBundle.putInt("priNum", priNum);
-        infoBundle.putString("userID",userID);
+        infoBundle.putString("userID", userID);
         infoFragment = MemberInfoFragment.newInstance(infoBundle);
 
         Bundle modifyBundle = new Bundle();
         modifyBundle.putInt("priNum", priNum);
-        modifyBundle.putString("userID",userID);
+        modifyBundle.putString("userID", userID);
         modifyFragment = MemberModifyFragment.newInstance(modifyBundle);
 
         fragmentManager.beginTransaction().add(R.id.fragment_setting, viewFragment).commit();
     }
 
-
-    private void getIntentItem() {
-        Intent intent = getIntent();
-        groupName = intent.getStringExtra("groupName");
-        userID = intent.getStringExtra("userID");
-
-        Log.d("groupName", groupName);
-        Log.d("userID", userID);
-    }
 
     public void onFragmentChanged(int index, Bundle bundle) {
         Fragment selectedFragment = null;
