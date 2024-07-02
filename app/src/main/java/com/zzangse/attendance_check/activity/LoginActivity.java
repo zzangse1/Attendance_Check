@@ -109,15 +109,18 @@ public class LoginActivity extends AppCompatActivity {
                         // json 데이터에서 userID 키에 해당하는 값을 가져옴
                         String userID = jsonObject.getString("userID");
                         String userToken = jsonObject.getString("userToken");
-                        Log.d("TEST", userID);
-                        Log.d("TEST", userPassword);
-                        Log.d("TEST", userToken);
+                        String userNickName = jsonObject.getString("userNickName");
+                        Log.d("자동로그인 userID", userID);
+                        Log.d("자동로그인 userPassword", userPassword);
+                        Log.d("자동로그인 userToken", userToken);
+                        Log.d("자동로그인 userNickName", userNickName);
                         Toast.makeText(getApplicationContext(), "자동 로그인 성공", Toast.LENGTH_SHORT).show();
                         Intent intent = new Intent(LoginActivity.this, MainActivity.class);
                         // 자동로그인
                         isCheckedBox(userID, userPassword);
                         intent.putExtra("userID", userID);
                         intent.putExtra("userToken", userToken);
+                        intent.putExtra("userNickName", userNickName);
                         startActivity(intent);
                     } else {
                         binding.tvErrorLabel.setVisibility(View.VISIBLE);
@@ -136,7 +139,7 @@ public class LoginActivity extends AppCompatActivity {
     private void initKakao() {
         Log.d("initKakao", "appkey");
         // KakaoSdk.init(this, getString(R.string.kakao_app_key));          // 카카오 init
-        KakaoSdk.init(this, getString(R.string.kakao_app_key_2)); // 카카오 init테스트
+        KakaoSdk.init(this, getString(R.string.kakao_app_test_key)); // 카카오 init테스트
         String kakao = KakaoSdk.INSTANCE.getKeyHash();
         Log.d("hash", kakao);
     }
@@ -252,15 +255,18 @@ public class LoginActivity extends AppCompatActivity {
                             // json 데이터에서 userID 키에 해당하는 값을 가져옴
                             String userID = jsonObject.getString("userID");
                             String userToken = jsonObject.getString("userToken");
-                            Log.d("TEST", userID);
+                            String userNickName = jsonObject.getString("userNickName");
+                            Log.d("서버에서 userID를 가져옴", userID);
                             Log.d("TEST", userPassword);
-                            Log.d("TEST", userToken);
+                            Log.d("서버에서 userToken를 가져옴", userToken);
+                            Log.d("서버에서 userNickName를 가져옴", userNickName);
                             Toast.makeText(getApplicationContext(), "로그인 성공", Toast.LENGTH_SHORT).show();
                             Intent intent = new Intent(LoginActivity.this, MainActivity.class);
                             // 자동로그인
                             isCheckedBox(userID, userPassword);
                             intent.putExtra("userID", userID);
                             intent.putExtra("userToken", userToken);
+                            intent.putExtra("userNickName", userNickName);
                             startActivity(intent);
                             // finish();
                         } else {
