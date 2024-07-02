@@ -1,16 +1,13 @@
 package com.zzangse.attendance_check.fragmentmain;
 
 import android.app.AlertDialog;
-import android.content.Context;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -26,12 +23,8 @@ import com.zzangse.attendance_check.databinding.FragmentMoreBinding;
 public class MoreFragment extends Fragment {
     private FragmentMoreBinding binding;
     private String userID;
+    private String userNickName;
     private String userToken = "hello";
-
-    @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -46,16 +39,17 @@ public class MoreFragment extends Fragment {
         super.onViewCreated(view, savedInstanceState);
         // 구현
         setTextView();
-        moveToChangePW();
         onClickLogout();
+        onClickTv();
     }
 
     private void getArgs() {
         Bundle args = getArguments();
         if (args != null) {
             userID = args.getString("userID");
+            userNickName = args.getString("userNickName");
             userToken = args.getString("userToken");
-            Log.d("usrToken", userToken + "");
+            Log.d("moreFragment_getArgs", userID + ", " + userNickName + ", " + userToken);
         }
     }
 
@@ -64,16 +58,22 @@ public class MoreFragment extends Fragment {
         binding.tvId.setText(userID);
     }
 
-    private void moveToChangePW() {
-        binding.tvPasswordLabel.setOnClickListener(v -> {
-            if (!userToken.equals("KAKAO")) {
-                Intent intent = new Intent(getContext(), MoreActivity.class);
-                intent.putExtra("userID", userID);
-                startActivity(intent);
-            } else {
-                Toast.makeText(getContext(), "카카오 계정은 비밀번호 변경을 할 수 없습니다.", Toast.LENGTH_SHORT).show();
-            }
+    private void onClickTv() {
+        binding.tvPasswordLabel.setOnClickListener(v->{
+            switchToFragment(0);
         });
+        binding.tvWithdrawalApp.setOnClickListener(v->{
+            switchToFragment(1);
+        });
+    }
+
+    private void switchToFragment(int index) {
+        Intent intent = new Intent(getActivity(), MoreActivity.class);
+        intent.putExtra("fragment_index", index);
+        intent.putExtra("userID", userID);
+        intent.putExtra("userNickName", userNickName);
+        startActivity(intent);
+
     }
 
     private void onClickLogout() {
