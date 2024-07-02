@@ -1,18 +1,17 @@
 package com.zzangse.attendance_check.fragmentmore;
 
 import android.os.Bundle;
-
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.appcompat.widget.Toolbar;
-import androidx.fragment.app.Fragment;
-
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
+
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.appcompat.widget.Toolbar;
+import androidx.fragment.app.Fragment;
 
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
@@ -32,9 +31,8 @@ public class ChangePasswordFragment extends Fragment {
     private static final String WARNING_MSG_NO_EQUAL_PASSWORD = "•비밀번호: 다시 확인해주세요.";
     private static final String REGEX_PASSWORD = "^[a-zA-Z0-9!@#$]+$";
 
-    public static ChangePasswordFragment newInstance(Bundle bundle) {
+    public static ChangePasswordFragment newInstance() {
         ChangePasswordFragment fragment = new ChangePasswordFragment();
-        fragment.setArguments(bundle);
         return fragment;
     }
 
@@ -45,10 +43,12 @@ public class ChangePasswordFragment extends Fragment {
         return binding.getRoot();
     }
 
-    private void getArgs() {
-        Bundle args = getArguments();
-        if (args != null) {
-            userID = args.getString("userID");
+    private void getBundle() {
+        if (getArguments() != null) {
+            userID = getArguments().getString("userID");
+            Log.d("changPW", userID + "");
+        } else {
+            Log.d("changPW", userID + " 비었음");
         }
     }
 
@@ -56,7 +56,7 @@ public class ChangePasswordFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         // 구현
-        getArgs();
+        getBundle();
         onClickSaveBtn();
         onClickClose();
     }
@@ -153,6 +153,5 @@ public class ChangePasswordFragment extends Fragment {
         binding.btnSave.setOnClickListener(v -> {
             updatePassword();
         });
-
     }
 }
