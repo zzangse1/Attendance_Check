@@ -213,6 +213,7 @@ public class CheckFragment extends Fragment {
                 public void onError(String errorMessage) {
                     // 에러 처리
                     Log.d("onError", "Failed to update status");
+                    sheetDialog.dismiss();
                 }
             });
         };
@@ -220,7 +221,6 @@ public class CheckFragment extends Fragment {
         btnTardy.setOnClickListener(onClickListener);
         btnAbsent.setOnClickListener(onClickListener);
         btnCancel.setOnClickListener(onClickListener);
-
         tv_infoName.setText(infoName);
         tv_infoNumber.setText(infoNumber);
 
@@ -404,7 +404,6 @@ public class CheckFragment extends Fragment {
                     } else {
                         dbCallback.onError("failed to insert");
                     }
-
                 } catch (JSONException e) {
                     dbCallback.onError("JSON parsing error");
                     throw new RuntimeException(e);
@@ -432,7 +431,6 @@ public class CheckFragment extends Fragment {
             public void onSuccess(JSONArray result) {
                 try {
                     boolean priNumFound = false;
-
                     for (int i = 0; i < result.length(); i++) {
                         JSONObject jsonObject = result.getJSONObject(i);
                         String infoCheck = jsonObject.getString("infoCheck");
@@ -628,8 +626,6 @@ public class CheckFragment extends Fragment {
 
             dialog.dismiss();
         });
-
-
 
         // 취소 버튼 이벤트
         btnCancel.setOnClickListener(v -> {
