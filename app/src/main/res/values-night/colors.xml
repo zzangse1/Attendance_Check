@@ -35,7 +35,8 @@
     <color name="grey_200">#C0C0C0</color>
     <color name="grey_100">#8897AE</color>
     <color name="grey_50">#686D76</color>
-    <!--color name="grey_50">#5F6868</color-->
+    <color name="tv_no_color">#333333</color>
+    <color name="tv_color">#B1B1BE</color>
 
     <!-- 출결 체크 색상 -->
     <color name="check_green">#66BB6A</color>
