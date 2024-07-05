@@ -33,7 +33,6 @@ public class MemberAddFragment extends Fragment {
     private FragmentMemberAddBinding binding;
     private String groupName;
     private String userID;
-    private static final String REGEX_PHONE_NUMBER = "^\\d{3}-?\\d{3,4}-?\\d{4}$";
     private int COLOR_RED;
     private int COLOR_NAVY;
     private ActivityResultLauncher<Intent> activityResultLauncher;
@@ -106,8 +105,7 @@ public class MemberAddFragment extends Fragment {
     }
 
     private boolean checkNumber(String number) {
-        boolean isNumber = number.matches(REGEX_PHONE_NUMBER);
-        if (number.isEmpty() || !isNumber) {
+        if (number.isEmpty()) {
             binding.etMemberAddNumberLayout.setBoxStrokeColor(COLOR_RED);
             binding.tvErrorNumber.setVisibility(View.VISIBLE);
             return false;
@@ -118,21 +116,8 @@ public class MemberAddFragment extends Fragment {
         }
     }
 
-    private boolean checkNumber2(String number2) {
-        boolean isNumber = number2.matches(REGEX_PHONE_NUMBER);
-        if (number2.isEmpty() || !isNumber) {
-            binding.etMemberAddNumber2Layout.setBoxStrokeColor(COLOR_RED);
-            binding.tvErrorNumber2.setVisibility(View.VISIBLE);
-            return false;
-        } else {
-            binding.etMemberAddNumber2Layout.setBoxStrokeColor(COLOR_NAVY);
-            binding.tvErrorNumber2.setVisibility(View.GONE);
-            return true;
-        }
-    }
-
     private boolean checkAddress(String address) {
-        if (address.equals(getResources().getString(R.string.fragment_member_add_address_hint))) {
+        if (address.isEmpty()){
             binding.tvErrorAddress.setVisibility(View.VISIBLE);
             return false;
         } else {
@@ -142,13 +127,11 @@ public class MemberAddFragment extends Fragment {
 
     }
 
-    private boolean checkAddress2(String address2) {
+    private String checkAddress2(String address2) {
         if (address2.isEmpty()) {
-            binding.tvErrorAddress2.setVisibility(View.VISIBLE);
-            return false;
+            return "";
         } else {
-            binding.tvErrorAddress2.setVisibility(View.GONE);
-            return true;
+            return address2;
         }
     }
 
@@ -169,19 +152,16 @@ public class MemberAddFragment extends Fragment {
 
         boolean isCheckName = checkName(name);
         boolean isCheckNumber = checkNumber(number);
-        boolean isCheckNumber2 = checkNumber2(number2);
         boolean isCheckAddress = checkAddress(address);
-        boolean isCheckAddress2 = checkAddress2(address2);
-        isValidMemberInfo(name, number, number2, address, address2, memo,
-                isCheckName, isCheckNumber, isCheckNumber2, isCheckAddress, isCheckAddress2);
+        String isCheckAddress2 = checkAddress2(address2);
+        isValidMemberInfo(name, number, number2, address, isCheckAddress2, memo,
+                isCheckName, isCheckNumber, isCheckAddress);
     }
 
     private void isValidMemberInfo(String name, String number, String number2, String address, String address2, String memo,
-                                   boolean isCheckName, boolean isCheckNumber, boolean isCheckNumber2, boolean isCheckAddress, boolean isCheckAddress2) {
-        if (isCheckName && isCheckNumber && isCheckNumber2 && isCheckAddress && isCheckAddress2) {
-            String combineAddress = address + " " + address2;
-            Log.d("combineAddress", combineAddress);
-            insertAddMember(name, number, number2, combineAddress, memo);
+                                   boolean isCheckName, boolean isCheckNumber, boolean isCheckAddress) {
+        if (isCheckName && isCheckNumber && isCheckAddress) {
+            insertAddMember(name, number, number2, address, address2, memo);
         } else {
             Log.d("멤버추가 공백 확인 이름", name + ", " + name.length());
             Log.d("멤버추가 공백 확인 번호", number + ", " + number.length());
@@ -197,7 +177,7 @@ public class MemberAddFragment extends Fragment {
         userID = getArguments().getString("userID");
     }
 
-    private void insertAddMember(String name, String number, String number2, String address, String memo) {
+    private void insertAddMember(String name, String number, String number2, String address, String address2, String memo) {
         Response.Listener<String> listener = new Response.Listener<String>() {
             @Override
             public void onResponse(String s) {
@@ -205,11 +185,11 @@ public class MemberAddFragment extends Fragment {
                     JSONObject jsonObject = new JSONObject(s);
                     boolean isSuccess = jsonObject.getBoolean("success");
                     if (isSuccess) {
-                        Toast.makeText(getActivity(), "DB ok", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(getActivity(), "[ "+name+" ] 추가", Toast.LENGTH_SHORT).show();
                         Log.d("DB접속 ", "저장완료");
                         getActivity().onBackPressed();
                     } else {
-                        Toast.makeText(getActivity(), "DB false", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(getActivity(), "추가 실패", Toast.LENGTH_SHORT).show();
                         Log.d("DB접속 ", "저장실패");
                     }
                 } catch (JSONException e) {
@@ -219,7 +199,7 @@ public class MemberAddFragment extends Fragment {
             }
         };
         InsertMemberRequest request = new InsertMemberRequest(userID, groupName, name, number, number2,
-                address, memo, listener);
+                address, address2, memo, listener);
         if (getActivity() != null) {
             Log.d("저장버튼", "userID: " + userID);
             Log.d("저장버튼", "groupName: " + groupName);
@@ -227,6 +207,7 @@ public class MemberAddFragment extends Fragment {
             Log.d("저장버튼", "number: " + number);
             Log.d("저장버튼", "number2: " + number2);
             Log.d("저장버튼", "address: " + address);
+            Log.d("저장버튼", "address2: " + address2);
             Log.d("저장버튼", "memo: " + memo);
             RequestQueue queue = Volley.newRequestQueue(getActivity());
             queue.add(request);
@@ -247,16 +228,6 @@ public class MemberAddFragment extends Fragment {
         });
     }
 
-    private void setTEst() {
-        String check = binding.tvAddress.getText().toString();
-        Log.d("check", check);
-        if (!check.isEmpty()) {
-            binding.tvAddress.setBackgroundResource(R.drawable.plain_outline_background);
-        } else {
-            binding.tvAddress.setBackgroundResource(R.drawable.plain_outline_background_grey);
-        }
-    }
-
     private void getAddress() {
         activityResultLauncher = registerForActivityResult(
                 new ActivityResultContracts.StartActivityForResult(),
@@ -268,7 +239,6 @@ public class MemberAddFragment extends Fragment {
                             if (test != null) {
                                 Log.d("test", test);
                                 binding.tvAddress.setText(test);
-                                setTEst();
                             }
                         }
                     }
