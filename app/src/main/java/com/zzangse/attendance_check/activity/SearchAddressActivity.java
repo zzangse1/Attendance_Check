@@ -40,7 +40,7 @@ public class SearchAddressActivity extends AppCompatActivity {
                 binding.webviewLayout.loadUrl("javascript:sample2_execDaumPostcode();");
             }
         });
-        binding.webviewLayout.loadUrl("http://zzangse.store/html/index.html");
+        binding.webviewLayout.loadUrl("http://zzangse.store/html/search_address.html");
     }
 
     private class BridgeInterface {
