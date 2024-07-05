@@ -15,7 +15,7 @@ public class InsertMemberRequest extends StringRequest {
 
 
     public InsertMemberRequest(String userID, String groupName, String name, String number, String number2,
-                               String address, String memo, Response.Listener<String> listener) {
+                               String address, String address2, String memo, Response.Listener<String> listener) {
         super(Method.POST, URL, listener, null);
 
         map = new HashMap<>();
@@ -25,6 +25,7 @@ public class InsertMemberRequest extends StringRequest {
         map.put("number", number);
         map.put("number2", number2);
         map.put("address", address);
+        map.put("address2", address2);
         map.put("memo", memo);
     }
 

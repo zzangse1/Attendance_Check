@@ -1,11 +1,8 @@
 package com.zzangse.attendance_check.request;
 
-import android.util.Log;
-
 import com.android.volley.Response;
 import com.android.volley.toolbox.StringRequest;
 
-import java.text.SimpleDateFormat;
 import java.util.HashMap;
 import java.util.Map;
 
