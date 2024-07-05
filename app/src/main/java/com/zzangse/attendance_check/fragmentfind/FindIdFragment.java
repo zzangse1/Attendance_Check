@@ -9,6 +9,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -20,12 +21,18 @@ import com.android.volley.toolbox.Volley;
 import com.zzangse.attendance_check.R;
 import com.zzangse.attendance_check.databinding.FragmentFindIdBinding;
 import com.zzangse.attendance_check.request.FindAccountIdRequest;
+import com.zzangse.attendance_check.request.FindAccountRequest;
 
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.util.Random;
+
 public class FindIdFragment extends Fragment {
     private FragmentFindIdBinding binding;
+    private String ERROR_MSG_NO_NAME = "이름을 입력해주세요.";
+    private String ERROR_MSG_NO_EMAIL = "이메일을 입력해주세요.";
+    private String ERROR_MSG_NOT_MATCH_EMAIL = "가입시 입력한 이름과 이메일이 맞지 않습니다.";
 
     @Nullable
     @Override
@@ -48,12 +55,15 @@ public class FindIdFragment extends Fragment {
             String userName = binding.etFindTopAccountName.getText().toString();
             String userPhoneNumber = binding.etFindAccountNumber.getText().toString();
             findAccountDB(userName, userPhoneNumber, "null");
-
+            Log.d("ID찾기 휴대전화.ver", "true");
         });
         binding.btnBottomCertificationNumber.setOnClickListener(v -> {
-            String userName = binding.etFindBottomAccountName.getText().toString();
-            String userID = binding.etFindAccountEmail.getText().toString();
-            findAccountDB(userName, "null", userID);
+            boolean isSuccess = visibilityNameAndEmailError();
+            if (isSuccess) {
+                String userName = binding.etFindBottomAccountName.getText().toString();
+                String userID = binding.etFindAccountEmail.getText().toString();
+                findAccountDB(userName, "null", userID);
+            }
         });
     }
 
@@ -111,6 +121,67 @@ public class FindIdFragment extends Fragment {
         });
     }
 
+    private void findAccount(String randCode,String userEmail) {
+        Response.Listener<String>listener = new Response.Listener<String>() {
+            @Override
+            public void onResponse(String s) {
+//                try {
+//                    JSONObject jsonObject = new JSONObject(s);
+//                    boolean isSuccess = jsonObject.getBoolean("success");
+//                    if (isSuccess) {
+//                        //성공
+//                    } else {
+//                        //실패
+//                    }
+//                } catch (JSONException e) {
+//                    throw new RuntimeException(e);
+//                }
+            }
+        };
+        FindAccountRequest request = new FindAccountRequest(randCode, userEmail,listener);
+        if (getActivity() != null) {
+            RequestQueue queue = Volley.newRequestQueue(getActivity());
+            queue.add(request);
+        }
+    }
+    private String sendRandomCode() {
+        Random random = new Random();
+        StringBuilder randCode = new StringBuilder();
+        for (int i = 0; i < 6; i++) {
+            int digit = random.nextInt(10);
+            randCode.append(digit);
+        }
+        return randCode.toString();
+    }
+
+    // 공통 오류 확인 메서드
+    private boolean visibilityError(TextView errorView, EditText inputField, String errorMessage) {
+        if (inputField.getText().toString().isEmpty()) {
+            errorView.setText(errorMessage);
+            errorView.setVisibility(View.VISIBLE);
+            return false;
+        } else {
+            errorView.setVisibility(View.GONE);
+            return true;
+        }
+    }
+
+    // 이름 오류 확인 메서드
+    private boolean visibilityNameError() {
+        return visibilityError(binding.tvNameError, binding.etFindBottomAccountName, ERROR_MSG_NO_NAME);
+    }
+
+    // 이메일 오류 확인 메서드
+    private boolean visibilityEmailError() {
+        return visibilityError(binding.tvEmailError, binding.etFindAccountEmail, ERROR_MSG_NO_EMAIL);
+    }
+
+    // 이름과 이메일 모두 확인 메서드
+    private boolean visibilityNameAndEmailError() {
+        boolean isNameValid = visibilityNameError();
+        boolean isEmailValid = visibilityEmailError();
+        return isNameValid && isEmailValid;
+    }
     private void settingBtn() {
         setActivateBtn(binding.etFindAccountNumber, binding.btnTopCertificationNumber, 11);
         setActivateBtn(binding.etFindAccountTopCertificationNumber, binding.btnTopConfirm, 4);
@@ -118,7 +189,16 @@ public class FindIdFragment extends Fragment {
     }
 
 
-    private void findAccountDB(String userName, String userPhoneNumber, String userID) {
+    private void dbError(boolean isEmailSuccess) {
+        if (isEmailSuccess) {
+            binding.tvEmailError.setVisibility(View.GONE);
+        } else {
+            binding.tvEmailError.setText(ERROR_MSG_NOT_MATCH_EMAIL);
+            binding.tvEmailError.setVisibility(View.VISIBLE);
+        }
+    }
+
+    private void findAccountDB(String userName, String userPhoneNumber, String userEmail) {
         Response.Listener<String> listener = new Response.Listener<String>() {
             @Override
             public void onResponse(String s) {
@@ -126,9 +206,10 @@ public class FindIdFragment extends Fragment {
                     JSONObject jsonObject = new JSONObject(s);
                     boolean isEmailSuccess = jsonObject.getBoolean("email_success");
                     boolean isNumberSuccess = jsonObject.getBoolean("phone_success");
+                    dbError(isEmailSuccess);
                     if (isEmailSuccess) {
                         Log.d("isEmailSuccess", isEmailSuccess + "");
-
+                        findAccount(sendRandomCode(),userEmail);
                     } else {
                         Log.d("isEmailSuccess", isEmailSuccess + "");
                     }
@@ -143,7 +224,7 @@ public class FindIdFragment extends Fragment {
                 }
             }
         };
-        FindAccountIdRequest request = new FindAccountIdRequest(userName, userPhoneNumber, userID, listener);
+        FindAccountIdRequest request = new FindAccountIdRequest(userName, userPhoneNumber, userEmail, listener);
         if (getActivity() != null) {
             RequestQueue queue = Volley.newRequestQueue(getActivity());
             queue.add(request);
