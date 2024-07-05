@@ -106,7 +106,7 @@ public class MemberViewFragment extends Fragment {
             public boolean onMenuItemClick(MenuItem item) {
                 int itemId = item.getItemId();
                 if (itemId == R.id.ib_add) {
-                    Toast.makeText(getActivity(), "멤버추가", Toast.LENGTH_SHORT).show();
+                    //Toast.makeText(getActivity(), "멤버추가", Toast.LENGTH_SHORT).show();
                     moveToMemberAddFragment();
                     return true;
                 }
