@@ -14,7 +14,7 @@ public class ModifyMemberRequest extends StringRequest {
     private Map<String, String> map;
 
     public ModifyMemberRequest(int priNum, String modifyGroupName, String modifyName, String modifyNumber,
-                               String modifyNumber2, String modifyAddress, String modifyMemo, Response.Listener<String> listener) {
+                               String modifyNumber2, String modifyAddress,String modifyAddress2, String modifyMemo, Response.Listener<String> listener) {
         super(Method.POST, URL, listener, null);
 
         map = new HashMap<>();
@@ -24,6 +24,7 @@ public class ModifyMemberRequest extends StringRequest {
         map.put("modifyNumber", modifyNumber);
         map.put("modifyNumber2", modifyNumber2);
         map.put("modifyAddress", modifyAddress);
+        map.put("modifyAddress2", modifyAddress2);
         map.put("modifyMemo", modifyMemo);
     }
 
