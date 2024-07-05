@@ -67,7 +67,6 @@ public class ChartFragment extends Fragment {
     private ArrayList<GroupName> filterList = new ArrayList<>();
     private String choiceGroupName;
     private CheckChart chart;
-    private SimpleDateFormat simpleDateFormat;
     private ArrayList<CheckChart> chartPieArrayList = new ArrayList<>();
     private ArrayList<CheckChart> chartRvArrayList = new ArrayList<>();
     private String date, firstDay, lastDay;
@@ -127,7 +126,6 @@ public class ChartFragment extends Fragment {
 
     private void initDate() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            // 현재 날짜를 가져옴
             LocalDate today = LocalDate.now();
             DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
 
@@ -142,8 +140,8 @@ public class ChartFragment extends Fragment {
 
             int year = today.getYear();
             int month = today.getMonthValue();
-            currentMonth = today.getMonthValue();
-            currentYear = today.getYear();
+            currentYear = year;
+            currentMonth = month - 1; // 0부터 11까지로 맞추기 위해 -1
 
             Log.d("java8 up", date);
             Log.d("java8 up | formattedToday", formattedToday);
@@ -167,7 +165,7 @@ public class ChartFragment extends Fragment {
             int month = calendar.get(Calendar.MONTH) + 1;
 
             currentYear = calendar.get(Calendar.YEAR);
-            currentMonth = calendar.get(Calendar.MONTH) + 1;
+            currentMonth = calendar.get(Calendar.MONTH); // 0부터 11까지로 맞추기 위해 -1
 
             binding.tvDate.setText(year + "년 " + month + "월");
             Log.d("CurrentDate", "Today: " + formattedToday);
@@ -178,6 +176,7 @@ public class ChartFragment extends Fragment {
         }
         loadCheckChart();
     }
+
 
     private void onClickGroupName() {
         binding.tvGroupName.setOnClickListener(v -> showGroupNameDialog());
@@ -368,6 +367,7 @@ public class ChartFragment extends Fragment {
         yearMonthPickerDialog.show();
     }
 
+
     private void changeMonth(boolean increase) {
         if (increase) {
             if (currentMonth == Calendar.DECEMBER) {
@@ -384,7 +384,7 @@ public class ChartFragment extends Fragment {
                 currentMonth--;
             }
         }
-        calculateFirstAndLastDayOfMonth(currentYear, currentMonth);
+        calculateFirstAndLastDayOfMonth(currentYear, currentMonth + 1);
     }
 
     private void onClickMonthBtn() {
@@ -395,11 +395,12 @@ public class ChartFragment extends Fragment {
             changeMonth(false);
         });
     }
-
     private void calculateFirstAndLastDayOfMonth(int year, int month) {
-        YearMonth yearMonth = null;
+        currentYear = year;
+        currentMonth = month - 1; // month는 1부터 12까지이므로 0부터 11까지로 변환
+
         if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
-            yearMonth = YearMonth.of(year, month);
+            YearMonth yearMonth = YearMonth.of(year, month);
             LocalDate firstDayOfMonth = yearMonth.atDay(1);
             LocalDate lastDayOfMonth = yearMonth.atEndOfMonth();
 
@@ -407,10 +408,14 @@ public class ChartFragment extends Fragment {
             firstDay = firstDayOfMonth.format(formatter);
             lastDay = lastDayOfMonth.format(formatter);
             binding.tvDate.setText(year + "년 " + month + "월");
+
+            // 결과 출력
+            Log.d("Date", "First day: " + firstDay);
+            Log.d("Date", "Last day: " + lastDay);
         } else {
             Calendar calendar = Calendar.getInstance();
             calendar.set(Calendar.YEAR, year);
-            calendar.set(Calendar.MONTH, month - 1);
+            calendar.set(Calendar.MONTH, month - 1); // month는 1부터 12까지이므로 1을 뺌
             // 첫날
             calendar.set(Calendar.DAY_OF_MONTH, 1);
             firstDay = String.format("%d-%02d-%02d", calendar.get(Calendar.YEAR),
@@ -423,12 +428,15 @@ public class ChartFragment extends Fragment {
                     calendar.get(Calendar.MONTH) + 1,
                     calendar.get(Calendar.DAY_OF_MONTH));
             binding.tvDate.setText(year + "년 " + month + "월");
+
+            // 결과 출력
+            Log.d("Date", "First day: " + firstDay);
+            Log.d("Date", "Last day: " + lastDay);
         }
-        // 결과 출력
-        Log.d("Date", "First day: " + firstDay);
-        Log.d("Date", "Last day: " + lastDay);
         loadCheckChart();
     }
+
+
 
     private void showGroupNameDialog() {
         android.app.AlertDialog.Builder builder = new android.app.AlertDialog.Builder(getActivity(), R.style.RoundedDialog);
