@@ -68,13 +68,15 @@ public class LoginActivity extends AppCompatActivity {
     }
 
     private void isCheckedBox(String userID, String userPassword) {
-        Log.d("isCHeck", binding.cbAutoLogin.isChecked() + "asdf");
+        Log.d("isCHeck", binding.cbAutoLogin.isChecked() + "");
         if (binding.cbAutoLogin.isChecked()) {
             binding.etId.setText(userID);
             binding.etPassword.setText(userPassword);
             MySharedPreferences.setCheckBox(getApplicationContext(), "true");
             MySharedPreferences.setUserId(getApplicationContext(), userID);
             MySharedPreferences.setUserPass(getApplicationContext(), userPassword);
+            Log.d("auto", MySharedPreferences.getUserId(getApplicationContext()));
+            Log.d("auto", MySharedPreferences.getUserPass(getApplicationContext()));
         } else {
             MySharedPreferences.setCheckBox(getApplicationContext(), "false");
         }
