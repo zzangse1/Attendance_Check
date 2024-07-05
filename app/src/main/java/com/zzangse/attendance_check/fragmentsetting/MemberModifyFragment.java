@@ -8,15 +8,19 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.toolbox.Volley;
+import com.google.android.material.textfield.TextInputLayout;
 import com.zzangse.attendance_check.R;
 import com.zzangse.attendance_check.activity.SettingActivity;
 import com.zzangse.attendance_check.databinding.FragmentMemberModifyBinding;
@@ -31,8 +35,11 @@ public class MemberModifyFragment extends Fragment {
     private FragmentMemberModifyBinding binding;
     private int priNum;
     private String userID, groupName;
-    private String modifyGroupName, modifyName, modifyNumber, modifyNumber2, modifyAddress, modifyMemo;
+    private String modifyGroupName, modifyName, modifyNumber, modifyNumber2, modifyAddress, modifyAddress2, modifyMemo;
+    private int COLOR_RED;
+    private int COLOR_NAVY;
     private String[] groupNameArr;
+
     public static MemberModifyFragment newInstance(Bundle bundle) {
         MemberModifyFragment fragment = new MemberModifyFragment();
         fragment.setArguments(bundle);
@@ -43,6 +50,8 @@ public class MemberModifyFragment extends Fragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         binding = FragmentMemberModifyBinding.inflate(inflater);
+        COLOR_RED = ContextCompat.getColor(requireContext(), R.color.red);
+        COLOR_NAVY = ContextCompat.getColor(requireContext(), R.color.navy_300);
         return binding.getRoot();
     }
 
@@ -53,7 +62,7 @@ public class MemberModifyFragment extends Fragment {
         onClickSaveBtn();
         onClickBack();
         textWatcher();
-         setSpinner();
+        setSpinner();
     }
 
     private void getBundle() {
@@ -65,31 +74,34 @@ public class MemberModifyFragment extends Fragment {
             String infoPhoneNumber = getArguments().getString("infoPhoneNumber");
             String infoPhoneNumber2 = getArguments().getString("infoPhoneNumber2");
             String infoAddress = getArguments().getString("infoAddress");
+            String infoAddress2 = getArguments().getString("infoAddress2");
             String infoMemo = getArguments().getString("infoMemo");
-            setMemberInfo(groupName, infoName, infoPhoneNumber, infoPhoneNumber2, infoAddress, infoMemo);
+            setMemberInfo(groupName, infoName, infoPhoneNumber, infoPhoneNumber2, infoAddress, infoAddress2, infoMemo);
         }
     }
 
     private void setBundle() {
         Bundle bundle = new Bundle();
-        bundle.putInt("priNum",priNum);
+        bundle.putInt("priNum", priNum);
         bundle.putString("userID", userID);
-        bundle.putString("groupName",modifyGroupName);
+        bundle.putString("groupName", modifyGroupName);
         bundle.putString("infoName", modifyName);
         bundle.putString("infoPhoneNumber", modifyNumber);
         bundle.putString("infoPhoneNumber2", modifyNumber2);
-        bundle.putString("infoAddress",modifyAddress);
+        bundle.putString("infoAddress", modifyAddress);
+        bundle.putString("infoAddress2", modifyAddress2);
         bundle.putString("infoMemo", modifyMemo);
 
         moveToMemberViewFragment(bundle);
     }
 
-    private void setMemberInfo(String groupName, String infoName, String infoPhoneNumber, String infoPhoneNumber2, String infoAddress, String infoMemo) {
+    private void setMemberInfo(String groupName, String infoName, String infoPhoneNumber, String infoPhoneNumber2, String infoAddress, String infoAddress2, String infoMemo) {
         binding.etModifyGroupName.setText(groupName);
         binding.etModifyPersonName.setText(infoName);
         binding.etModifyPersonNumber.setText(infoPhoneNumber);
         binding.etModifyPersonNumber2.setText(infoPhoneNumber2);
         binding.etModifyPersonAddress.setText(infoAddress);
+        binding.etModifyPersonAddress2.setText(infoAddress2);
         binding.etModifyPersonMemo.setText(infoMemo);
     }
 
@@ -115,16 +127,19 @@ public class MemberModifyFragment extends Fragment {
             @Override
             public void afterTextChanged(Editable s) {
                 int memoLength = binding.etModifyPersonMemo.length();
-                binding.etModifyPersonMemoLayout.setHint("메모(수정) ( " + memoLength + " / 300 )");
+                binding.etModifyPersonMemoLayout.setHint("메모(수정) ( " + memoLength + " / 200 )");
             }
         });
     }
 
     private void onClickSaveBtn() {
         binding.btnSave.setOnClickListener(v -> {
-            updateMemberInfo();
-            Toast.makeText(getActivity(), "저장되었습니다.", Toast.LENGTH_SHORT).show();
-            setBundle();
+            boolean isSuccess = isCheckError();
+            if (isSuccess) {
+                updateMemberInfo();
+                Toast.makeText(getActivity(), "저장되었습니다.", Toast.LENGTH_SHORT).show();
+                setBundle();
+            }
         });
     }
 
@@ -134,9 +149,10 @@ public class MemberModifyFragment extends Fragment {
         modifyNumber = binding.etModifyPersonNumber.getText().toString();
         modifyNumber2 = binding.etModifyPersonNumber2.getText().toString();
         modifyAddress = binding.etModifyPersonAddress.getText().toString();
+        modifyAddress2 = binding.etModifyPersonAddress2.getText().toString();
         modifyMemo = binding.etModifyPersonMemo.getText().toString();
         ModifyMemberRequest request = new ModifyMemberRequest(priNum, modifyGroupName, modifyName,
-                modifyNumber, modifyNumber2, modifyAddress, modifyMemo, new Response.Listener<String>() {
+                modifyNumber, modifyNumber2, modifyAddress, modifyAddress2, modifyMemo, new Response.Listener<String>() {
             @Override
             public void onResponse(String s) {
                 Log.d("name", s);
@@ -148,12 +164,42 @@ public class MemberModifyFragment extends Fragment {
         }
     }
 
+    private boolean visibilityError(TextView errorView, TextInputLayout layout, EditText inputField, String errorMsg) {
+        if (inputField.getText().toString().isEmpty()) {
+            errorView.setText(errorMsg);
+            layout.setBoxStrokeColor(COLOR_RED);
+            errorView.setVisibility(View.VISIBLE);
+            Log.d("error", inputField + errorMsg);
+            return false;
+        } else {
+            layout.setBoxStrokeColor(COLOR_NAVY);
+            errorView.setVisibility(View.GONE);
+            return true;
+        }
+    }
+
+    private boolean isCheckError() {
+        boolean isNameValid = isValidName();
+        boolean isNumberValid = isValidNumber();
+        boolean isAddressValid = isValidAddress();
+        return isNameValid && isNumberValid && isAddressValid;
+    }
+
+    private boolean isValidAddress() {
+        return visibilityError(binding.tvErrorAddress, binding.etModifyPersonAddressLayout, binding.etModifyPersonAddress, getResources().getString(R.string.error_msg_no_address));
+    }
+
+    private boolean isValidNumber() {
+        return visibilityError(binding.tvErrorNumber, binding.etModifyPersonNumberLayout, binding.etModifyPersonNumber, getResources().getString(R.string.error_msg_no_number));
+    }
+
+    private boolean isValidName() {
+        return visibilityError(binding.tvErrorName, binding.etModifyPersonNameLayout, binding.etModifyPersonName, getResources().getString(R.string.error_msg_no_name));
+    }
+
     private void moveToMemberViewFragment(Bundle bundle) {
         if (getActivity() instanceof SettingActivity) {
             Log.d("modify -> view", priNum + "");
-//            Bundle bundle = new Bundle();
-//            bundle.putString("groupName", groupName);
-//            bundle.putString("userID", userID);
             ((SettingActivity) getActivity()).onFragmentChanged(0, bundle);
 
         }
@@ -163,6 +209,7 @@ public class MemberModifyFragment extends Fragment {
         getGroupName();
 
     }
+
     private void getGroupName() {
         LoadGroupRequest loadGroupRequest = new LoadGroupRequest(getContext());
         loadGroupRequest.sendGroupOutputRequest(userID, new LoadGroupRequest.VolleyCallback() {
