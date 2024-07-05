@@ -129,6 +129,7 @@ public class MemberInfoFragment extends Fragment {
         binding.tvInfoPersonNumber.setText(memberInfo.getInfoNumber());
         binding.tvInfoPersonNumber2.setText(memberInfo.getInfoNumber2());
         binding.tvInfoPersonAddress.setText(memberInfo.getInfoAddress());
+        binding.tvInfoPersonAddress2.setText(memberInfo.getInfoAddress2());
         binding.tvInfoPersonMemo.setText(memberInfo.getInfoMemo());
     }
 
@@ -145,9 +146,10 @@ public class MemberInfoFragment extends Fragment {
                         String infoPhoneNumber = jsonObject.getString("infoPhoneNumber");
                         String infoPhoneNumber2 = jsonObject.getString("infoPhoneNumber2");
                         String infoAddress = jsonObject.getString("infoAddress");
+                        String infoAddress2 = jsonObject.getString("infoAddress2");
                         String infoMemo = jsonObject.getString("infoMemo");
                         Log.d("TEST", groupName + ", " + infoName);
-                        memberInfo = new MemberInfo(groupName, infoName, infoPhoneNumber, infoPhoneNumber2, infoAddress, infoMemo);
+                        memberInfo = new MemberInfo(groupName, infoName, infoPhoneNumber, infoPhoneNumber2, infoAddress,infoAddress2, infoMemo);
                     }
                 } catch (JSONException e) {
                     //throw new RuntimeException(e);
@@ -172,6 +174,7 @@ public class MemberInfoFragment extends Fragment {
         bundle.putString("infoPhoneNumber", memberInfo.getInfoNumber());
         bundle.putString("infoPhoneNumber2", memberInfo.getInfoNumber2());
         bundle.putString("infoAddress", memberInfo.getInfoAddress());
+        bundle.putString("infoAddress2", memberInfo.getInfoAddress2());
         bundle.putString("infoMemo", memberInfo.getInfoMemo());
 
         Log.d("테스트", memberInfo.getInfoGroupName());
