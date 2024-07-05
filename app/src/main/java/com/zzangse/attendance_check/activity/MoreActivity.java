@@ -52,6 +52,7 @@ public class MoreActivity extends AppCompatActivity {
         String tag = null;
         Bundle withDrawal_bundle = new Bundle();
         withDrawal_bundle.putString("userNickName", userNickName);
+        withDrawal_bundle.putString("userID", userID);
         Bundle changePW_bundle = new Bundle();
         changePW_bundle.putString("userID", userID);
 
