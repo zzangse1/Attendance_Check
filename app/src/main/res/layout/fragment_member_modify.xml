@@ -76,6 +76,8 @@
                 android:hint="@string/modify_name"
                 app:boxBackgroundColor="@color/dialogPrimary"
                 app:boxStrokeColor="@color/navy_300"
+                app:endIconDrawable="@drawable/ic_clear"
+                app:endIconMode="clear_text"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/et_modify_group_name_layout">
@@ -89,6 +91,18 @@
                     android:maxLength="10" />
             </com.google.android.material.textfield.TextInputLayout>
 
+            <TextView
+                android:id="@+id/tv_error_name"
+                style="@style/AppEditText.Red.S14"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:text="@string/error_msg_no_name"
+                android:visibility="gone"
+                app:layout_constraintStart_toStartOf="@id/et_modify_person_name_layout"
+                app:layout_constraintTop_toBottomOf="@id/et_modify_person_name_layout" />
+
+
             <com.google.android.material.textfield.TextInputLayout
                 android:id="@+id/et_modify_person_number_layout"
                 android:layout_width="0dp"
@@ -99,9 +113,11 @@
                 android:hint="@string/modify_number"
                 app:boxBackgroundColor="@color/dialogPrimary"
                 app:boxStrokeColor="@color/navy_300"
+                app:endIconDrawable="@drawable/ic_clear"
+                app:endIconMode="clear_text"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/et_modify_person_name_layout">
+                app:layout_constraintTop_toBottomOf="@id/tv_error_name">
 
                 <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/et_modify_person_number"
@@ -112,6 +128,16 @@
                     android:maxLength="11" />
             </com.google.android.material.textfield.TextInputLayout>
 
+            <TextView
+                android:id="@+id/tv_error_number"
+                style="@style/AppEditText.Red.S14"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:text="@string/error_msg_no_number"
+                android:visibility="gone"
+                app:layout_constraintStart_toStartOf="@id/et_modify_person_number_layout"
+                app:layout_constraintTop_toBottomOf="@id/et_modify_person_number_layout" />
 
             <com.google.android.material.textfield.TextInputLayout
                 android:id="@+id/et_modify_person_number2_layout"
@@ -123,9 +149,11 @@
                 android:hint="@string/modify_number2"
                 app:boxBackgroundColor="@color/dialogPrimary"
                 app:boxStrokeColor="@color/navy_300"
+                app:endIconDrawable="@drawable/ic_clear"
+                app:endIconMode="clear_text"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/et_modify_person_number_layout">
+                app:layout_constraintTop_toBottomOf="@id/tv_error_number">
 
                 <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/et_modify_person_number2"
@@ -146,12 +174,50 @@
                 android:hint="@string/modify_address"
                 app:boxBackgroundColor="@color/dialogPrimary"
                 app:boxStrokeColor="@color/navy_300"
+                app:endIconDrawable="@drawable/ic_clear"
+                app:endIconMode="clear_text"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/et_modify_person_number2_layout">
 
                 <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/et_modify_person_address"
+                    style="@style/AppEditText.S17"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:inputType="text"
+                    android:maxLength="100" />
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <TextView
+                android:id="@+id/tv_error_address"
+                style="@style/AppEditText.Red.S14"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:text="@string/error_msg_no_address"
+                android:visibility="gone"
+                app:layout_constraintStart_toStartOf="@id/et_modify_person_address_layout"
+                app:layout_constraintTop_toBottomOf="@id/et_modify_person_address_layout" />
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/et_modify_person_address2_layout"
+                android:layout_width="0dp"
+                android:layout_height="60dp"
+                android:layout_marginStart="20dp"
+                android:layout_marginTop="20dp"
+                android:layout_marginEnd="20dp"
+                android:hint="@string/modify_address2"
+                app:boxBackgroundColor="@color/dialogPrimary"
+                app:boxStrokeColor="@color/navy_300"
+                app:endIconDrawable="@drawable/ic_clear"
+                app:endIconMode="clear_text"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/tv_error_address">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/et_modify_person_address2"
                     style="@style/AppEditText.S17"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
@@ -171,10 +237,12 @@
                 android:hint="@string/modify_memo"
                 app:boxBackgroundColor="@color/dialogPrimary"
                 app:boxStrokeColor="@color/navy_300"
+                app:endIconDrawable="@drawable/ic_clear"
+                app:endIconMode="clear_text"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/et_modify_person_address_layout">
+                app:layout_constraintTop_toBottomOf="@id/et_modify_person_address2_layout">
 
                 <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/et_modify_person_memo"
@@ -183,8 +251,10 @@
                     android:layout_height="match_parent"
                     android:gravity="left|top"
                     android:inputType="textMultiLine"
-                    android:maxLength="300"
-                    android:singleLine="false" />
+                    android:maxLength="200"
+                    android:singleLine="false"
+                    app:endIconDrawable="@drawable/ic_clear"
+                    app:endIconMode="clear_text" />
             </com.google.android.material.textfield.TextInputLayout>
         </androidx.constraintlayout.widget.ConstraintLayout>
     </androidx.core.widget.NestedScrollView>

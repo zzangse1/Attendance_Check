@@ -82,8 +82,8 @@
                 style="@style/AppEditText.Red.S14"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/withdrawal_app_error_msg"
                 android:layout_marginStart="35dp"
+                android:text="@string/withdrawal_app_error_msg"
                 android:visibility="gone"
                 app:layout_constraintStart_toStartOf="@id/cb_withdrawal"
                 app:layout_constraintTop_toBottomOf="@id/cb_withdrawal" />
@@ -97,17 +97,27 @@
                 android:layout_marginTop="20dp"
                 android:drawablePadding="10dp"
                 android:text="@string/withdrawal_app_bottom_label"
-                app:layout_constraintEnd_toEndOf="@id/cb_withdrawal"
                 app:layout_constraintStart_toStartOf="@id/cb_withdrawal"
                 app:layout_constraintTop_toBottomOf="@id/tv_error_checkbox" />
 
+            <TextView
+                android:id="@+id/tv_count"
+                style="@style/AppEditText.S14"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="5dp"
+                android:text="( 0 / 100 )"
+                app:layout_constraintBottom_toBottomOf="@id/tv_withdrawal_question3"
+                app:layout_constraintStart_toEndOf="@id/tv_withdrawal_question3" />
+
             <EditText
-                android:id="@+id/et_withdrawal_reason"
+                android:id="@+id/et_withdrawal_feedback"
                 style="@style/AppEditText.S17"
                 android:layout_width="0dp"
                 android:layout_height="200dp"
                 android:layout_marginStart="30dp"
                 android:layout_marginTop="10dp"
+                android:maxLength="100"
                 android:layout_marginEnd="30dp"
                 android:layout_marginBottom="30dp"
                 android:background="@drawable/plain_outline_background"
@@ -128,9 +138,9 @@
                 android:layout_marginTop="20dp"
                 android:background="@drawable/btn_selector"
                 android:text="@string/fragment_withdrawal_btn_label"
-                app:layout_constraintEnd_toEndOf="@id/et_withdrawal_reason"
-                app:layout_constraintStart_toStartOf="@id/et_withdrawal_reason"
-                app:layout_constraintTop_toBottomOf="@id/et_withdrawal_reason" />
+                app:layout_constraintEnd_toEndOf="@id/et_withdrawal_feedback"
+                app:layout_constraintStart_toStartOf="@id/et_withdrawal_feedback"
+                app:layout_constraintTop_toBottomOf="@id/et_withdrawal_feedback" />
         </androidx.constraintlayout.widget.ConstraintLayout>
     </androidx.core.widget.NestedScrollView>
 

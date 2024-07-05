@@ -52,6 +52,8 @@
                 android:hint="@string/fragment_member_add_name_hint"
                 app:boxBackgroundColor="@color/dialogPrimary"
                 app:boxStrokeColor="@color/navy_300"
+                app:endIconDrawable="@drawable/ic_clear"
+                app:endIconMode="clear_text"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent">
@@ -87,6 +89,8 @@
                 android:hint="@string/fragment_member_add_number_hint"
                 app:boxBackgroundColor="@color/dialogPrimary"
                 app:boxStrokeColor="@color/navy_300"
+                app:endIconDrawable="@drawable/ic_clear"
+                app:endIconMode="clear_text"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/tv_error_name">
@@ -119,9 +123,11 @@
                 android:layout_marginStart="20dp"
                 android:layout_marginTop="10dp"
                 android:layout_marginEnd="20dp"
-                android:hint="@string/fragment_member_add_number2_hint"
+                android:hint="@string/plain_number2"
                 app:boxBackgroundColor="@color/dialogPrimary"
                 app:boxStrokeColor="@color/navy_300"
+                app:endIconDrawable="@drawable/ic_clear"
+                app:endIconMode="clear_text"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/tv_error_number">
@@ -137,17 +143,6 @@
             </com.google.android.material.textfield.TextInputLayout>
 
             <TextView
-                android:id="@+id/tv_error_number2"
-                style="@style/AppEditText.Red.S14"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="10dp"
-                android:text="@string/fragment_member_add_number2_error"
-                android:visibility="gone"
-                app:layout_constraintStart_toStartOf="@id/et_member_add_number2_layout"
-                app:layout_constraintTop_toBottomOf="@id/et_member_add_number2_layout" />
-
-            <TextView
                 android:id="@+id/tv_address"
                 style="@style/AppEditText.S17"
                 android:layout_width="match_parent"
@@ -155,13 +150,13 @@
                 android:layout_marginStart="20dp"
                 android:layout_marginTop="10dp"
                 android:layout_marginEnd="20dp"
-                android:background="@drawable/plain_outline_background_grey"
+                android:background="@drawable/plain_outline_background_no_color"
                 android:gravity="center|left"
+                android:hint="@string/fragment_member_add_address_hint"
                 android:paddingStart="20dp"
-                android:text="@string/fragment_member_add_address_hint"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/tv_error_number2" />
+                app:layout_constraintTop_toBottomOf="@id/et_member_add_number2_layout" />
 
             <TextView
                 android:id="@+id/tv_error_address"
@@ -181,7 +176,11 @@
                 android:layout_marginStart="20dp"
                 android:layout_marginTop="10dp"
                 android:layout_marginEnd="20dp"
-                android:hint="@string/fragment_member_add_address2_hint"
+                android:hint="@string/plain_address2"
+                app:boxBackgroundColor="@color/dialogPrimary"
+                app:boxStrokeColor="@color/navy_300"
+                app:endIconDrawable="@drawable/ic_clear"
+                app:endIconMode="clear_text"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/tv_error_address">
@@ -193,18 +192,6 @@
                     android:layout_height="match_parent" />
             </com.google.android.material.textfield.TextInputLayout>
 
-            <TextView
-                android:id="@+id/tv_error_address2"
-                style="@style/AppEditText.Red.S14"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="10dp"
-                android:text="@string/fragment_member_add_address2_error"
-                android:visibility="gone"
-                app:layout_constraintStart_toStartOf="@id/et_member_add_address2_layout"
-                app:layout_constraintTop_toBottomOf="@id/et_member_add_address2_layout" />
-
-
             <com.google.android.material.textfield.TextInputLayout
                 android:id="@+id/et_member_add_memo_layout"
                 android:layout_width="0dp"
@@ -215,9 +202,11 @@
                 android:hint="@string/fragment_member_add_memo_hint"
                 app:boxBackgroundColor="@color/dialogPrimary"
                 app:boxStrokeColor="@color/navy_300"
+                app:endIconDrawable="@drawable/ic_clear"
+                app:endIconMode="clear_text"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/tv_error_address2">
+                app:layout_constraintTop_toBottomOf="@id/et_member_add_address2_layout">
 
                 <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/et_member_add_memo"
