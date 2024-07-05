@@ -3,8 +3,8 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:background="@color/backgroundPrimary"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:background="@color/backgroundPrimary">
 
     <TextView
         android:id="@+id/tv_group_name_choice"
@@ -24,14 +24,14 @@
         android:layout_marginStart="20dp"
         android:layout_marginTop="10dp"
         android:layout_marginEnd="20dp"
-        app:boxBackgroundColor="@color/dialogPrimary"
         android:hint="@string/plain_group_name"
-        app:startIconDrawable="@drawable/ic_search"
-        app:endIconDrawable="@drawable/ic_close"
+        app:boxBackgroundColor="@color/dialogPrimary"
+        app:endIconDrawable="@drawable/ic_clear"
         app:endIconMode="clear_text"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/tv_group_name_choice">
+        app:layout_constraintTop_toBottomOf="@id/tv_group_name_choice"
+        app:startIconDrawable="@drawable/ic_search">
 
         <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/et_group_name"
@@ -57,9 +57,9 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="20dp"
-        android:text="단어의 철자가 정확한지 확인해보세요."
-        android:inputType="textMultiLine"
         android:layout_marginTop="10dp"
+        android:inputType="textMultiLine"
+        android:text="단어의 철자가 정확한지 확인해보세요."
         android:visibility="gone"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/tv_error" />
