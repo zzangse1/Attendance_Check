@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@color/backgroundPrimary"
+    android:paddingBottom="40dp">
+
+    <TextView
+        android:id="@+id/tv_title"
+        style="@style/AppEditText.Bold.S24"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="30dp"
+        android:layout_marginTop="30dp"
+        android:text="@string/fragment_withdrawal_btn_label"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/tv_withdrawal_label"
+        style="@style/AppEditText.S17"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="30dp"
+        android:layout_marginTop="20dp"
+        android:layout_marginEnd="20dp"
+        android:text="탈퇴하기를 입력해주세요"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/tv_title" />
+
+    <EditText
+        android:id="@+id/et_withdrawal_agree"
+        android:layout_width="0dp"
+        android:layout_height="60dp"
+        android:layout_marginStart="30dp"
+        android:layout_marginTop="20dp"
+        android:layout_marginEnd="30dp"
+        android:background="@drawable/plain_outline_background"
+        android:paddingStart="20dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/tv_withdrawal_label" />
+
+    <TextView
+        android:id="@+id/tv_group_name_error"
+        style="@style/AppEditText.Red.S14"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginStart="20dp"
+        android:layout_marginTop="10dp"
+        android:text="2 ~ 10글자로 작성해주세요.(공백 x)"
+        android:visibility="gone"
+        app:layout_constraintStart_toStartOf="@id/et_group_name_layout"
+        app:layout_constraintTop_toBottomOf="@id/et_group_name_layout" />
+
+    <TextView
+        android:id="@+id/btn_cancel"
+        style="@style/AppEditText.Red_200.S17"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="40dp"
+        android:text="@string/plain_cancel"
+        app:layout_constraintEnd_toStartOf="@id/btn_ok"
+        app:layout_constraintTop_toTopOf="@id/btn_ok" />
+
+    <TextView
+        android:id="@+id/btn_ok"
+        style="@style/AppEditText.Navy.S17"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="30dp"
+        android:layout_marginTop="30dp"
+        android:layout_marginEnd="30dp"
+        android:text="@string/fragment_withdrawal_btn_label"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/et_withdrawal_agree" />
+</androidx.constraintlayout.widget.ConstraintLayout>
