@@ -2,7 +2,6 @@ package com.zzangse.attendance_check.activity;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.text.InputType;
 import android.util.Log;
 import android.view.View;
 import android.widget.Toast;
@@ -29,7 +28,6 @@ import kotlin.jvm.functions.Function2;
 
 public class LoginActivity extends AppCompatActivity {
     private ActivityLoginBinding binding;
-    private boolean isVisibility = true;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -38,7 +36,6 @@ public class LoginActivity extends AppCompatActivity {
         initView();
         initAutoLogin();
         onClickLogin();
-        onClickEditTextPassWordShow();
         onClickSignUp();
         onClickKakaoLogin();
         onClickFindAccount();
@@ -223,21 +220,6 @@ public class LoginActivity extends AppCompatActivity {
         intent.putExtra("userPhoneNumber", userPhoneNumber);
         intent.putExtra("userToken", userToken);
         startActivity(intent);
-    }
-
-
-    private void onClickEditTextPassWordShow() {
-        binding.ibShowPassword.setOnClickListener(v -> {
-            if (!isVisibility) {
-                binding.ibShowPassword.setImageResource(R.drawable.ic_visibility_off);
-                binding.etPassword.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_PASSWORD);
-                isVisibility = true;
-            } else {
-                binding.ibShowPassword.setImageResource(R.drawable.ic_visibility);
-                binding.etPassword.setInputType(InputType.TYPE_CLASS_TEXT);
-                isVisibility = false;
-            }
-        });
     }
 
     private void onClickLogin() {
