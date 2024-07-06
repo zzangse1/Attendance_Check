@@ -24,6 +24,7 @@
         android:id="@+id/et_id_layout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        app:endIconMode="clear_text"
         android:layout_marginStart="30dp"
         android:layout_marginTop="50dp"
         android:layout_marginEnd="30dp"
@@ -49,6 +50,7 @@
         android:layout_marginStart="30dp"
         android:layout_marginTop="10dp"
         android:layout_marginEnd="30dp"
+        app:endIconMode="password_toggle"
         android:hint="비밀번호"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -64,7 +66,7 @@
             android:maxLines="1" />
     </com.google.android.material.textfield.TextInputLayout>
 
-    <ImageButton
+    <!--ImageButton
         android:id="@+id/ib_show_password"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -74,7 +76,7 @@
         app:layout_constraintBottom_toBottomOf="@id/et_password_layout"
         app:layout_constraintEnd_toEndOf="@id/et_password_layout"
         app:layout_constraintTop_toTopOf="@id/et_password_layout"
-        app:layout_constraintVertical_bias="0.6" />
+        app:layout_constraintVertical_bias="0.6" /-->
 
     <TextView
         android:id="@+id/tv_error_label"
