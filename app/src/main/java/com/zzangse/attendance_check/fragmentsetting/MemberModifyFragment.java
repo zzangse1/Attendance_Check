@@ -1,5 +1,7 @@
 package com.zzangse.attendance_check.fragmentsetting;
 
+import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -12,6 +14,8 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.core.content.ContextCompat;
@@ -22,6 +26,7 @@ import com.android.volley.Response;
 import com.android.volley.toolbox.Volley;
 import com.google.android.material.textfield.TextInputLayout;
 import com.zzangse.attendance_check.R;
+import com.zzangse.attendance_check.activity.SearchAddressActivity;
 import com.zzangse.attendance_check.activity.SettingActivity;
 import com.zzangse.attendance_check.databinding.FragmentMemberModifyBinding;
 import com.zzangse.attendance_check.request.LoadGroupRequest;
@@ -39,7 +44,7 @@ public class MemberModifyFragment extends Fragment {
     private int COLOR_RED;
     private int COLOR_NAVY;
     private String[] groupNameArr;
-
+    private ActivityResultLauncher<Intent> activityResultLauncher;
     public static MemberModifyFragment newInstance(Bundle bundle) {
         MemberModifyFragment fragment = new MemberModifyFragment();
         fragment.setArguments(bundle);
@@ -59,10 +64,12 @@ public class MemberModifyFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         getBundle();
-        onClickSaveBtn();
+        moveToSearchAddress();
+        getAddress();
         onClickBack();
         textWatcher();
         setSpinner();
+        onClickSaveBtn();
     }
 
     private void getBundle() {
@@ -100,7 +107,7 @@ public class MemberModifyFragment extends Fragment {
         binding.etModifyPersonName.setText(infoName);
         binding.etModifyPersonNumber.setText(infoPhoneNumber);
         binding.etModifyPersonNumber2.setText(infoPhoneNumber2);
-        binding.etModifyPersonAddress.setText(infoAddress);
+        binding.tvModifyPersonAddress.setText(infoAddress);
         binding.etModifyPersonAddress2.setText(infoAddress2);
         binding.etModifyPersonMemo.setText(infoMemo);
     }
@@ -139,6 +146,7 @@ public class MemberModifyFragment extends Fragment {
                 updateMemberInfo();
                 Toast.makeText(getActivity(), "저장되었습니다.", Toast.LENGTH_SHORT).show();
                 setBundle();
+                Log.d("저장버튼", "저장");
             }
         });
     }
@@ -148,7 +156,7 @@ public class MemberModifyFragment extends Fragment {
         modifyName = binding.etModifyPersonName.getText().toString();
         modifyNumber = binding.etModifyPersonNumber.getText().toString();
         modifyNumber2 = binding.etModifyPersonNumber2.getText().toString();
-        modifyAddress = binding.etModifyPersonAddress.getText().toString();
+        modifyAddress = binding.tvModifyPersonAddress.getText().toString();
         modifyAddress2 = binding.etModifyPersonAddress2.getText().toString();
         modifyMemo = binding.etModifyPersonMemo.getText().toString();
         ModifyMemberRequest request = new ModifyMemberRequest(priNum, modifyGroupName, modifyName,
@@ -164,6 +172,7 @@ public class MemberModifyFragment extends Fragment {
         }
     }
 
+
     private boolean visibilityError(TextView errorView, TextInputLayout layout, EditText inputField, String errorMsg) {
         if (inputField.getText().toString().isEmpty()) {
             errorView.setText(errorMsg);
@@ -178,6 +187,19 @@ public class MemberModifyFragment extends Fragment {
         }
     }
 
+    private boolean checkAddress(String address) {
+        if (address.isEmpty()){
+            binding.tvErrorAddress.setVisibility(View.VISIBLE);
+            Log.d("checkAddress", address+"");
+            return false;
+        } else {
+            binding.tvErrorAddress.setVisibility(View.GONE);
+            Log.d("checkAddress", address+"");
+            return true;
+        }
+
+    }
+
     private boolean isCheckError() {
         boolean isNameValid = isValidName();
         boolean isNumberValid = isValidNumber();
@@ -186,7 +208,7 @@ public class MemberModifyFragment extends Fragment {
     }
 
     private boolean isValidAddress() {
-        return visibilityError(binding.tvErrorAddress, binding.etModifyPersonAddressLayout, binding.etModifyPersonAddress, getResources().getString(R.string.error_msg_no_address));
+        return checkAddress(binding.tvModifyPersonAddress.getText().toString());
     }
 
     private boolean isValidNumber() {
@@ -208,6 +230,31 @@ public class MemberModifyFragment extends Fragment {
     private void setSpinner() {
         getGroupName();
 
+    }
+
+    private void moveToSearchAddress() {
+        binding.tvModifyPersonAddress.setOnClickListener(v -> {
+            Intent intent = new Intent(requireContext(), SearchAddressActivity.class);
+            activityResultLauncher.launch(intent);
+        });
+    }
+
+    private void getAddress() {
+        activityResultLauncher = registerForActivityResult(
+                new ActivityResultContracts.StartActivityForResult(),
+                result -> {
+                    if (result.getResultCode() == Activity.RESULT_OK) {
+                        Intent data = result.getData();
+                        if (data != null) {
+                            String test = data.getStringExtra("data");
+                            if (test != null) {
+                                Log.d("test", test);
+                                binding.tvModifyPersonAddress.setText(test);
+                                Log.d("getAddress()", binding.tvModifyPersonAddress.getText().toString());
+                            }
+                        }
+                    }
+                });
     }
 
     private void getGroupName() {
