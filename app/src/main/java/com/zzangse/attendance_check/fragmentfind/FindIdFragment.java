@@ -10,6 +10,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -22,6 +23,7 @@ import com.zzangse.attendance_check.R;
 import com.zzangse.attendance_check.databinding.FragmentFindIdBinding;
 import com.zzangse.attendance_check.request.FindAccountIdRequest;
 import com.zzangse.attendance_check.request.FindAccountRequest;
+import com.zzangse.attendance_check.request.FindAccountSendRequest;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -33,6 +35,7 @@ public class FindIdFragment extends Fragment {
     private String ERROR_MSG_NO_NAME = "이름을 입력해주세요.";
     private String ERROR_MSG_NO_EMAIL = "이메일을 입력해주세요.";
     private String ERROR_MSG_NOT_MATCH_EMAIL = "가입시 입력한 이름과 이메일이 맞지 않습니다.";
+    private String randCode;
 
     @Nullable
     @Override
@@ -47,6 +50,8 @@ public class FindIdFragment extends Fragment {
         onClickRadioBtn();
         settingBtn();
         onClickSendNumber();
+        onClickRandCodeCheck();
+        test();
     }
 
     private void onClickSendNumber() {
@@ -63,6 +68,7 @@ public class FindIdFragment extends Fragment {
                 String userName = binding.etFindBottomAccountName.getText().toString();
                 String userID = binding.etFindAccountEmail.getText().toString();
                 findAccountDB(userName, "null", userID);
+                Toast.makeText(getActivity(), "인증번호발송 완료.", Toast.LENGTH_SHORT).show();
             }
         });
     }
@@ -121,37 +127,86 @@ public class FindIdFragment extends Fragment {
         });
     }
 
-    private void findAccount(String randCode,String userEmail) {
-        Response.Listener<String>listener = new Response.Listener<String>() {
+    private void onClickRandCodeCheck() {
+        binding.btnBottomConfirm.setOnClickListener(v -> {
+            String userEmail = binding.etFindBottomAccountName.getText().toString();
+            String randCode = binding.etFindAccountBottomCertificationNumber.getText().toString();
+            Log.d("onCLickCOde", userEmail + ", " + randCode);
+            checkCode(userEmail, randCode);
+        });
+    }
+
+    private void test() {
+        binding.btnBottomConfirm.setOnClickListener(v->{
+            String a1 =binding.etFindAccountBottomCertificationNumber.getText().toString();
+            if (a1.equals(randCode)) {
+                Log.d("check", "equl");
+            } else {
+                Log.d("check", "equl x");
+            }
+        });
+    }
+    private void checkCode(String userEmail, String randCode) {
+        Response.Listener<String> listener = new Response.Listener<String>() {
             @Override
             public void onResponse(String s) {
 //                try {
 //                    JSONObject jsonObject = new JSONObject(s);
-//                    boolean isSuccess = jsonObject.getBoolean("success");
+//                    boolean isSuccess = jsonObject.getBoolean("verified");
+//                    String check1 = jsonObject.getString("postCode");
+//                    String check2 = jsonObject.getString("postEmail");
+//                    String check3 = jsonObject.getString("saveCode");
+//                    String check4 = jsonObject.getString("saveEmail");
 //                    if (isSuccess) {
 //                        //성공
+//                        Log.d("체크", isSuccess + "");
+//                        Log.d("postCode", check1 + "");
+//                        Log.d("postEmail", check2 + "");
+//                        Log.d("saveCode", check3 + "");
+//                        Log.d("saveEmail", check4 + "");
 //                    } else {
-//                        //실패
+//                        Log.d("체크", isSuccess + "");
+//                        Log.d("postCode", check1 + "");
+//                        Log.d("postEmail", check2 + "");
+//                        Log.d("saveCode", check3 + "");
+//                        Log.d("saveEmail", check4 + "");
 //                    }
 //                } catch (JSONException e) {
 //                    throw new RuntimeException(e);
 //                }
             }
         };
-        FindAccountRequest request = new FindAccountRequest(randCode, userEmail,listener);
+        FindAccountSendRequest request = new FindAccountSendRequest(userEmail, randCode, listener);
         if (getActivity() != null) {
             RequestQueue queue = Volley.newRequestQueue(getActivity());
             queue.add(request);
         }
     }
-    private String sendRandomCode() {
-        Random random = new Random();
-        StringBuilder randCode = new StringBuilder();
-        for (int i = 0; i < 6; i++) {
-            int digit = random.nextInt(10);
-            randCode.append(digit);
+
+    private void findAccount(String userEmail) {
+        Response.Listener<String> listener = new Response.Listener<String>() {
+            @Override
+            public void onResponse(String s) {
+                try {
+                    JSONObject jsonObject = new JSONObject(s);
+                    String check = jsonObject.getString("randCode");
+                    randCode = check;
+                    Log.d("check", check+"");
+//                    if (isSuccess) {
+//                        //성공
+//                    } else {
+//                        //실패
+//                    }
+                } catch (JSONException e) {
+                    throw new RuntimeException(e);
+                }
+            }
+        };
+        FindAccountRequest request = new FindAccountRequest(userEmail, listener);
+        if (getActivity() != null) {
+            RequestQueue queue = Volley.newRequestQueue(getActivity());
+            queue.add(request);
         }
-        return randCode.toString();
     }
 
     // 공통 오류 확인 메서드
@@ -182,10 +237,11 @@ public class FindIdFragment extends Fragment {
         boolean isEmailValid = visibilityEmailError();
         return isNameValid && isEmailValid;
     }
+
     private void settingBtn() {
         setActivateBtn(binding.etFindAccountNumber, binding.btnTopCertificationNumber, 11);
-        setActivateBtn(binding.etFindAccountTopCertificationNumber, binding.btnTopConfirm, 4);
-        setActivateBtn(binding.etFindAccountBottomCertificationNumber, binding.btnBottomConfirm, 4);
+        setActivateBtn(binding.etFindAccountTopCertificationNumber, binding.btnTopConfirm, 6);
+        setActivateBtn(binding.etFindAccountBottomCertificationNumber, binding.btnBottomConfirm, 6);
     }
 
 
@@ -209,7 +265,9 @@ public class FindIdFragment extends Fragment {
                     dbError(isEmailSuccess);
                     if (isEmailSuccess) {
                         Log.d("isEmailSuccess", isEmailSuccess + "");
-                        findAccount(sendRandomCode(),userEmail);
+                        findAccount(userEmail);
+                        // 보내기
+
                     } else {
                         Log.d("isEmailSuccess", isEmailSuccess + "");
                     }
