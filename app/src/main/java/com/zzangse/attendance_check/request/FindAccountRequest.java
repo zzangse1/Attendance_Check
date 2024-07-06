@@ -9,11 +9,10 @@ import java.util.Map;
 public class FindAccountRequest extends StringRequest {
     private final static String URL = "http://zzangse.store/find_account/index.php";
     private Map<String, String> map;
-    public FindAccountRequest(String randomCode, String userEmail, Response.Listener<String> listener) {
+    public FindAccountRequest(String userEmail, Response.Listener<String> listener) {
         super(Method.POST, URL, listener, null);
 
         map = new HashMap<>();
-        map.put("randomCode", randomCode);
         map.put("userEmail", userEmail);
     }
 
