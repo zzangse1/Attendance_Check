@@ -1,6 +1,7 @@
 package com.zzangse.attendance_check.fragmentfind;
 
 import android.os.Bundle;
+import android.os.CountDownTimer;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
@@ -29,6 +30,8 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.Random;
+import java.util.Timer;
+import java.util.TimerTask;
 
 public class FindIdFragment extends Fragment {
     private FragmentFindIdBinding binding;
@@ -36,6 +39,11 @@ public class FindIdFragment extends Fragment {
     private String ERROR_MSG_NO_EMAIL = "이메일을 입력해주세요.";
     private String ERROR_MSG_NOT_MATCH_EMAIL = "가입시 입력한 이름과 이메일이 맞지 않습니다.";
     private String randCode;
+    private int mnMil = 1000;
+    int min = 3;
+    private int value;
+    private int mnExit = 181;
+    private CountDownTimer timer;
 
     @Nullable
     @Override
@@ -51,7 +59,7 @@ public class FindIdFragment extends Fragment {
         settingBtn();
         onClickSendNumber();
         onClickRandCodeCheck();
-        test();
+        //test();
     }
 
     private void onClickSendNumber() {
@@ -69,6 +77,8 @@ public class FindIdFragment extends Fragment {
                 String userID = binding.etFindAccountEmail.getText().toString();
                 findAccountDB(userName, "null", userID);
                 Toast.makeText(getActivity(), "인증번호발송 완료.", Toast.LENGTH_SHORT).show();
+                setTimer();
+                binding.btnBottomCertificationNumber.setEnabled(true);
             }
         });
     }
@@ -129,10 +139,10 @@ public class FindIdFragment extends Fragment {
 
     private void onClickRandCodeCheck() {
         binding.btnBottomConfirm.setOnClickListener(v -> {
-            String userEmail = binding.etFindBottomAccountName.getText().toString();
+            String userID = binding.etFindAccountEmail.getText().toString();
             String randCode = binding.etFindAccountBottomCertificationNumber.getText().toString();
-            Log.d("onCLickCOde", userEmail + ", " + randCode);
-            checkCode(userEmail, randCode);
+            Log.d("onCLickCOde", userID + ", " + randCode);
+            checkCode(userID, randCode);
         });
     }
 
@@ -146,37 +156,63 @@ public class FindIdFragment extends Fragment {
             }
         });
     }
-    private void checkCode(String userEmail, String randCode) {
+
+    private void setTimer() {
+        binding.tvTimer.setVisibility(View.VISIBLE);
+        binding.btnBottomCertificationNumber.setClickable(false);
+
+        value = 0;
+
+        int delay = mnExit * mnMil;
+        timer = new CountDownTimer(delay,100) {
+            @Override
+            public void onTick(long millisUntilFinished) {
+                value--;
+                if (value < 0) {
+                    value=59;
+                    min--;
+                    if (min<0){
+                        min=0;
+                        value=0;
+                    }
+                }
+                binding.tvTimer.setText(min+" : "+value + "");
+            }
+
+            @Override
+            public void onFinish() {
+                binding.tvTimer.setText("종료");
+                binding.btnBottomCertificationNumber.setClickable(true);
+                // db삭제 함수
+            }
+        };
+        timer.start();
+    }
+    private void checkCode(String userID, String randCode) {
         Response.Listener<String> listener = new Response.Listener<String>() {
             @Override
             public void onResponse(String s) {
-//                try {
-//                    JSONObject jsonObject = new JSONObject(s);
-//                    boolean isSuccess = jsonObject.getBoolean("verified");
-//                    String check1 = jsonObject.getString("postCode");
-//                    String check2 = jsonObject.getString("postEmail");
-//                    String check3 = jsonObject.getString("saveCode");
-//                    String check4 = jsonObject.getString("saveEmail");
-//                    if (isSuccess) {
-//                        //성공
-//                        Log.d("체크", isSuccess + "");
-//                        Log.d("postCode", check1 + "");
-//                        Log.d("postEmail", check2 + "");
-//                        Log.d("saveCode", check3 + "");
-//                        Log.d("saveEmail", check4 + "");
-//                    } else {
-//                        Log.d("체크", isSuccess + "");
-//                        Log.d("postCode", check1 + "");
-//                        Log.d("postEmail", check2 + "");
-//                        Log.d("saveCode", check3 + "");
-//                        Log.d("saveEmail", check4 + "");
-//                    }
-//                } catch (JSONException e) {
-//                    throw new RuntimeException(e);
-//                }
+                try {
+                    JSONObject jsonObject = new JSONObject(s);
+                    boolean isSuccess = jsonObject.getBoolean("success");
+                    if (isSuccess) {
+                        String check1 = jsonObject.getString("userID");
+                        String check2 = jsonObject.getString("randCode");
+                        String check3 = jsonObject.getString("error");
+                        Log.d("체크", isSuccess + "");
+                        Log.d("userID", check1 + "");
+                        Log.d("randCode", check2 + "");
+                        Log.d("error", check3 + "");
+                        binding.tvRandCodeErrorMsg.setVisibility(View.GONE);
+                    } else {
+                        binding.tvRandCodeErrorMsg.setVisibility(View.VISIBLE);
+                    }
+                } catch (JSONException e) {
+                    throw new RuntimeException(e);
+                }
             }
         };
-        FindAccountSendRequest request = new FindAccountSendRequest(userEmail, randCode, listener);
+        FindAccountSendRequest request = new FindAccountSendRequest(userID, randCode, listener);
         if (getActivity() != null) {
             RequestQueue queue = Volley.newRequestQueue(getActivity());
             queue.add(request);

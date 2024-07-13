@@ -23,7 +23,7 @@ public class SignInRequest extends StringRequest {
 
     @Nullable
     @Override
-    protected Map<String, String> getParams() throws AuthFailureError {
+    protected Map<String, String> getParams() {
         return map;
     }
 }

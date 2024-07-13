@@ -267,6 +267,22 @@
                             android:background="@drawable/btn_clicked"
                             android:text="@string/plain_confirm" />
                     </LinearLayout>
+                    <TextView
+                        android:id="@+id/tv_rand_code_error_msg"
+                        android:layout_width="wrap_content"
+                        style="@style/AppEditText.Red.S14"
+                        android:layout_marginTop="10dp"
+                        android:visibility="gone"
+                        android:layout_height="wrap_content"
+                        android:text="인증번호를 확인해주세요"/>
+
+                    <TextView
+                        android:id="@+id/tv_timer"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:visibility="gone"
+                        style="@style/AppEditText.S14"
+                        android:layout_marginTop="5dp" />
                 </LinearLayout>
 
 
