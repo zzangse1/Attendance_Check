@@ -30,7 +30,7 @@ public class MainActivity extends AppCompatActivity {
     private MoreFragment moreFragment;
     private String userToken;
     private String userNickName;
-    private long backBtnTime  = 0;
+    private long backBtnTime = 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -38,6 +38,7 @@ public class MainActivity extends AppCompatActivity {
         initView();
         initFragment();
         setupBottomNav();
+        getOnBackPressedDispatcher().addCallback(this, onBackPressedCallback);
     }
 
     private void setupBottomNav() {
@@ -113,7 +114,7 @@ public class MainActivity extends AppCompatActivity {
         public void handleOnBackPressed() {
             long curTime = System.currentTimeMillis();
             long gapTime = curTime - backBtnTime;
-            if (gapTime >= 0 && gapTime <= 200) {
+            if (gapTime >= 0 && gapTime <= 2000) {
                 finish();
             } else {
                 backBtnTime=curTime;
