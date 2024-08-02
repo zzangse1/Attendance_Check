@@ -13,6 +13,7 @@
     <string name="login_sns_label">소셜로 간편가입</string>
 
     <!-- plain_label -->
+    <string name="plain_id">아이디</string>
     <string name="plain_email">이메일</string>
     <string name="plain_password">비밀번호</string>
     <string name="plain_nickname">닉네임</string>
