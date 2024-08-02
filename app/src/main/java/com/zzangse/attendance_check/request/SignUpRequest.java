@@ -10,17 +10,18 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class SignUpRequest extends StringRequest {
-    private final static String URL ="http://zzangse.store/sign_up.php";
-    private Map<String,String> map;
+    private final static String URL = "http://zzangse.store/attendance_check/sign/sign_up.php";
+    private Map<String, String> map;
 
 
-    public SignUpRequest(String userID, String userPassword, String userNickName,
+    public SignUpRequest(String userID, String userEmail, String userPassword, String userNickName,
                          String userName, String userBirth, String userSex,
-                         String userPhoneNumber,String userToken, Response.Listener<String> listener) {
+                         String userPhoneNumber, String userToken, Response.Listener<String> listener) {
         super(Method.POST, URL, listener, null);
 
         map = new HashMap<>();
         map.put("userID", userID);
+        map.put("userEmail", userEmail);
         map.put("userPassword", userPassword);
         map.put("userNickName", userNickName);
         map.put("userName", userName);
