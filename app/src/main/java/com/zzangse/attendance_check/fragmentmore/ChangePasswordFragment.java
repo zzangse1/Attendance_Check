@@ -17,7 +17,7 @@ import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.toolbox.Volley;
 import com.zzangse.attendance_check.databinding.FragmentChangePasswordBinding;
-import com.zzangse.attendance_check.request.ChangePasswordRequest;
+import com.zzangse.attendance_check.request.PasswordRequest;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -110,7 +110,9 @@ public class ChangePasswordFragment extends Fragment {
         String userPassword = binding.etUserPassword.getText().toString();
         if (nullPassword(newPassword, newPasswordCheck)) {
             if (checkPassword(newPassword, newPasswordCheck)) {
-                ChangePasswordRequest request = new ChangePasswordRequest(userID, userPassword, newPassword, new Response.Listener<String>() {
+                PasswordRequest request = new PasswordRequest(
+                        PasswordRequest.RequestType.CHANGE_PW,
+                        userID, userPassword, newPassword, new Response.Listener<String>() {
                     @Override
                     public void onResponse(String s) {
                         try {
