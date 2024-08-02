@@ -10,7 +10,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class SignInRequest extends StringRequest {
-    private final static String URL ="http://zzangse.store/sign_in.php";
+    private final static String URL ="http://zzangse.store/attendance_check/sign/sign_in.php";
     private Map<String,String> map;
 
     public SignInRequest(String userID, String userPassword, Response.Listener<String> listener) {
