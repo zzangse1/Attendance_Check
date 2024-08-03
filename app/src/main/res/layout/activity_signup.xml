@@ -180,7 +180,7 @@
                     android:layout_height="match_parent"
                     android:inputType="text"
                     android:maxLength="10"
-                    android:text="가나다" />
+                     />
             </com.google.android.material.textfield.TextInputLayout>
 
             <com.google.android.material.textfield.TextInputLayout
