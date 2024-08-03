@@ -314,6 +314,7 @@ public class SignupActivity extends AppCompatActivity {
 
     private void setErrorLayout(TextInputLayout layout, TextView textView, String errorMsg) {
         layout.setError(errorMsg);
+        layout.setErrorEnabled(true);
         textView.setVisibility(View.VISIBLE);
         textView.setText(layout.getError());
     }
