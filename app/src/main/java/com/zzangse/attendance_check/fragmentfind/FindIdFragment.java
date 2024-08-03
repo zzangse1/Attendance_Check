@@ -27,6 +27,7 @@ import com.zzangse.attendance_check.request.FindAccountDeleteRequest;
 import com.zzangse.attendance_check.request.FindAccountRequest;
 import com.zzangse.attendance_check.request.FindAccountRandomCodeRequest;
 import com.zzangse.attendance_check.request.FindAccountSendRequest;
+import com.zzangse.attendance_check.request.ShowIDRequest;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -89,11 +90,11 @@ public class FindIdFragment extends Fragment {
         layout.setErrorEnabled(false);
     }
 
-    private void setErrorLayout(TextInputLayout layout, TextView textView, String errorMsg) {
+    private void setErrorLayout(TextInputLayout layout , String errorMsg) {
         layout.setError(errorMsg);
         layout.setErrorEnabled(true);
-
-        textView.setVisibility(View.VISIBLE);
+        binding.tvEmailError.setVisibility(View.VISIBLE);
+        binding.tvEmailError.setText(layout.getError());
     }
 
     private void settingBtn() {
@@ -111,33 +112,38 @@ public class FindIdFragment extends Fragment {
 
     // 이름 오류 확인 메서드
     private boolean visibilityNameError() {
-        return visibilityError(binding.etFindAccountNameLayout, binding.etFindAccountName, ERROR_MSG_NO_NAME);
+        return visibilityError(binding.etFindAccountNameLayout, binding.etFindAccountName, binding.tvNameError, ERROR_MSG_NO_NAME);
     }
 
     // 이메일 오류 확인 메서드
     private boolean visibilityEmailError() {
-        return visibilityError(binding.etFindAccountEmailLayout, binding.etFindAccountEmail, ERROR_MSG_NO_EMAIL);
+        return visibilityError(binding.etFindAccountEmailLayout, binding.etFindAccountEmail, binding.tvEmailError, ERROR_MSG_NO_EMAIL);
     }
 
 
     // 공통 오류 확인 메서드
-    private boolean visibilityError(TextInputLayout layout, TextInputEditText editText, String errorMessage) {
+    private boolean visibilityError(TextInputLayout layout, TextInputEditText editText, TextView textView, String errorMessage) {
         if (editText.getText().toString().isEmpty()) {
             layout.setError(errorMessage);
+            textView.setVisibility(View.VISIBLE);
+            textView.setText(layout.getError());
             return false;
         } else {
             layout.setError(null);
+            textView.setVisibility(View.GONE);
+            textView.setText("");
             return true;
         }
     }
 
     private void dbError(boolean isEmailSuccess) {
         if (isEmailSuccess) {
-            clearErrorLayout(binding.etFindAccountNameLayout, binding.tvEmailError);
+            clearErrorLayout(binding.etFindAccountNameLayout, binding.tvNameError);
             clearErrorLayout(binding.etFindAccountEmailLayout, binding.tvEmailError);
         } else {
-            setErrorLayout(binding.etFindAccountNameLayout, binding.tvEmailError, ERROR_MSG_NOT_MATCH_EMAIL);
-            setErrorLayout(binding.etFindAccountEmailLayout, binding.tvEmailError, ERROR_MSG_NOT_MATCH_EMAIL);
+            setErrorLayout(binding.etFindAccountNameLayout, ERROR_MSG_NOT_MATCH_EMAIL);
+            setErrorLayout(binding.etFindAccountEmailLayout, ERROR_MSG_NOT_MATCH_EMAIL);
+            Log.d("check", binding.tvNameError.getText().toString() + ", " + binding.tvNameError.getVisibility());
         }
     }
 
@@ -231,6 +237,36 @@ public class FindIdFragment extends Fragment {
         isTextManuallyChanged = true;
     }
 
+    private void showID(String userName, String userEmail) {
+        binding.linearTopLayout.setVisibility(View.GONE);
+        binding.linearBottomLayout.setVisibility(View.VISIBLE);
+        showID_DB(userName, userEmail);
+    }
+
+    private void showID_DB(String userName, String userEmail) {
+        ShowIDRequest request = new ShowIDRequest(userName, userEmail, new Response.Listener<String>() {
+            @Override
+            public void onResponse(String s) {
+                try {
+                    JSONObject jsonObject = new JSONObject(s);
+                    boolean isSuccess = jsonObject.getBoolean("success");
+                    String showUserID = jsonObject.getString("userID");
+                    if (isSuccess) {
+                        binding.tvIdShow.setText(showUserID);
+                        Log.d("showID", showUserID);
+                    } else {
+                        Log.d("showID", showUserID + "");
+                    }
+                } catch (JSONException e) {
+                    throw new RuntimeException(e);
+                }
+            }
+        });
+        if (getActivity() != null) {
+            RequestQueue queue = Volley.newRequestQueue(getActivity());
+            queue.add(request);
+        }
+    }
 
     private void checkCode(String userName, String userEmail, String randCode) {
         Response.Listener<String> listener = new Response.Listener<String>() {
@@ -253,6 +289,7 @@ public class FindIdFragment extends Fragment {
                         setButtonTextManually("인증 완료");
                         deleteDBCode(userName, userEmail);
                         // 아이디 보내기()
+                        showID(userName, userEmail);
                     } else {
                         Log.d("난수 확인 완료", isSuccess + "");
                         Log.d("난수 확인 완료", userEmail1 + "");
@@ -322,7 +359,7 @@ public class FindIdFragment extends Fragment {
                     } else {
                         Log.d("디비에 정보가 있음 확인", isEmailSuccess + "");
                         Log.d("디비에 정보가 있음 확인", userName1 + ", " + userEmail1);
-                        setErrorLayout(binding.etFindAccountNameLayout, binding.tvNameError, "");
+                        //setErrorLayout(binding.etFindAccountNameLayout, binding.tvNameError, "");
                         ableTextInput();
 
                     }

@@ -21,6 +21,7 @@ import androidx.fragment.app.Fragment;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.toolbox.Volley;
+import com.google.android.material.textfield.TextInputLayout;
 import com.zzangse.attendance_check.R;
 import com.zzangse.attendance_check.activity.LoginActivity;
 import com.zzangse.attendance_check.databinding.FragmentFindPwBinding;
@@ -284,32 +285,51 @@ public class FindPwFragment extends Fragment {
     }
 
     // 공통 오류 확인 메서드
-    private boolean visibilityError(TextView errorView, EditText inputField, String errorMessage) {
+    private boolean visibilityError(TextInputLayout layout, TextView errorView, EditText inputField, String errorMessage) {
         if (inputField.getText().toString().isEmpty()) {
+            layout.setError(errorMessage);
             errorView.setText(errorMessage);
             errorView.setVisibility(View.VISIBLE);
+            Log.d("layout",layout.getId()+"");
             return false;
         } else {
+            layout.setError(null);
             errorView.setVisibility(View.GONE);
             return true;
         }
     }
 
+    private boolean test(String a) {
+        if (a.isEmpty()) {
+            binding.etFindAccountNameLayout.setError("name x");
+            binding.etFindAccountNameLayout.setErrorEnabled(true);
+            return true;
+        } else {
+            return false;
+        }
+    }
+
     // 이름 오류 확인 메서드
     private boolean visibilityNameError() {
-        return visibilityError(binding.tvNameError, binding.etFindAccountName, ERROR_MSG_NO_NAME);
+        return test(binding.etFindAccountName.getText().toString());
+       // return visibilityError(binding.etFindAccountNameLayout, binding.tvNameError, binding.etFindAccountName, ERROR_MSG_NO_NAME);
+    }
+
+    private boolean visibilityIDError() {
+        return visibilityError(binding.etFindAccountIdLayout, binding.tvNameError, binding.etFindAccountId, ERROR_MSG_NO_NAME);
     }
 
     // 이메일 오류 확인 메서드
     private boolean visibilityEmailError() {
-        return visibilityError(binding.tvEmailError, binding.etFindAccountEmail, ERROR_MSG_NO_EMAIL);
+        return visibilityError(binding.etFindAccountEmailLayout, binding.tvEmailError, binding.etFindAccountEmail, ERROR_MSG_NO_EMAIL);
     }
 
     // 이름과 이메일 모두 확인 메서드
     private boolean visibilityNameAndEmailError() {
         boolean isNameValid = visibilityNameError();
+        boolean isIDValid = visibilityIDError();
         boolean isEmailValid = visibilityEmailError();
-        return isNameValid && isEmailValid;
+        return isNameValid && isEmailValid && isIDValid;
     }
 
     private void settingBtn() {
