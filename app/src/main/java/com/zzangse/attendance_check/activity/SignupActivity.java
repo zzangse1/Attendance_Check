@@ -112,14 +112,19 @@ public class SignupActivity extends AppCompatActivity {
 
     // 카카오 전화번호 +82 형식 포멧
     private String formatPhoneNumber(String userPhoneNumber) {
-        String numberWithoutCountryCode = userPhoneNumber.replaceFirst("^\\+82\\s*", "");
-        String formattedNumber = numberWithoutCountryCode.replaceAll("[^0-9]", "");
+        if (!userPhoneNumber.isEmpty()) {
+            String numberWithoutCountryCode = userPhoneNumber.replaceFirst("^\\+82\\s*", "");
+            String formattedNumber = numberWithoutCountryCode.replaceAll("[^0-9]", "");
 
-        if (!formattedNumber.startsWith("0")) {
-            formattedNumber = "0" + formattedNumber;
+            if (!formattedNumber.startsWith("0")) {
+                formattedNumber = "0" + formattedNumber;
+            }
+
+            return formattedNumber;
+        } else {
+            return "";
         }
 
-        return formattedNumber;
     }
 
     private void initView() {
