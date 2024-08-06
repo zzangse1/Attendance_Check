@@ -38,12 +38,20 @@ import java.util.regex.Pattern;
 
 public class FindPwFragment extends Fragment {
     private FragmentFindPwBinding binding;
-    private String ERROR_MSG_NO_NAME = "이름을 입력해주세요.";
-    private String ERROR_MSG_NO_EMAIL = "이메일을 입력해주세요.";
-    private String ERROR_MSG_NOT_MATCH_EMAIL = "가입시 입력한 이름과 이메일이 맞지 않습니다.";
-    private static final String REGEX_PASSWORD = "^[A-Za-z0-9!@#$]{8,20}$";
+    private static final String WARNING_MSG_NO_ID = "•아이디: 필수 정보 입니다.";
+    private static final String WARNING_MSG_NO_EMAIL = "•이메일: 필수 정보 입니다.";
+    private static final String WARNING_MSG_NO_NAME = "•이름: 필수 정보입니다.";
+    private static final String WARNING_MSG_RULE_NAME = "•이름: 2~6자로 설정해주세요.";
+    private static final String REGEX_PASSWORD = "^[a-zA-Z0-9!@#$]+$";
+    private static final String WARNING_MSG_NO_MATCH = "•가입시 입력한 이름과 이메일이 맞지 않습니다.";
     private static final String WARNING_MSG_RULE_PASSWORD = "•비밀번호: 8~20자의 영문 대/소문자, 숫자, [!,@,#,$]를 사용해 주세요.";
     private static final String WARNING_MSG_NO_PASSWORD = "•비밀번호: 필수 정보입니다.";
+    private static final String REGEX_NAME = "^[가-힣]{2,6}$";
+    private static final String REGEX_EMAIL = "^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,6}$";
+    private static final String REGEX_ID = "^[a-z0-9_-]{5,20}$";
+    private static final String WARNING_MSG_RULE_ID = "•아이디: 5~20자의 영문 소문자, 숫자를 사용해 주세요.";
+    private static final String WARNING_MSG_RULE_EMAIL = "•이메일: 5~30자의 이메일 형식을 맞춰주세요. [sample@domain.com]";
+
     private int min, value;
     private CountDownTimer timer;
     private boolean isTextManuallyChanged = false;
@@ -64,12 +72,12 @@ public class FindPwFragment extends Fragment {
         onClickSendNumber();
         onClickRandCodeCheck();
         onClickChangeBtn();
-        //test();
     }
 
     private void onClickSendNumber() {
         binding.btnCertificationNumber.setOnClickListener(v -> {
             boolean isSuccess = visibilityNameAndEmailError();
+            Log.d("정보확인", isSuccess + "");
             if (isSuccess) {
                 resetManualTextFlag();
                 String userName = binding.etFindAccountName.getText().toString();
@@ -77,10 +85,13 @@ public class FindPwFragment extends Fragment {
                 String userEmail = binding.etFindAccountEmail.getText().toString();
                 FindAccountDBInfo(userName, userID, userEmail);
                 binding.btnCertificationNumber.setEnabled(false);
-            } else {
-                ableTextInput();
             }
         });
+    }
+
+    private void showNoFindDB() {
+        binding.tvNoDb.setVisibility(View.VISIBLE);
+        binding.tvNoDb.setText(WARNING_MSG_NO_MATCH);
     }
 
     private void setActivateBtn(EditText editText, Button button, int inputLength) {
@@ -118,7 +129,6 @@ public class FindPwFragment extends Fragment {
 
 
     private void setTimer(String userID) {
-        binding.tvTimer.setVisibility(View.VISIBLE);
         // 타이머 초기화: 3분을 180초로 설정
         final int initialMinutes = 3;
         final int initialSeconds = 0;
@@ -139,6 +149,7 @@ public class FindPwFragment extends Fragment {
                             value = 0;
                         }
                     }
+                    enableTextInput();
                     binding.btnCertificationNumber.setText(String.format("%02d:%02d", min, value));
                 }
             }
@@ -285,52 +296,66 @@ public class FindPwFragment extends Fragment {
     }
 
     // 공통 오류 확인 메서드
-    private boolean visibilityError(TextInputLayout layout, TextView errorView, EditText inputField, String errorMessage) {
+    private boolean visibilityError(TextInputLayout layout, TextView textView, EditText inputField,
+                                    String noMsg, String ruleMsg, String REGEX) {
+        boolean isMatch = Pattern.matches(REGEX, inputField.getText().toString());
         if (inputField.getText().toString().isEmpty()) {
-            layout.setError(errorMessage);
-            errorView.setText(errorMessage);
-            errorView.setVisibility(View.VISIBLE);
-            Log.d("layout",layout.getId()+"");
+            setErrorLayout(layout, textView, noMsg);
+            Log.d("textView", textView.getText().toString());
+            return false;
+        } else if (!isMatch) {
+            Log.d("textView", textView.getText().toString());
+            setErrorLayout(layout, textView, ruleMsg);
             return false;
         } else {
-            layout.setError(null);
-            errorView.setVisibility(View.GONE);
+            Log.d("textView", textView.getText().toString());
+            clearErrorLayout(layout, textView);
             return true;
         }
     }
 
-    private boolean test(String a) {
-        if (a.isEmpty()) {
-            binding.etFindAccountNameLayout.setError("name x");
-            binding.etFindAccountNameLayout.setErrorEnabled(true);
-            return true;
-        } else {
-            return false;
-        }
+    private void setErrorLayout(TextInputLayout layout, TextView textView, String errorMsg) {
+        binding.tvNoDb.setVisibility(View.GONE);
+        layout.setError(errorMsg);
+        layout.setErrorEnabled(true);
+        textView.setVisibility(View.VISIBLE);
+        textView.setText(layout.getError());
     }
+
+    private void clearErrorLayout(TextInputLayout layout, TextView textView) {
+        Log.i("clear", textView + "");
+        layout.setError(null);
+        layout.setErrorEnabled(false);
+        textView.setVisibility(View.GONE);
+    }
+
 
     // 이름 오류 확인 메서드
     private boolean visibilityNameError() {
-        return test(binding.etFindAccountName.getText().toString());
-       // return visibilityError(binding.etFindAccountNameLayout, binding.tvNameError, binding.etFindAccountName, ERROR_MSG_NO_NAME);
+        // 조건 추가
+        return visibilityError(binding.etFindAccountNameLayout, binding.tvErrorName, binding.etFindAccountName,
+                WARNING_MSG_NO_NAME, WARNING_MSG_RULE_NAME, REGEX_NAME);
     }
 
     private boolean visibilityIDError() {
-        return visibilityError(binding.etFindAccountIdLayout, binding.tvNameError, binding.etFindAccountId, ERROR_MSG_NO_NAME);
+        return visibilityError(binding.etFindAccountIdLayout, binding.tvErrorId, binding.etFindAccountId,
+                WARNING_MSG_NO_ID, WARNING_MSG_RULE_ID, REGEX_ID);
     }
 
     // 이메일 오류 확인 메서드
     private boolean visibilityEmailError() {
-        return visibilityError(binding.etFindAccountEmailLayout, binding.tvEmailError, binding.etFindAccountEmail, ERROR_MSG_NO_EMAIL);
+        return visibilityError(binding.etFindAccountEmailLayout, binding.tvErrorEmail, binding.etFindAccountEmail,
+                WARNING_MSG_NO_EMAIL, WARNING_MSG_RULE_EMAIL, REGEX_EMAIL);
     }
 
     // 이름과 이메일 모두 확인 메서드
     private boolean visibilityNameAndEmailError() {
         boolean isNameValid = visibilityNameError();
-        boolean isIDValid = visibilityIDError();
         boolean isEmailValid = visibilityEmailError();
+        boolean isIDValid = visibilityIDError();
         return isNameValid && isEmailValid && isIDValid;
     }
+
 
     private void settingBtn() {
 //        setActivateBtn(binding.etFindAccountNumber, binding.btnTopCertificationNumber, 11);
@@ -341,10 +366,12 @@ public class FindPwFragment extends Fragment {
 
     private void dbError(boolean isEmailSuccess) {
         if (isEmailSuccess) {
-            binding.tvEmailError.setVisibility(View.GONE);
+//            binding.tvEmailError.setVisibility(View.GONE);
+            Log.d("dbError", isEmailSuccess + "");
         } else {
-            binding.tvEmailError.setText(ERROR_MSG_NOT_MATCH_EMAIL);
-            binding.tvEmailError.setVisibility(View.VISIBLE);
+            Log.d("dbError", isEmailSuccess + "");
+//            binding.tvEmailError.setText(ERROR_MSG_NOT_MATCH_EMAIL);
+//            binding.tvEmailError.setVisibility(View.VISIBLE);
         }
     }
 
@@ -372,6 +399,7 @@ public class FindPwFragment extends Fragment {
     }
 
     private void ableTextInput() {
+        showNoFindDB();
         binding.btnCertificationNumber.setText("정보 확인");
         binding.btnCertificationNumber.setEnabled(true);
         binding.etFindAccountNameLayout.setEnabled(true);
@@ -391,18 +419,17 @@ public class FindPwFragment extends Fragment {
                     String userID1 = jsonObject.getString("userID");
                     String userName1 = jsonObject.getString("userName");
                     String userEmail1 = jsonObject.getString("userEmail");
-                    dbError(isEmailSuccess);
                     if (isEmailSuccess) {
                         Log.d("디비에 정보가 있음 확인", isEmailSuccess + "");
                         Log.d("디비에 정보가 있음 확인", userID1 + ", " + userName1 + ", " + userEmail1);
                         enableTextInput();
+                        binding.tvNoDb.setVisibility(View.GONE);
                         sendEmail(userID, userEmail);
                         setTimer(userID);
                     } else {
                         Log.d("디비에 정보가 있음 확인", isEmailSuccess + "");
                         Log.d("디비에 정보가 있음 확인", userID1 + ", " + userName1 + ", " + userEmail1);
                         ableTextInput();
-
                     }
                 } catch (JSONException e) {
                     throw new RuntimeException(e);

@@ -24,21 +24,27 @@ import com.google.android.material.textfield.TextInputLayout;
 import com.zzangse.attendance_check.R;
 import com.zzangse.attendance_check.databinding.FragmentFindIdBinding;
 import com.zzangse.attendance_check.request.FindAccountDeleteRequest;
-import com.zzangse.attendance_check.request.FindAccountRequest;
 import com.zzangse.attendance_check.request.FindAccountRandomCodeRequest;
+import com.zzangse.attendance_check.request.FindAccountRequest;
 import com.zzangse.attendance_check.request.FindAccountSendRequest;
 import com.zzangse.attendance_check.request.ShowIDRequest;
 
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.util.regex.Pattern;
+
 public class FindIdFragment extends Fragment {
     private FragmentFindIdBinding binding;
-    private String ERROR_MSG_NO_NAME = "이름을 입력해주세요.";
-    private String ERROR_MSG_NO_EMAIL = "이메일을 입력해주세요.";
-    private String ERROR_MSG_NOT_MATCH_EMAIL = "가입시 입력한 이름과 이메일이 맞지 않습니다.";
-    int min = 3;
-    private int value;
+    private static final String WARNING_MSG_NO_EMAIL = "•이메일: 필수 정보 입니다.";
+    private static final String WARNING_MSG_NO_NAME = "•이름: 필수 정보입니다.";
+    private static final String WARNING_MSG_NO_MATCH = "•가입시 입력한 이름과 이메일이 맞지 않습니다.";
+    private static final String WARNING_MSG_RULE_NAME = "•이름: 2~6자로 설정해주세요.";
+    private static final String REGEX_NAME = "^[가-힣]{2,6}$";
+    private static final String REGEX_EMAIL = "^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,6}$";
+    private static final String WARNING_MSG_RULE_EMAIL = "•이메일: 5~30자의 이메일 형식을 맞춰주세요. [sample@domain.com]";
+
+    private int min, value;
     private CountDownTimer timer;
     private boolean isTextManuallyChanged = false;
 
@@ -90,7 +96,7 @@ public class FindIdFragment extends Fragment {
         layout.setErrorEnabled(false);
     }
 
-    private void setErrorLayout(TextInputLayout layout , String errorMsg) {
+    private void setErrorLayout(TextInputLayout layout, String errorMsg) {
         layout.setError(errorMsg);
         layout.setErrorEnabled(true);
         binding.tvEmailError.setVisibility(View.VISIBLE);
@@ -112,19 +118,26 @@ public class FindIdFragment extends Fragment {
 
     // 이름 오류 확인 메서드
     private boolean visibilityNameError() {
-        return visibilityError(binding.etFindAccountNameLayout, binding.etFindAccountName, binding.tvNameError, ERROR_MSG_NO_NAME);
+        return visibilityError(binding.etFindAccountNameLayout, binding.etFindAccountName, binding.tvNameError, REGEX_NAME, WARNING_MSG_NO_NAME, WARNING_MSG_RULE_NAME);
     }
 
     // 이메일 오류 확인 메서드
     private boolean visibilityEmailError() {
-        return visibilityError(binding.etFindAccountEmailLayout, binding.etFindAccountEmail, binding.tvEmailError, ERROR_MSG_NO_EMAIL);
+        return visibilityError(binding.etFindAccountEmailLayout, binding.etFindAccountEmail, binding.tvEmailError, REGEX_EMAIL, WARNING_MSG_NO_EMAIL, WARNING_MSG_RULE_EMAIL);
     }
 
 
     // 공통 오류 확인 메서드
-    private boolean visibilityError(TextInputLayout layout, TextInputEditText editText, TextView textView, String errorMessage) {
+    private boolean visibilityError(TextInputLayout layout, TextInputEditText editText,
+                                    TextView textView, String REGEX, String noMsg, String ruleMsg) {
+        boolean isMatch = Pattern.matches(REGEX, editText.getText().toString());
         if (editText.getText().toString().isEmpty()) {
-            layout.setError(errorMessage);
+            layout.setError(noMsg);
+            textView.setVisibility(View.VISIBLE);
+            textView.setText(layout.getError());
+            return false;
+        } else if (!isMatch) {
+            layout.setError(ruleMsg);
             textView.setVisibility(View.VISIBLE);
             textView.setText(layout.getError());
             return false;
@@ -136,16 +149,11 @@ public class FindIdFragment extends Fragment {
         }
     }
 
-    private void dbError(boolean isEmailSuccess) {
-        if (isEmailSuccess) {
-            clearErrorLayout(binding.etFindAccountNameLayout, binding.tvNameError);
-            clearErrorLayout(binding.etFindAccountEmailLayout, binding.tvEmailError);
-        } else {
-            setErrorLayout(binding.etFindAccountNameLayout, ERROR_MSG_NOT_MATCH_EMAIL);
-            setErrorLayout(binding.etFindAccountEmailLayout, ERROR_MSG_NOT_MATCH_EMAIL);
-            Log.d("check", binding.tvNameError.getText().toString() + ", " + binding.tvNameError.getVisibility());
-        }
+    private void showNoFindDB() {
+        binding.tvNoDb.setVisibility(View.VISIBLE);
+        binding.tvNoDb.setText(WARNING_MSG_NO_MATCH);
     }
+
 
     private void sendEmail(String userName, String userEmail) {
         Response.Listener<String> listener = new Response.Listener<String>() {
@@ -188,6 +196,7 @@ public class FindIdFragment extends Fragment {
     }
 
     private void ableTextInput() {
+        showNoFindDB();
         binding.btnCertificationNumber.setText("정보 확인");
         binding.btnCertificationNumber.setEnabled(true);
         binding.etFindAccountNameLayout.setEnabled(true);
@@ -195,7 +204,6 @@ public class FindIdFragment extends Fragment {
     }
 
     private void setTimer(String userName, String userEmail) {
-        binding.tvTimer.setVisibility(View.VISIBLE);
         // 타이머 초기화: 3분을 180초로 설정
         final int initialMinutes = 3;
         final int initialSeconds = 0;
@@ -216,6 +224,7 @@ public class FindIdFragment extends Fragment {
                             value = 0;
                         }
                     }
+                    enableTextInput();
                     binding.btnCertificationNumber.setText(String.format("%02d:%02d", min, value));
                 }
             }
@@ -252,7 +261,7 @@ public class FindIdFragment extends Fragment {
                     boolean isSuccess = jsonObject.getBoolean("success");
                     String showUserID = jsonObject.getString("userID");
                     if (isSuccess) {
-                        binding.tvIdShow.setText(showUserID);
+                        binding.etIdShow.setText(showUserID);
                         Log.d("showID", showUserID);
                     } else {
                         Log.d("showID", showUserID + "");
@@ -347,7 +356,6 @@ public class FindIdFragment extends Fragment {
                     boolean isEmailSuccess = jsonObject.getBoolean("success");
                     String userName1 = jsonObject.getString("userName");
                     String userEmail1 = jsonObject.getString("userEmail");
-                    dbError(isEmailSuccess);
                     if (isEmailSuccess) {
                         Log.d("디비에 정보가 있음 확인", isEmailSuccess + "");
                         Log.d("디비에 정보가 있음 확인", userName1 + ", " + userEmail1);
