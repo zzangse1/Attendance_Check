@@ -33,6 +33,50 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent">
 
+            <TextView
+                android:id="@+id/tv_privacy"
+                style="@style/AppEditText.Bold.Navy.S17"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="개인정보 처리방침 (클릭)"
+                app:layout_constraintBottom_toBottomOf="@id/cb_privacy"
+                app:layout_constraintEnd_toStartOf="@id/cb_privacy"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <CheckBox
+                android:id="@+id/cb_privacy"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="20dp"
+                android:enabled="false"
+                android:text="확인했습니다"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+
+            <TextView
+                android:id="@+id/tv_service"
+                style="@style/AppEditText.Bold.Navy.S17"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="서비스 이용약관 (클릭)"
+                app:layout_constraintBottom_toBottomOf="@id/cb_service"
+                app:layout_constraintEnd_toStartOf="@id/cb_service"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="@id/cb_service" />
+
+            <CheckBox
+                android:id="@+id/cb_service"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="20dp"
+                android:enabled="false"
+                android:text="확인했습니다"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/cb_privacy" />
+
+
             <com.google.android.material.textfield.TextInputLayout
                 android:id="@+id/et_id_layout"
                 android:layout_width="0dp"
@@ -42,7 +86,7 @@
                 android:hint="아이디"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/cb_service"
                 app:startIconDrawable="@drawable/ic_person">
 
                 <com.google.android.material.textfield.TextInputEditText
@@ -179,8 +223,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:inputType="text"
-                    android:maxLength="10"
-                     />
+                    android:maxLength="10" />
             </com.google.android.material.textfield.TextInputLayout>
 
             <com.google.android.material.textfield.TextInputLayout
@@ -216,7 +259,7 @@
 
 
             <LinearLayout
-                android:id="@+id/test_layout"
+                android:id="@+id/sex_layout"
                 android:layout_width="0dp"
                 android:layout_height="0dp"
                 android:layout_marginTop="5dp"
@@ -226,15 +269,15 @@
                 app:layout_constraintEnd_toEndOf="@id/et_sex_layout"
                 app:layout_constraintStart_toStartOf="@id/et_sex_layout"
                 app:layout_constraintTop_toTopOf="@id/et_sex_layout">
-<!--            <LinearLayout-->
-<!--                android:layout_width="0dp"-->
-<!--                android:layout_height="0dp"-->
-<!--                android:background="@color/backgroundPrimary"-->
-<!--                android:gravity="center"-->
-<!--                app:layout_constraintBottom_toBottomOf="@id/et_sex_layout"-->
-<!--                app:layout_constraintEnd_toEndOf="@id/et_sex_layout"-->
-<!--                app:layout_constraintStart_toStartOf="@id/et_sex_layout"-->
-<!--                app:layout_constraintTop_toTopOf="@id/et_sex_layout">-->
+                <!--            <LinearLayout-->
+                <!--                android:layout_width="0dp"-->
+                <!--                android:layout_height="0dp"-->
+                <!--                android:background="@color/backgroundPrimary"-->
+                <!--                android:gravity="center"-->
+                <!--                app:layout_constraintBottom_toBottomOf="@id/et_sex_layout"-->
+                <!--                app:layout_constraintEnd_toEndOf="@id/et_sex_layout"-->
+                <!--                app:layout_constraintStart_toStartOf="@id/et_sex_layout"-->
+                <!--                app:layout_constraintTop_toTopOf="@id/et_sex_layout">-->
 
                 <androidx.appcompat.widget.AppCompatButton
                     android:id="@+id/btn_male"
