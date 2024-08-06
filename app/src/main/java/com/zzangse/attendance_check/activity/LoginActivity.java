@@ -137,8 +137,7 @@ public class LoginActivity extends AppCompatActivity {
 
     private void initKakao() {
         Log.d("initKakao", "appkey");
-        // KakaoSdk.init(this, getString(R.string.kakao_app_key));          // 카카오 init
-        KakaoSdk.init(this, getString(R.string.kakao_app_key_2)); // 카카오 init테스트
+         KakaoSdk.init(this, getString(R.string.kakao_app_key));          // 카카오 init
         String kakao = KakaoSdk.INSTANCE.getKeyHash();
         Log.d("hash", kakao);
     }
