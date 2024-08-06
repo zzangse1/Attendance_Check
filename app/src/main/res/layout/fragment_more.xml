@@ -59,17 +59,17 @@
                 style="@style/AppEditText.More.S17"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/plain_email"
+                android:text="@string/plain_id"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/tv_account_label" />
 
             <TextView
                 android:id="@+id/tv_id"
                 style="@style/AppEditText.Hint.S16"
-                app:layout_constraintBottom_toBottomOf="@id/tv_id_label"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginEnd="30dp"
+                app:layout_constraintBottom_toBottomOf="@id/tv_id_label"
                 app:layout_constraintEnd_toEndOf="@id/view_id"
                 app:layout_constraintTop_toTopOf="@id/tv_id_label" />
 
@@ -119,8 +119,8 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginEnd="30dp"
-                app:layout_constraintBottom_toBottomOf="@id/tv_app_version_label"
                 android:text="@string/app_version"
+                app:layout_constraintBottom_toBottomOf="@id/tv_app_version_label"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toTopOf="@id/tv_app_version_label" />
 
@@ -148,6 +148,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/fragment_more_personal_info_label"
+                android:paddingBottom="20dp"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/tv_app_term_of_service_label" />
 
@@ -157,6 +158,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/fragment_more_youth_protection_policy_label"
+                android:visibility="gone"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/tv_app_personal_info_label" />
 
@@ -167,6 +169,7 @@
                 android:layout_height="wrap_content"
                 android:paddingBottom="20dp"
                 android:text="@string/fragment_more_open_source_label"
+                android:visibility="gone"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/tv_app_youth_protection_policy_label" />
 
@@ -197,6 +200,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/fragment_more_other_info_consent_label"
+                android:visibility="gone"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/tv_other_label" />
 
