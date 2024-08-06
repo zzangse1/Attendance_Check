@@ -3,11 +3,13 @@ package com.zzangse.attendance_check.activity;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.drawable.Drawable;
+import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
+import android.widget.CompoundButton;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -66,6 +68,8 @@ public class SignupActivity extends AppCompatActivity {
     private static boolean IS_VALID_BIRTH = false;
     private static boolean IS_VALID_SEX = false;
     private static boolean IS_VALID_PHONE_NUMBER = false;
+    private boolean isPrivacy = false;
+    private boolean isService = false;
     private String userToken = "ZZANGSE";
 
     // 할일
@@ -77,6 +81,9 @@ public class SignupActivity extends AppCompatActivity {
         onClickBtn();
         onClickSignUp();
         onClickBack();
+        onClickTvPrivacy();
+        enableAll(isPrivacy, isService);
+        onClickCheckBox();
     }
 
 
@@ -124,6 +131,58 @@ public class SignupActivity extends AppCompatActivity {
         binding.toolbarSignup.setNavigationOnClickListener(v -> {
             onBackPressed();
             finish();
+        });
+    }
+
+    private void onClickTvPrivacy() {
+        binding.tvPrivacy.setOnClickListener(v -> {
+            String url = "https://sites.google.com/view/zzangse-privacy/%ED%99%88";
+            Intent intent = new Intent(Intent.ACTION_VIEW);
+            intent.setData(Uri.parse(url));
+            startActivity(intent);
+            binding.cbPrivacy.setChecked(true);
+            binding.cbPrivacy.setEnabled(true);
+            isPrivacy = true;
+        });
+        binding.tvService.setOnClickListener(v -> {
+            String url = "https://sites.google.com/view/zzangse-service/%ED%99%88";
+            Intent intent = new Intent(Intent.ACTION_VIEW);
+            intent.setData(Uri.parse(url));
+            startActivity(intent);
+            binding.cbService.setChecked(true);
+            binding.cbService.setEnabled(true);
+            isService = true;
+        });
+    }
+
+    private void enableAll(boolean isPrivacy, boolean isService) {
+        boolean isShow = isPrivacy && isService;
+        binding.etIdLayout.setEnabled(isShow);
+        binding.etPasswordLayout.setEnabled(isShow);
+        binding.etEmailLayout.setEnabled(isShow);
+        binding.etNicknameLayout.setEnabled(isShow);
+        binding.etNameLayout.setEnabled(isShow);
+        binding.etBirthLayout.setEnabled(isShow);
+        binding.btnMale.setEnabled(isShow);
+        binding.btnFemale.setEnabled(isShow);
+        binding.btnNone.setEnabled(isShow);
+        binding.etNumberLayout.setEnabled(isShow);
+    }
+
+    private void onClickCheckBox() {
+        binding.cbPrivacy.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                isPrivacy = isChecked;
+                enableAll(isPrivacy, isService);
+            }
+        });
+        binding.cbService.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                isService = isChecked;
+                enableAll(isPrivacy, isService);
+            }
         });
     }
 
@@ -246,14 +305,14 @@ public class SignupActivity extends AppCompatActivity {
         Drawable drawable_ok = ContextCompat.getDrawable(getApplicationContext(), R.drawable.plain_outline_background_no_color);
         Drawable drawable_error = ContextCompat.getDrawable(getApplicationContext(), R.drawable.plain_outline_background_red);
         if (sex.isEmpty()) {
-           // binding.etSexLayout.setBackground(drawable_error);
-            binding.testLayout.setBackground(drawable_error);
+            // binding.etSexLayout.setBackground(drawable_error);
+            binding.sexLayout.setBackground(drawable_error);
             binding.tvErrorSex.setText(WARNING_MSG_NO_SEX);
             binding.tvErrorSex.setVisibility(View.VISIBLE);
             return false;
         } else {
-           // binding.etSexLayout.setBackground(drawable_ok);
-            binding.testLayout.setBackground(drawable_ok);
+            // binding.etSexLayout.setBackground(drawable_ok);
+            binding.sexLayout.setBackground(drawable_ok);
             binding.tvErrorSex.setVisibility(View.GONE);
             return true;
         }
