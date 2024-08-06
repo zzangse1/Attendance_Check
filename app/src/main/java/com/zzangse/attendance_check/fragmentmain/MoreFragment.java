@@ -2,12 +2,14 @@ package com.zzangse.attendance_check.fragmentmain;
 
 import android.app.AlertDialog;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -41,6 +43,9 @@ public class MoreFragment extends Fragment {
         setTextView();
         onClickLogout();
         onClickTv();
+        onClickNotice();
+        onClickPrivacy();
+        onClickService();
     }
 
     private void getArgs() {
@@ -59,10 +64,10 @@ public class MoreFragment extends Fragment {
     }
 
     private void onClickTv() {
-        binding.tvPasswordLabel.setOnClickListener(v->{
+        binding.tvPasswordLabel.setOnClickListener(v -> {
             switchToFragment(0);
         });
-        binding.tvWithdrawalApp.setOnClickListener(v->{
+        binding.tvWithdrawalApp.setOnClickListener(v -> {
             switchToFragment(1);
         });
     }
@@ -81,6 +86,30 @@ public class MoreFragment extends Fragment {
             showLogOutDialog();
         });
     }
+
+    private void onClickNotice() {
+        binding.tvAppNoticeLabel.setOnClickListener(v -> {
+            Toast.makeText(getContext(), "공지가 없습니다.", Toast.LENGTH_SHORT).show();
+        });
+    }
+    private void onClickPrivacy() {
+        binding.tvAppPersonalInfoLabel.setOnClickListener(v->{
+            String url = "https://sites.google.com/view/zzangse-privacy/%ED%99%88";
+            Intent intent = new Intent(Intent.ACTION_VIEW);
+            intent.setData(Uri.parse(url));
+            startActivity(intent);
+        });
+    }
+
+    private void onClickService() {
+        binding.tvAppTermOfServiceLabel.setOnClickListener(v -> {
+            String url = "https://sites.google.com/view/zzangse-service/%ED%99%88";
+            Intent intent = new Intent(Intent.ACTION_VIEW);
+            intent.setData(Uri.parse(url));
+            startActivity(intent);
+        });
+    }
+
 
     private void showLogOutDialog() {
 
