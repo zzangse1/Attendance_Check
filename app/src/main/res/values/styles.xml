@@ -160,6 +160,14 @@
         <item name="android:textSize">32sp</item>
     </style>
 
+    <style name="AppEditText.Bold.Navy">
+        <item name="android:textColor">@color/navy_200</item>
+    </style>
+
+    <style name="AppEditText.Bold.Navy.S17">
+        <item name="android:textSize">17sp</item>
+    </style>
+
     <style name="AppBtnSex" parent="Widget.MaterialComponents.Button.OutlinedButton">
         <item name="android:textColor">@color/grey_100</item>
         <item name="strokeColor">@color/grey_100</item>
@@ -171,5 +179,4 @@
         <item name="android:windowIsFloating">true</item>
         <item name="android:windowCloseOnTouchOutside">true</item>
     </style>
-
 </resources>
