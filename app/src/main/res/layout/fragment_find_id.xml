@@ -30,17 +30,9 @@
                 style="@style/AppEditText.S14"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:inputType="text" />
+                android:inputType="text"
+                android:maxLength="6" />
         </com.google.android.material.textfield.TextInputLayout>
-
-
-        <TextView
-            android:id="@+id/tv_name_error"
-            style="@style/AppEditText.Red.S14"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="5dp"
-            android:visibility="gone" />
 
 
         <LinearLayout
@@ -65,7 +57,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:inputType="text"
-                    />
+                    android:maxLength="30" />
             </com.google.android.material.textfield.TextInputLayout>
 
             <androidx.appcompat.widget.AppCompatButton
@@ -79,13 +71,6 @@
                 android:text="정보 확인" />
         </LinearLayout>
 
-        <TextView
-            android:id="@+id/tv_email_error"
-            style="@style/AppEditText.Red.S14"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="5dp"
-            android:visibility="gone" />
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -122,26 +107,43 @@
         </LinearLayout>
 
         <TextView
-            android:id="@+id/tv_rand_code_error_msg"
+            android:id="@+id/tv_name_error"
             style="@style/AppEditText.Red.S14"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="10dp"
-            android:text="인증번호를 확인해주세요"
-            android:visibility="gone" />
-
-        <TextView
-            android:id="@+id/tv_timer"
-            style="@style/AppEditText.S14"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="5dp"
             android:visibility="gone" />
+
+        <TextView
+            android:id="@+id/tv_email_error"
+            style="@style/AppEditText.Red.S14"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="5dp"
+            android:visibility="gone" />
+
+        <TextView
+            android:id="@+id/tv_no_db"
+            style="@style/AppEditText.Red.S14"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:visibility="gone" />
+
+
+        <TextView
+            android:id="@+id/tv_rand_code_error_msg"
+            style="@style/AppEditText.Red.S14"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="5dp"
+            android:text="인증번호를 확인해주세요"
+            android:visibility="gone" />
+
     </LinearLayout>
 
     <LinearLayout
         android:id="@+id/linear_bottom_layout"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_margin="20dp"
         android:orientation="vertical"
@@ -156,14 +158,15 @@
             android:layout_height="wrap_content"
             android:text="아이디는 아래와 같습니다." />
 
-        <TextView
-            android:id="@+id/tv_id_show"
+        <androidx.appcompat.widget.AppCompatEditText
+            android:id="@+id/et_id_show"
             style="@style/AppEditText.S17"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="match_parent"
+            android:layout_height="60dp"
             android:layout_marginTop="10dp"
-            android:text="id" />
-
+            android:background="@drawable/plain_outline_background"
+            android:enabled="false"
+            android:gravity="center" />
 
     </LinearLayout>
 
