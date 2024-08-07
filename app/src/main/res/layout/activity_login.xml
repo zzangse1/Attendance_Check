@@ -164,7 +164,7 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="20dp"
-        android:src="@drawable/kakao_login_medium_wide"
+        android:src="@drawable/kakao_login"
         app:layout_constraintEnd_toEndOf="@id/btn_login"
         android:visibility="gone"
         app:layout_constraintStart_toStartOf="@id/btn_login"
