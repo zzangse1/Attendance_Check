@@ -49,4 +49,5 @@ dependencies {
     implementation(libs.volley)
     implementation("com.github.PhilJay:MPAndroidChart:v3.1.0")
     implementation ("com.kakao.sdk:v2-user:2.20.1" )// 카카오 로그인 API 모듈// 카카오 로그인 API 모듈
+    implementation("com.google.android.gms:play-services-ads:22.6.0")
 }
