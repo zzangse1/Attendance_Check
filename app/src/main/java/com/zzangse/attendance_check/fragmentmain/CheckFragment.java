@@ -29,6 +29,10 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.toolbox.Volley;
+import com.google.android.gms.ads.AdRequest;
+import com.google.android.gms.ads.MobileAds;
+import com.google.android.gms.ads.initialization.InitializationStatus;
+import com.google.android.gms.ads.initialization.OnInitializationCompleteListener;
 import com.google.android.material.bottomsheet.BottomSheetDialog;
 import com.google.android.material.datepicker.MaterialDatePicker;
 import com.google.android.material.datepicker.MaterialPickerOnPositiveButtonClickListener;
@@ -100,7 +104,19 @@ public class CheckFragment extends Fragment {
         onClickDateBtn();
         onClickGroupName();
         initChoiceGroupName();
+        showAD();
         Log.d("HASH: ", getKeyHash(getContext()));
+    }
+
+    private void showAD() {
+        MobileAds.initialize(getContext(), new OnInitializationCompleteListener() {
+            @Override
+            public void onInitializationComplete(@NonNull InitializationStatus initializationStatus) {
+
+            }
+        });
+        AdRequest request = new AdRequest.Builder().build();
+        binding.adView.loadAd(request);
     }
 
     private void initChoiceGroupName() {

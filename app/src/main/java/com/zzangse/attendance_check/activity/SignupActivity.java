@@ -21,6 +21,10 @@ import androidx.core.content.ContextCompat;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.toolbox.Volley;
+import com.google.android.gms.ads.AdRequest;
+import com.google.android.gms.ads.MobileAds;
+import com.google.android.gms.ads.initialization.InitializationStatus;
+import com.google.android.gms.ads.initialization.OnInitializationCompleteListener;
 import com.google.android.material.textfield.TextInputLayout;
 import com.zzangse.attendance_check.R;
 import com.zzangse.attendance_check.databinding.ActivitySignupBinding;
@@ -84,6 +88,18 @@ public class SignupActivity extends AppCompatActivity {
         onClickTvPrivacy();
         enableAll(isPrivacy, isService);
         onClickCheckBox();
+        showAD();
+    }
+
+    private void showAD() {
+        MobileAds.initialize(this, new OnInitializationCompleteListener() {
+            @Override
+            public void onInitializationComplete(@NonNull InitializationStatus initializationStatus) {
+
+            }
+        });
+        AdRequest request = new AdRequest.Builder().build();
+        binding.adView.loadAd(request);
     }
 
 

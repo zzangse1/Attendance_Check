@@ -29,6 +29,10 @@ import com.github.mikephil.charting.data.PieData;
 import com.github.mikephil.charting.data.PieDataSet;
 import com.github.mikephil.charting.data.PieEntry;
 import com.github.mikephil.charting.formatter.ValueFormatter;
+import com.google.android.gms.ads.AdRequest;
+import com.google.android.gms.ads.MobileAds;
+import com.google.android.gms.ads.initialization.InitializationStatus;
+import com.google.android.gms.ads.initialization.OnInitializationCompleteListener;
 import com.google.android.material.textfield.TextInputEditText;
 import com.zzangse.attendance_check.R;
 import com.zzangse.attendance_check.adapter.ChartAdapter;
@@ -116,12 +120,24 @@ public class ChartFragment extends Fragment {
         setupCheckBox();
         initRecycler();
         onClickMonthBtn();
+        showAD();
     }
 
     @Override
     public void onResume() {
         super.onResume();
         binding.checkBox.setChecked(false);
+    }
+
+    private void showAD() {
+        MobileAds.initialize(getContext(), new OnInitializationCompleteListener() {
+            @Override
+            public void onInitializationComplete(@NonNull InitializationStatus initializationStatus) {
+
+            }
+        });
+        AdRequest request = new AdRequest.Builder().build();
+        binding.adView.loadAd(request);
     }
 
     private void initDate() {

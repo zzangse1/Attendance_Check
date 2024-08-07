@@ -6,11 +6,16 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.toolbox.Volley;
+import com.google.android.gms.ads.AdRequest;
+import com.google.android.gms.ads.MobileAds;
+import com.google.android.gms.ads.initialization.InitializationStatus;
+import com.google.android.gms.ads.initialization.OnInitializationCompleteListener;
 import com.kakao.sdk.auth.model.OAuthToken;
 import com.kakao.sdk.common.KakaoSdk;
 import com.kakao.sdk.user.UserApiClient;
@@ -39,6 +44,7 @@ public class LoginActivity extends AppCompatActivity {
         onClickSignUp();
         onClickKakaoLogin();
         onClickFindAccount();
+        showAD();
     }
 
     @Override
@@ -57,6 +63,18 @@ public class LoginActivity extends AppCompatActivity {
             Log.d("뒤로가기", MySharedPreferences.getUserId(getApplicationContext()));
             Log.d("뒤로가기", MySharedPreferences.getUserPass(getApplicationContext()));
         }
+    }
+
+    private void showAD() {
+        MobileAds.initialize(this, new OnInitializationCompleteListener() {
+            @Override
+            public void onInitializationComplete(@NonNull InitializationStatus initializationStatus) {
+
+            }
+        });
+        AdRequest request = new AdRequest.Builder().build();
+        binding.adView.loadAd(request);
+        binding.adView2.loadAd(request);
     }
 
     private void initView() {
