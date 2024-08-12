@@ -44,25 +44,21 @@ public class SignupActivity extends AppCompatActivity {
     private static final String REGEX_ID = "^[a-z0-9_-]{5,20}$";
     private static final String REGEX_PASSWORD = "^[a-zA-Z0-9!@#$]+$";
     private static final String REGEX_NAME = "^[가-힣]{2,6}$";
-    private static final String REGEX_PHONE_NUMBER = "^\\d{3}-?\\d{3,4}-?\\d{4}$";
     private static final String WARNING_MSG_NO_ID = "•아이디: 필수 정보 입니다.";
     private static final String WARNING_MSG_NO_EMAIL = "•이메일: 필수 정보 입니다.";
     private static final String WARNING_MSG_NO_PASSWORD = "•비밀번호: 필수 정보입니다.";
     private static final String WARNING_MSG_NO_NICKNAME = "•닉네임: 필수 정보입니다.";
     private static final String WARNING_MSG_SAME_ID = "•아이디: 이미 사용중인 아이디 입니다.";
     private static final String WARNING_MSG_SAME_EMAIL = "•이메일: 이미 사용중인 이메일 입니다.";
-    private static final String WARNING_MSG_SAME_PHONE_NUMBER = "•휴대전화번호: 이미 사용 중입니다.";
     private static final String WARNING_MSG_RULE_ID = "•아이디: 5~20자의 영문 소문자, 숫자를 사용해 주세요.";
     private static final String WARNING_MSG_RULE_EMAIL = "•이메일: 5~30자의 이메일 형식을 맞춰주세요 [sample@domain.com]";
     private static final String WARNING_MSG_RULE_PASSWORD = "•비밀번호: 8~20자의 영문 대/소문자, 숫자, [!,@,#,$]를 사용해 주세요.";
     private static final String WARNING_MSG_RULE_BIRTHDAY = "•생년월일: [ 20240101 ] 형식으로 작성해 주세요.";
     private static final String WARNING_MSG_RULE_NICKNAME = "•닉네임: 2~8자로 설정해주세요.";
-    private static final String WARNING_MSG_RULE_NUMBER = "•전화번호: [ 01012341234 ] 형식으로 작성해 주세요.";
     private static final String WARNING_MSG_RULE_NAME = "•이름: 2~6자로 설정해주세요.";
     private static final String WARNING_MSG_NO_BIRTHDAY = "•생년월일: 필수 정보입니다.";
     private static final String WARNING_MSG_NO_NAME = "•이름: 필수 정보입니다.";
     private static final String WARNING_MSG_NO_SEX = "•성별: 필수 정보입니다.";
-    private static final String WARNING_MSG_NO_PHONE_NUMBER = "•전화번호: 필수 정보입니다.";
 
     private static boolean IS_VALID_ID = false;
     private static boolean IS_VALID_EMAIL = false;
@@ -71,7 +67,6 @@ public class SignupActivity extends AppCompatActivity {
     private static boolean IS_VALID_NAME = false;
     private static boolean IS_VALID_BIRTH = false;
     private static boolean IS_VALID_SEX = false;
-    private static boolean IS_VALID_PHONE_NUMBER = false;
     private boolean isPrivacy = false;
     private boolean isService = false;
     private String userToken = "ZZANGSE";
@@ -112,35 +107,15 @@ public class SignupActivity extends AppCompatActivity {
             String userNickName = intent.getStringExtra("userNickName");
             String userBirth = intent.getStringExtra("userBirth");
             String userSex = intent.getStringExtra("userSex");
-            String userPhoneNumber = intent.getStringExtra("userPhoneNumber");
-            userPhoneNumber = formatPhoneNumber(userPhoneNumber);
             Log.d("userSex", userSex + "");
             Log.d("userToken", userToken + "");
             binding.etEmail.setText(userEmail);
             binding.etName.setText(userName);
             binding.etNickname.setText(userNickName);
             binding.etBirth.setText(userBirth);
-            binding.etNumber.setText(userPhoneNumber);
         } else {
             userToken = "ZZANGSE";
         }
-    }
-
-    // 카카오 전화번호 +82 형식 포멧
-    private String formatPhoneNumber(String userPhoneNumber) {
-        if (!userPhoneNumber.isEmpty()) {
-            String numberWithoutCountryCode = userPhoneNumber.replaceFirst("^\\+82\\s*", "");
-            String formattedNumber = numberWithoutCountryCode.replaceAll("[^0-9]", "");
-
-            if (!formattedNumber.startsWith("0")) {
-                formattedNumber = "0" + formattedNumber;
-            }
-
-            return formattedNumber;
-        } else {
-            return "";
-        }
-
     }
 
     private void initView() {
@@ -187,7 +162,6 @@ public class SignupActivity extends AppCompatActivity {
         binding.btnMale.setEnabled(isShow);
         binding.btnFemale.setEnabled(isShow);
         binding.btnNone.setEnabled(isShow);
-        binding.etNumberLayout.setEnabled(isShow);
     }
 
     private void onClickCheckBox() {
@@ -217,8 +191,6 @@ public class SignupActivity extends AppCompatActivity {
             String m_birth = binding.etBirth.getText().toString();
             String userNickName = binding.etNickname.getText().toString();
             String userName = binding.etName.getText().toString();
-            String userPhoneNumber = binding.etNumber.getText().toString();
-
 
             IS_VALID_ID = checkId(userID);
             IS_VALID_EMAIL = checkEmail(userEmail);
@@ -227,10 +199,9 @@ public class SignupActivity extends AppCompatActivity {
             IS_VALID_NICK_NAME = checkNickName(userNickName);
             IS_VALID_NAME = checkName(userName);
             IS_VALID_SEX = checkSex(m_sex);
-            IS_VALID_PHONE_NUMBER = checkPhoneNumber(userPhoneNumber);
 
             setCheckValid(IS_VALID_ID, IS_VALID_EMAIL, IS_VALID_PASSWORD, IS_VALID_BIRTH,
-                    IS_VALID_NICK_NAME, IS_VALID_NAME, IS_VALID_SEX, IS_VALID_PHONE_NUMBER);
+                    IS_VALID_NICK_NAME, IS_VALID_NAME, IS_VALID_SEX);
 
             setClearFocus();
         });
@@ -238,8 +209,8 @@ public class SignupActivity extends AppCompatActivity {
     }
 
     private void setCheckValid(boolean isValidId, boolean isValidEmail, boolean isValidPassword, boolean isValidBirth,
-                               boolean isValidNickName, boolean isValidName, boolean isValidSex, boolean isValidPhoneNumber) {
-        if (isValidId && isValidEmail && isValidPassword && isValidBirth && isValidNickName && isValidName && isValidSex && isValidPhoneNumber) {
+                               boolean isValidNickName, boolean isValidName, boolean isValidSex) {
+        if (isValidId && isValidEmail && isValidPassword && isValidBirth && isValidNickName && isValidName && isValidSex) {
             onClick();
         } else {
             Toast.makeText(getApplicationContext(), "회원등록 실패", Toast.LENGTH_SHORT).show();
@@ -255,7 +226,6 @@ public class SignupActivity extends AppCompatActivity {
         String userName = binding.etName.getText().toString();
         String userBirth = binding.etBirth.getText().toString();
         String userSex = m_sex;
-        String userPhoneNumber = binding.etNumber.getText().toString();
 
         Response.Listener<String> listener = new Response.Listener<String>() {
             @Override
@@ -269,46 +239,30 @@ public class SignupActivity extends AppCompatActivity {
                         Intent intent = new Intent(SignupActivity.this, LoginActivity.class);
                         startActivity(intent);
                     } else {
-                        Log.d("issue", errorCode + "");
                         isDuplication(errorCode);
                     }
                 } catch (JSONException e) {
-                    Log.d("hello", "5");
                     throw new RuntimeException(e);
                 }
             }
         };
-        Log.d("hello", "6");
         SignUpRequest request = new SignUpRequest(userID, userEmail, userPassword, userNickName,
-                userName, userBirth, userSex, userPhoneNumber, userToken, listener);
+                userName, userBirth, userSex, userToken, listener);
         RequestQueue queue = Volley.newRequestQueue(SignupActivity.this);
         queue.add(request);
     }
 
     private void isDuplication(String errorCode) {
-        if (errorCode.equals("ZOE_SIGN_UP_007")) {
-            setErrorLayout(binding.etIdLayout, binding.tvErrorId, WARNING_MSG_SAME_ID);
-            setErrorLayout(binding.etEmailLayout, binding.tvErrorEmail, WARNING_MSG_SAME_EMAIL);
-            setErrorLayout(binding.etNumberLayout, binding.tvErrorPhoneNumber, WARNING_MSG_SAME_PHONE_NUMBER);
-        } else if (errorCode.equals("ZOE_SIGN_UP_006")) {
-            setErrorLayout(binding.etEmailLayout, binding.tvErrorEmail, WARNING_MSG_SAME_EMAIL);
-            setErrorLayout(binding.etNumberLayout, binding.tvErrorPhoneNumber, WARNING_MSG_SAME_PHONE_NUMBER);
-        } else if (errorCode.equals("ZOE_SIGN_UP_005")) {
-            setErrorLayout(binding.etIdLayout, binding.tvErrorId, WARNING_MSG_SAME_ID);
-            setErrorLayout(binding.etNumberLayout, binding.tvErrorPhoneNumber, WARNING_MSG_SAME_PHONE_NUMBER);
-        } else if (errorCode.equals("ZOE_SIGN_UP_004")) {
+        if (errorCode.equals("ZOE_SIGN_UP_004")) {
             setErrorLayout(binding.etIdLayout, binding.tvErrorId, WARNING_MSG_SAME_ID);
             setErrorLayout(binding.etEmailLayout, binding.tvErrorEmail, WARNING_MSG_SAME_EMAIL);
         } else if (errorCode.equals("ZOE_SIGN_UP_001")) {
             setErrorLayout(binding.etIdLayout, binding.tvErrorId, WARNING_MSG_SAME_ID);
         } else if (errorCode.equals("ZOE_SIGN_UP_002")) {
             setErrorLayout(binding.etEmailLayout, binding.tvErrorEmail, WARNING_MSG_SAME_EMAIL);
-        } else if (errorCode.equals("ZOE_SIGN_UP_003")) {
-            setErrorLayout(binding.etNumberLayout, binding.tvErrorPhoneNumber, WARNING_MSG_SAME_PHONE_NUMBER);
         } else {
             clearErrorLayout(binding.etIdLayout, binding.tvErrorId);
             clearErrorLayout(binding.etEmailLayout, binding.tvErrorEmail);
-            clearErrorLayout(binding.etNumberLayout, binding.tvErrorPhoneNumber);
         }
 
     }
@@ -449,20 +403,6 @@ public class SignupActivity extends AppCompatActivity {
             return false;
         } else {
             clearErrorLayout(binding.etBirthLayout, binding.tvErrorBirth);
-            return true;
-        }
-    }
-
-    private boolean checkPhoneNumber(String phoneNumber) {
-        boolean isMatch = Pattern.matches(REGEX_PHONE_NUMBER, phoneNumber);
-        if (phoneNumber.isEmpty()) {
-            setErrorLayout(binding.etNumberLayout, binding.tvErrorPhoneNumber, WARNING_MSG_NO_PHONE_NUMBER);
-            return false;
-        } else if (!isMatch) {
-            setErrorLayout(binding.etNumberLayout, binding.tvErrorPhoneNumber, WARNING_MSG_RULE_NUMBER);
-            return false;
-        } else {
-            clearErrorLayout(binding.etNumberLayout, binding.tvErrorPhoneNumber);
             return true;
         }
     }

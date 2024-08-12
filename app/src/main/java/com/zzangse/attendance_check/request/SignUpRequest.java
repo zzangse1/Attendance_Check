@@ -16,7 +16,7 @@ public class SignUpRequest extends StringRequest {
 
     public SignUpRequest(String userID, String userEmail, String userPassword, String userNickName,
                          String userName, String userBirth, String userSex,
-                         String userPhoneNumber, String userToken, Response.Listener<String> listener) {
+                         String userToken, Response.Listener<String> listener) {
         super(Method.POST, URL, listener, null);
 
         map = new HashMap<>();
@@ -27,7 +27,6 @@ public class SignUpRequest extends StringRequest {
         map.put("userName", userName);
         map.put("userBirth", userBirth);
         map.put("userSex", userSex);
-        map.put("userPhoneNumber", userPhoneNumber);
         map.put("userToken", userToken);
     }
 
