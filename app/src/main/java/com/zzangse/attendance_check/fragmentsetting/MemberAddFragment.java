@@ -66,11 +66,11 @@ public class MemberAddFragment extends Fragment {
         textWatcherMemo();
         getAddress();
         moveToSearchAddress();
-        showAD();
+       // showAD();
     }
 
     private void showAD() {
-        MobileAds.initialize(getContext(), new OnInitializationCompleteListener() {
+        MobileAds.initialize(requireContext(), new OnInitializationCompleteListener() {
             @Override
             public void onInitializationComplete(@NonNull InitializationStatus initializationStatus) {
 

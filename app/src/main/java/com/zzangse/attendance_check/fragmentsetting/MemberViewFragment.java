@@ -20,6 +20,10 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.toolbox.Volley;
+import com.google.android.gms.ads.AdRequest;
+import com.google.android.gms.ads.MobileAds;
+import com.google.android.gms.ads.initialization.InitializationStatus;
+import com.google.android.gms.ads.initialization.OnInitializationCompleteListener;
 import com.zzangse.attendance_check.R;
 import com.zzangse.attendance_check.activity.SettingActivity;
 import com.zzangse.attendance_check.adapter.MemberNameAdapter;
@@ -74,6 +78,7 @@ public class MemberViewFragment extends Fragment {
         setGroupName();
         onClickBtnAdd();
         dataLoad();
+        showAD();
     }
 
     private void initRecycler() {
@@ -98,6 +103,18 @@ public class MemberViewFragment extends Fragment {
                 showDeleteDialog(memberInfo.getPriNum(), pos, memberInfo.getInfoName());
             }
         });
+    }
+
+
+    private void showAD() {
+        MobileAds.initialize(requireContext(), new OnInitializationCompleteListener() {
+            @Override
+            public void onInitializationComplete(@NonNull InitializationStatus initializationStatus) {
+
+            }
+        });
+        AdRequest request = new AdRequest.Builder().build();
+        binding.adView.loadAd(request);
     }
 
     private void onClickBtnAdd() {

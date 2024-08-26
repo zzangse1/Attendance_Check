@@ -94,7 +94,7 @@ public class SignupActivity extends AppCompatActivity {
             }
         });
         AdRequest request = new AdRequest.Builder().build();
-        binding.adView.loadAd(request);
+        //binding.adView.loadAd(request);
     }
 
 
@@ -420,7 +420,7 @@ public class SignupActivity extends AppCompatActivity {
         int unselectedBackgroundStart = R.drawable.btn_unclick_sex_start;
         int unselectedBackgroundCenter = R.drawable.btn_unclick_sex_center;
         int unselectedBackgroundEnd = R.drawable.btn_unclick_sex_end;
-        int unselectedTextColor = getColor(R.color.grey_100);
+        int unselectedTextColor = getColor(R.color.tv_no_color);
         m_sex = selectedButton.getText().toString();
         binding.btnMale.setBackgroundResource(unselectedBackgroundStart);
         binding.btnMale.setTextColor(unselectedTextColor);

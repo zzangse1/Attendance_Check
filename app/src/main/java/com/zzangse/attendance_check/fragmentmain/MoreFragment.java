@@ -54,7 +54,7 @@ public class MoreFragment extends Fragment {
     }
 
     private void showAD() {
-        MobileAds.initialize(getContext(), new OnInitializationCompleteListener() {
+        MobileAds.initialize(requireContext(), new OnInitializationCompleteListener() {
             @Override
             public void onInitializationComplete(@NonNull InitializationStatus initializationStatus) {
 

@@ -61,11 +61,11 @@ public class MemberInfoFragment extends Fragment {
         onClickModifyBtn();
         loadMemberInfo(priNum);
         onClickPhoneNumber();
-        showAD();
+        //showAD();
     }
 
     private void showAD() {
-        MobileAds.initialize(getContext(), new OnInitializationCompleteListener() {
+        MobileAds.initialize(requireContext(), new OnInitializationCompleteListener() {
             @Override
             public void onInitializationComplete(@NonNull InitializationStatus initializationStatus) {
 
