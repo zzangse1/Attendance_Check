@@ -4,15 +4,15 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <com.google.android.gms.ads.AdView xmlns:ads="http://schemas.android.com/apk/res-auto"
-        android:id="@+id/adView"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        ads:adSize="BANNER"
-        ads:adUnitId="@string/test_ad"
-        ads:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
+    <!--    <com.google.android.gms.ads.AdView xmlns:ads="http://schemas.android.com/apk/res-auto"-->
+    <!--        android:id="@+id/adView"-->
+    <!--        android:layout_width="wrap_content"-->
+    <!--        android:layout_height="wrap_content"-->
+    <!--        ads:adSize="BANNER"-->
+    <!--        ads:adUnitId="@string/test_ad"-->
+    <!--        ads:layout_constraintTop_toTopOf="parent"-->
+    <!--        app:layout_constraintEnd_toEndOf="parent"-->
+    <!--        app:layout_constraintStart_toStartOf="parent" />-->
 
     <com.google.android.material.appbar.MaterialToolbar
         android:id="@+id/toolbar_signup"
@@ -42,48 +42,46 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent">
 
-            <TextView
-                android:id="@+id/tv_privacy"
-                style="@style/AppEditText.Bold.Navy.S17"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="개인정보 처리방침 (클릭)"
-                app:layout_constraintBottom_toBottomOf="@id/cb_privacy"
-                app:layout_constraintEnd_toStartOf="@id/cb_privacy"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
-
             <CheckBox
                 android:id="@+id/cb_privacy"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginEnd="20dp"
-                android:enabled="false"
-                android:text="확인했습니다"
-                app:layout_constraintEnd_toEndOf="parent"
+                android:layout_marginStart="20dp"
+                android:text="(필수) 개인정보 처리방침"
+                app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
 
-
             <TextView
-                android:id="@+id/tv_service"
-                style="@style/AppEditText.Bold.Navy.S17"
+                android:id="@+id/tv_privacy"
+                style="@style/AppEditText.Bold.Navy.S14"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="서비스 이용약관 (클릭)"
-                app:layout_constraintBottom_toBottomOf="@id/cb_service"
-                app:layout_constraintEnd_toStartOf="@id/cb_service"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="@id/cb_service" />
+                android:layout_marginEnd="20dp"
+                android:text="개인정보 처리방침(클릭)"
+                app:layout_constraintBottom_toBottomOf="@id/cb_privacy"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="@id/cb_privacy" />
 
             <CheckBox
                 android:id="@+id/cb_service"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginEnd="20dp"
-                android:enabled="false"
-                android:text="확인했습니다"
-                app:layout_constraintEnd_toEndOf="parent"
+                android:layout_marginStart="20dp"
+                android:text="(필수) 서비스 이용약관"
+                app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/cb_privacy" />
+
+
+            <TextView
+                android:id="@+id/tv_service"
+                style="@style/AppEditText.Bold.Navy.S14"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="20dp"
+                android:text="서비스 이용약관(클릭)"
+                app:layout_constraintBottom_toBottomOf="@id/cb_service"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="@id/cb_service" />
 
 
             <com.google.android.material.textfield.TextInputLayout
@@ -281,7 +279,7 @@
 
                 <androidx.appcompat.widget.AppCompatButton
                     android:id="@+id/btn_male"
-                    style="@style/AppButtonText.Gray.S17"
+                    style="@style/AppEditText.Choice_Sex.S14"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
@@ -290,7 +288,7 @@
 
                 <androidx.appcompat.widget.AppCompatButton
                     android:id="@+id/btn_female"
-                    style="@style/AppButtonText.Gray.S17"
+                    style="@style/AppEditText.Choice_Sex.S14"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
@@ -299,7 +297,7 @@
 
                 <androidx.appcompat.widget.AppCompatButton
                     android:id="@+id/btn_none"
-                    style="@style/AppButtonText.Gray.S17"
+                    style="@style/AppEditText.Choice_Sex.S14"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
