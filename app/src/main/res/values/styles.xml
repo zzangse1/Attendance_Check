@@ -42,10 +42,17 @@
         <item name="android:textColor">@color/navy_300</item>
     </style>
 
+    <style name="AppEditText.Choice_Sex">
+        <item name="android:textColor">@color/tv_no_color</item>
+    </style>
+
+    <style name="AppEditText.Choice_Sex.S14">
+        <item name="android:textSize">14sp</item>
+    </style>
+
     <style name="AppEditText.Navy.S17">
         <item name="android:textSize">17sp</item>
     </style>
-
 
     <style name="AppEditText.S24">
         <item name="android:textSize">24sp</item>
@@ -162,6 +169,10 @@
 
     <style name="AppEditText.Bold.Navy">
         <item name="android:textColor">@color/navy_200</item>
+    </style>
+
+    <style name="AppEditText.Bold.Navy.S14">
+        <item name="android:textSize">14sp</item>
     </style>
 
     <style name="AppEditText.Bold.Navy.S17">
