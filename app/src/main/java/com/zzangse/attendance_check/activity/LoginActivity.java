@@ -74,7 +74,7 @@ public class LoginActivity extends AppCompatActivity {
         });
         AdRequest request = new AdRequest.Builder().build();
         binding.adView.loadAd(request);
-        binding.adView2.loadAd(request);
+        //binding.adView2.loadAd(request);
     }
 
     private void initView() {

@@ -12,6 +12,15 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
+import com.google.android.gms.ads.AdError;
+import com.google.android.gms.ads.AdRequest;
+import com.google.android.gms.ads.FullScreenContentCallback;
+import com.google.android.gms.ads.LoadAdError;
+import com.google.android.gms.ads.MobileAds;
+import com.google.android.gms.ads.initialization.InitializationStatus;
+import com.google.android.gms.ads.initialization.OnInitializationCompleteListener;
+import com.google.android.gms.ads.interstitial.InterstitialAd;
+import com.google.android.gms.ads.interstitial.InterstitialAdLoadCallback;
 import com.google.android.material.navigation.NavigationBarView;
 import com.google.android.material.snackbar.Snackbar;
 import com.zzangse.attendance_check.R;
@@ -40,6 +49,8 @@ public class MainActivity extends AppCompatActivity {
         setupBottomNav();
         getOnBackPressedDispatcher().addCallback(this, onBackPressedCallback);
     }
+
+
 
     private void setupBottomNav() {
         binding.bottomNav.setOnItemSelectedListener(new BottomNavSelect());
@@ -117,8 +128,8 @@ public class MainActivity extends AppCompatActivity {
             if (gapTime >= 0 && gapTime <= 2000) {
                 finish();
             } else {
-                backBtnTime=curTime;
-                Snackbar.make(binding.navHostFragment,"한번 더 누르면 종료됩니다.",Snackbar.LENGTH_SHORT).show();
+                backBtnTime = curTime;
+                Snackbar.make(binding.navHostFragment, "한번 더 누르면 종료됩니다.", Snackbar.LENGTH_SHORT).show();
             }
         }
     };
@@ -129,7 +140,7 @@ public class MainActivity extends AppCompatActivity {
         long curTime = System.currentTimeMillis();
         long gapTime = curTime - backBtnTime;
         if (gapTime >= 0 && gapTime <= 2000) {
-            Log.d("Back_BTN","onBackPressed");
+            Log.d("Back_BTN", "onBackPressed");
             super.onBackPressed();
         } else {
             backBtnTime = curTime;

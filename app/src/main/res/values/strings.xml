@@ -152,7 +152,8 @@
     <string name="fragment_check_absent">결석</string>
 
     <!-- 애드옵스 -->
-    <string name="my_ad">ca-app-pub-2295399199407201/6153256751</string>
+    <string name="my_ad_banner">ca-app-pub-2295399199407201/6153256751</string>
+    <string name="my_ad_front">ca-app-pub-2295399199407201/2274933913</string>
 
 
 </resources>

@@ -76,7 +76,7 @@ public class FindPwFragment extends Fragment {
         onClickSendNumber();
         onClickRandCodeCheck();
         onClickChangeBtn();
-        showAD();
+    //    showAD();
     }
 
     private void onClickSendNumber() {

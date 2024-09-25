@@ -65,7 +65,7 @@ public class FindIdFragment extends Fragment {
         onClickSendNumber();
         onClickRandCodeCheck();
         settingBtn();
-        showAD();
+       // showAD();
     }
 
     private void showAD() {
