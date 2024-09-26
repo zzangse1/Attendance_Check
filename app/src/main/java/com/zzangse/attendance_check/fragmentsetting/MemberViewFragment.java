@@ -98,7 +98,7 @@ public class MemberViewFragment extends Fragment {
 
             @Override
             public void onDelete(MemberInfo memberInfo) {
-                Toast.makeText(getActivity(), "delete", Toast.LENGTH_SHORT).show();
+                //Toast.makeText(getActivity(), "delete", Toast.LENGTH_SHORT).show();
                 int pos = memberNameList.indexOf(memberInfo);
                 showDeleteDialog(memberInfo.getPriNum(), pos, memberInfo.getInfoName());
             }
